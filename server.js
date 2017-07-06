@@ -1,14 +1,20 @@
+require('babel-core/register');
+require('babel-polyfill');
 
 const Koa = require('Koa')
-    , bodyParser = require('koa-bodyparser')
-
-    , router = require('./routes')
-
     , app = new Koa()
+    , bodyParser = require('koa-bodyparser')
+    , logger = require('koa-logger')
+    , router = require('./routes')
+    , db = require('./db')
+
+app.use(logger())
 
 
-app.use(router.routes()).use(router.allowedMethods())
 app.use(bodyParser())
+app.use(router.routes())
+   .use(router.allowedMethods())
+
 
 
 app.listen(3000)

@@ -1,14 +1,10 @@
 
-var Router = require('koa-router')
+var { host } = require('../config')
 
-var home = new Router()
-var host = 'https://newteo.com'
-
-home.get('/', async (ctx) => {
+var home = (ctx) => {
   ctx.body = {
-    page: `${host}/page`,
-    post: `${host}/post`
+    host: host
   }
-})
+}
 
 module.exports = home

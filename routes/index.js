@@ -1,17 +1,36 @@
 
+import Router from 'koa-router'
+import { Admin, App } from '../controllers'
+import home from './home'
+import verifyToken from '../utils/verifyToken'
+import jwt from 'jsonwebtoken'
+import { cert } from '../config'
 
-var Router = require('koa-router')
-var home = require('./home')
-var page = require('./page')
-var post = require('./post')
-var query = require('./query')
-var router = new Router()
+const router = new Router()
 
 
-router.use('/', home.routes(), home.allowedMethods())
-router.use('/page', page.routes(), page.allowedMethods())
-router.use('/post', post.routes(), post.allowedMethods())
-router.use('/query', query.routes(), query.allowedMethods())
+router.get('/', home)
+router.post('/admin/session', Admin.session)
 
+router.use('*', verifyToken)
+
+router.get('/admin/users', Admin.getUsers)
+
+router.param('userId', function (id, ctx, next) {
+  ctx.userId = id
+  if (!ctx.userId) return ctx.status = 404;
+  return next();
+})
+.get('/admin/users/:userId', Admin.getUserById)
+.put('/admin/users/:userId', Admin.UpdateUser)
+.delete('/admin/users/:userId', Admin.DeleteUser)
+
+router.post('/admin/users/new', Admin.newUser)
+router.get('/app', App.Index)
 
 module.exports = router
+
+
+
+
+
