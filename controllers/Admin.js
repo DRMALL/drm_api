@@ -20,7 +20,7 @@ class Admin {
       return ctx.body = { code: 401, message: '用户名或密码错误', data: '' }
 
     const token = jwt.sign({ admin, password }, cert)
-    ctx.body = { token }
+    ctx.body = { code: 201, message: '', data: token }
   }
 
   //新增用户

@@ -13,7 +13,6 @@ router.post('/admin/session', Admin.session)
 router.use('*', verifyToken)
 
 router.get('/admin/users', Admin.getUsers)
-
 router.param('userId', function (id, ctx, next) {
   ctx.userId = id
   if (!ctx.userId) return ctx.status = 404;
@@ -24,7 +23,12 @@ router.param('userId', function (id, ctx, next) {
 .delete('/admin/users/:userId', Admin.DeleteUser)
 
 router.post('/admin/users/new', Admin.newUser)
+
+
+
+
 router.get('/app', App.Index)
+router.post('/app/session', App.session)
 
 module.exports = router
 
