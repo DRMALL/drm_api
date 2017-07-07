@@ -16,6 +16,7 @@
     "url": "https://github.com/DRMALL/drm_api/issues"
   },
   "dependencies": {
+    "busboy": "^0.2.14",
     "jsonwebtoken": "^7.4.1",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",

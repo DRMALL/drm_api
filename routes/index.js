@@ -9,6 +9,9 @@ const router = new Router()
 
 router.get('/', home)
 router.post('/admin/session', Admin.session)
+router.post('/app/session', App.session)
+router.post('/app/upload', App.Upload)
+
 
 router.use('*', verifyToken)
 
@@ -28,7 +31,9 @@ router.post('/admin/users/new', Admin.newUser)
 
 
 router.get('/app', App.Index)
-router.post('/app/session', App.session)
+router.get('/app/user', App.getUserInfo)
+router.post('/app/user/update', App.UpdateUser)
+
 
 module.exports = router
 
