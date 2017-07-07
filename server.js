@@ -1,7 +1,7 @@
 require('babel-core/register');
 require('babel-polyfill');
 
-const Koa = require('Koa')
+const Koa = require('koa')
     , app = new Koa()
     , bodyParser = require('koa-bodyparser')
     , logger = require('koa-logger')

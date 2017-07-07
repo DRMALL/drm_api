@@ -3,8 +3,6 @@ import Router from 'koa-router'
 import { Admin, App } from '../controllers'
 import home from './home'
 import verifyToken from '../utils/verifyToken'
-import jwt from 'jsonwebtoken'
-import { cert } from '../config'
 
 const router = new Router()
 
