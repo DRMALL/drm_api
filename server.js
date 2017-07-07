@@ -7,7 +7,10 @@ const Koa = require('koa')
     , logger = require('koa-logger')
     , router = require('./routes')
     , db = require('./db')
+    , cors = require('koa2-cors')
 
+
+app.use(cors())
 app.use(logger())
 
 
