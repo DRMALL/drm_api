@@ -14,6 +14,11 @@ app = https://api.wardenger.me/app
 
 ## 目录
 
+* [App](#App)
+  * [登录](#登录)
+  * [获取用户信息](#获取用户信息)
+  * [更新用户信息](#更新用户信息)
+
 * [admin](#admin)
   * [登录](#登录)
   * [新增用户](#新增用户)
@@ -24,7 +29,41 @@ app = https://api.wardenger.me/app
 
 
 
-* [app](#app)
+# App
+
+### 登录
+
+```
+POST https://api.wardenger.me/app/session
+```
+```
+{
+  email: '',
+  password: ''
+}
+```
+
+### 获取用户信息
+```
+GET https://api.wardenger.me/app/user?token=${token}
+```
+
+### 更新用户信息
+```
+POST https://api.wardenger.me/app/user/update?token=${token}
+```
+
+```
+{
+  name: '',
+  password: '',
+  email: '',
+  phone: '',
+  company_name: '',
+  address: ''
+}
+```
+
 
 
 # admin

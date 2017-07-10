@@ -4,6 +4,8 @@ import mongoose from 'mongoose'
 import User from '../model/User'
 import jwt from 'jsonwebtoken'
 import { cert, initAdmins } from '../config'
+import { hash, compare } from '../utils/util'
+
 
 
 class Admin {
@@ -34,7 +36,8 @@ class Admin {
       }
     }
     try {
-      const result = await User.create({ name, password, email, phone, company_name, address })
+      const encryptPass = await hash(password)
+      const result = await User.create({ name, password: encryptPass , email, phone, company_name, address })
       ctx.body = { code: 201, message: 'ok', data: result }
     }
     catch(e) {

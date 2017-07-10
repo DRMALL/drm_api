@@ -5,6 +5,8 @@ import User from '../model/User'
 import jwt from 'jsonwebtoken'
 import { cert } from '../config'
 import { busboys } from '../utils/upload'
+import { compare } from '../utils/util'
+import bcrypt from 'bcrypt'
 
 
 
@@ -19,19 +21,22 @@ class App {
     const { email, password } = ctx.request.body
     if(!email || !password)
       return ctx.body = { code: 400, message: '缺少必要的参数 email, password', data: '' }
+
     const result = await User.findOne({ email })
     if(!result)
-      return ctx.body = { code: 404, message: '未找到该用户', data: '' }
-    if(result.password !== password)
-      return ctx.body = { code: 401, message: '密码错误', data: '' }
+      return ctx.body = { code: 401, message: '用户名或密码错误', data: '' }
+
+    const isvalid = await bcrypt.compare(password, result.password)
+    if(!isvalid)
+      return ctx.body = { code: 401, message: '用户名或密码错误', data: '' }
 
     const token = jwt.sign({ id: result._id }, cert)
     ctx.body = { code: 201, message: 'ok', data: token }
+
   }
 
   //获取用户信息
   static async getUserInfo(ctx) {
-
     const { id } = ctx.request.decoded 
     const result = await User.findById(id)
     if(!result)
