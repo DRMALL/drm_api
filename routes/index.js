@@ -15,6 +15,8 @@ router.post('/app/upload', App.Upload)
 
 router.use('*', verifyToken)
 
+
+//users
 router.get('/admin/users', Admin.getUsers)
 router.param('userId', function (id, ctx, next) {
   ctx.userId = id
@@ -24,8 +26,17 @@ router.param('userId', function (id, ctx, next) {
 .get('/admin/users/:userId', Admin.getUserById)
 .put('/admin/users/:userId', Admin.UpdateUser)
 .delete('/admin/users/:userId', Admin.DeleteUser)
-
 router.post('/admin/users/new', Admin.newUser)
+
+
+//news
+router.post('/admin/news/uploadimg', Admin.uploadImg)
+router.post('/admin/news/new', Admin.createNew)
+router.get('/admin/news/all', Admin.getNews)
+router.get('/admin/news/one', Admin.getNewsById)
+router.post('/admin/news/delete', Admin.deleteNew)
+router.post('/admin/news/update', Admin.updateNew)
+
 
 
 
@@ -33,6 +44,10 @@ router.post('/admin/users/new', Admin.newUser)
 router.get('/app', App.Index)
 router.get('/app/user', App.getUserInfo)
 router.post('/app/user/update', App.UpdateUser)
+router.get('/app/news', App.getNews)
+router.get('/app/news/one', App.getNewsById)
+
+
 
 
 module.exports = router

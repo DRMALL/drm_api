@@ -28,11 +28,17 @@ exports.busboys = (ctx, options = {}) => {
     return new Promise((resolve, reject) => {
         const busboy = new Busboy({ headers: ctx.req.headers });
         let name = '';
+        let fieldname = ''
+        let result = []
 
         // 监听文件解析事件
         busboy.on('file', (fieldname, file, filename, encoding, mimetype) => {
+
             name = Date.now() + '_' + path.basename(filename);
+            // fieldname = fieldname
+
             console.log(`File [${fieldname}] 文件名: ${filename}`);
+
             // 通过管道的方式，把文件流保存到特定路径
 
             file.pipe(fs.createWriteStream(
@@ -49,6 +55,7 @@ exports.busboys = (ctx, options = {}) => {
                 console.log(`File [${fieldname}] 上传结束`);
                 resolve({
                     success: true,
+                    fieldname: fieldname,
                     file: `${host}${path.join(options.uploadDir, name)}`,
                 });
             });
@@ -56,14 +63,18 @@ exports.busboys = (ctx, options = {}) => {
 
         // 监听请求中的字段
         busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated) {
+
             console.log(`Field [${fieldname}]: value: ${inspect(val)}`);
+
         });
 
         // 监听结束事件
         busboy.on('finish', function () {
             console.log('Done parsing form!');
+
             resolve({
                 success: true,
+                fieldname: fieldname,
                 file: `${host}${path.join(options.uploadDir, name)}`,
             });
         });

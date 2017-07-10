@@ -2,6 +2,7 @@
 // var mongoose = require('mongoose')
 
 import User from '../model/User'
+import News from '../model/News'
 import jwt from 'jsonwebtoken'
 import { cert } from '../config'
 import { busboys } from '../utils/upload'
@@ -38,7 +39,7 @@ class App {
   //获取用户信息
   static async getUserInfo(ctx) {
     const { id } = ctx.request.decoded 
-    const result = await User.findById(id)
+    const result = await User.findById({_id: id })
     if(!result)
       return ctx.body = { code: 404, message: '未找到该用户', data: '' }
     ctx.body = { code: 200, message: 'ok', data: result }
@@ -62,6 +63,28 @@ class App {
   //
   static async Upload(ctx) {
     ctx.body = await busboys (ctx);
+    console.log(ctx.body)
+  }
+
+  static async getNews(ctx) {
+    try {
+      const result = await News.find()
+      ctx.body = { code: 200, message: 'ok', data: result }
+    }
+    catch(e) {
+      ctx.body = { code: 502, message: '获取数据时出错', data: e }
+    }
+  }
+
+  static async getNewsById(ctx) {
+    let { id } = ctx.query
+    try {
+      const result = await News.findById({ _id: id })
+      ctx.body = { code: 201, message: '获取成功', data: result }
+    }
+    catch(e) {
+      ctx.body = { code: 503, message: '获取数据时出错', data: e }
+    }
   }
 
 
