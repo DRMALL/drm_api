@@ -4,6 +4,7 @@
 import User from '../model/User'
 import News from '../model/News'
 import Bug from '../model/Bug'
+import Order from '../model/Order'
 import jwt from 'jsonwebtoken'
 import { cert } from '../config'
 import { busboys } from '../utils/upload'
@@ -42,7 +43,7 @@ class App {
     const { id } = ctx.request.decoded 
     const result = await User.findById({_id: id })
     if(!result)
-      return ctx.body = { code: 404, message: '未找到该用户', data: '' }
+      return ctx.body = { code: 404, message: '未找到该用户', data: result }
     ctx.body = { code: 200, message: 'ok', data: result }
   }
 
@@ -112,12 +113,21 @@ class App {
   }
 
   static async createOrder(ctx) {
-    let { bugId, title, content } = ctx.query
+    let { bugId, title, content } = ctx.request.body
     if(!bugId || !title || !content ) {
       return ctx.body = { code: 401, message: '缺少必要的参数params: bugId, title, content', data: '' }
     }
-    
+    let { id } = ctx.request.decoded
+    let order = await Order.create({ title, content, bug: bugId, user: id })
+    ctx.body = { code: 201, message: 'ok', data: order }
+  }
 
+  static async getOrders(ctx) {
+    let result = await Order.find()
+    .populate('user', 'name email')
+    .populate({ path: 'bug', select: 'category ', })
+
+    ctx.body = { code: 200, message: 'ok', data: result }
   }
 
 

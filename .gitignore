@@ -6,3 +6,4 @@ logs
 .DS_Store
 config.js
 deploy.sh
+note.md

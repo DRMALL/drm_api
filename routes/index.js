@@ -10,7 +10,7 @@ const router = new Router()
 router.get('/', home)
 router.post('/admin/session', Admin.session)
 router.post('/app/session', App.session)
-router.post('/app/upload', App.Upload)
+// router.post('/app/upload', App.Upload)
 
 
 router.use('*', verifyToken)
@@ -58,7 +58,7 @@ router.get('/app/bugs', App.getBugs)
 router.get('/app/bugs/one', App.getBug)
 
 router.post('/app/order/new', App.createOrder)
-
+router.get('/app/order/all', App.getOrders)
 
 
 

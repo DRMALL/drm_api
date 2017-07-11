@@ -24,6 +24,7 @@ app.use(router.routes())
    .use(router.allowedMethods())
 
 
+module.exports = app
 
 app.listen(3000)
 console.log('[demo] start-quick is starting at port 3000')

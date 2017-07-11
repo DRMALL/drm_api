@@ -1,11 +1,13 @@
 
 import mongoose from 'mongoose'
 
-const orderSchema = new mongoose.Schema({
+const  Schema = mongoose.Schema
+
+const orderSchema = new Schema({
   title: { type: String },
-  category: { type: Schema.Types.ObjectId, ref: 'Bug' }
+  bug: { type: Schema.Types.ObjectId, ref: 'Bug' },
   content: { type: String },
-  asker: { type: Schema.Types.ObjectId, ref: 'User'},
+  user: { type: Schema.Types.ObjectId, ref: 'User'},
   isHanlded: { type: Boolean, default: false },
   isDone: { type: Boolean, default: false },
 })

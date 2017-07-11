@@ -35,7 +35,7 @@ class Admin {
     if(!name || !password || !email || !phone || !company_name || !address) {
       return ctx.body = {
         code: 400,
-        message: '缺少必要的参数 admin, password, email, phone, company_name, address',
+        message: '缺少必要的参数 name, password, email, phone, company_name, address',
         data: ''
       }
     }
