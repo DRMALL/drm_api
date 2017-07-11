@@ -8,8 +8,6 @@ const newsSchema = new mongoose.Schema({
   images: [],
   author: { type: String },
   published: { type: Boolean, default: false, required: true },
-  create_time: { type: Date, default: Date.now },
-  publish_time: { type: Date }
-})
+}, { timestamps: true })
 
 export default mongoose.model('News', newsSchema)

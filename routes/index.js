@@ -37,6 +37,13 @@ router.get('/admin/news/one', Admin.getNewsById)
 router.post('/admin/news/delete', Admin.deleteNew)
 router.post('/admin/news/update', Admin.updateNew)
 
+//bugs
+router.post('/admin/bugs/new', Admin.createBug)
+router.post('/admin/bugs/update', Admin.updateBug)
+router.post('/admin/bugs/delete', Admin.deleteBug)
+router.get('/admin/bugs/all', Admin.getBugs)
+router.get('/admin/bugs/one', Admin.getBug)
+
 
 
 
@@ -46,6 +53,11 @@ router.get('/app/user', App.getUserInfo)
 router.post('/app/user/update', App.UpdateUser)
 router.get('/app/news', App.getNews)
 router.get('/app/news/one', App.getNewsById)
+
+router.get('/app/bugs', App.getBugs)
+router.get('/app/bugs/one', App.getBug)
+
+router.post('/app/order/new', App.createOrder)
 
 
 

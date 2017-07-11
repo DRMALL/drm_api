@@ -7,6 +7,7 @@ import { cert, initAdmins } from '../config'
 import { hash, compare } from '../utils/util'
 import { busboys } from '../utils/upload'
 import News from '../model/News'
+import Bug from '../model/Bug'
 
 
 
@@ -160,11 +161,64 @@ class Admin {
     catch(e) {
       ctx.body = { code: 503, message: '获取数据时出错', data: e }
     }
-
   }
 
+  static async createBug(ctx) {
+    let { title, category, content } = ctx.request.body
+    if( !title || !category || !content )
+      return ctx.body = { code: 400, message: '缺少必要的param: title, category, content', data: ''}
 
+    try {
+      const result = await Bug.create({ title, category, content })
+      ctx.body = { code: 201, message: '创建成功', data: result }
+    }
+    catch(e) {
+      ctx.body = { code: 503, message: '数据库出错', data: e }
+    }
 
+ 
+  }
+
+  static async updateBug(ctx) {
+    let { id } = ctx.query
+    let bodyData = ctx.request.body
+
+    const result = await Bug.findOneAndUpdate({ _id: id }, bodyData, { new: true })
+    ctx.body = { code: 201, message: '更新成功', data: result }
+  }
+
+  static async deleteBug(ctx) {
+    let { id } = ctx.query
+    try {
+      const result = await Bug.remove({ _id: id })
+      ctx.body = { code: 201, message: '删除成功', data: {} }
+    }
+    catch(e) {
+      ctx.body = { code: 503, message: '数据库出错', data: e }
+    }
+  }
+
+  static async getBugs(ctx) {
+    let { id } = ctx.query
+    try {
+      const result = await Bug.find()
+      ctx.body = { code: 201, message: '获取成功', data: result }
+    }
+    catch(e) {
+      ctx.body = { code: 503, message: '数据库出错', data: e }
+    }
+  }
+
+  static async getBug(ctx) {
+    let { id } = ctx.query
+    try {
+      const result = await Bug.findById({ _id: id })
+      ctx.body = { code: 201, message: '获取成功', data: result }
+    }
+    catch(e) {
+      ctx.body = { code: 503, message: '数据库出错', data: e }
+    }
+  }
 
 
 }

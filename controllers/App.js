@@ -3,6 +3,7 @@
 
 import User from '../model/User'
 import News from '../model/News'
+import Bug from '../model/Bug'
 import jwt from 'jsonwebtoken'
 import { cert } from '../config'
 import { busboys } from '../utils/upload'
@@ -86,6 +87,40 @@ class App {
       ctx.body = { code: 503, message: '获取数据时出错', data: e }
     }
   }
+
+  static async getBugs(ctx) {
+    try {
+      const result = await Bug.find()
+      ctx.body = { code: 200, message: 'ok', data: result }
+    }
+    catch(e) {
+      ctx.body = { code: 502, message: '获取数据时出错', data: e }
+    }
+  }
+
+  static async getBug(ctx) {
+
+    let { id } = ctx.query
+
+    try {
+      const result = await Bug.findById({ _id: id })
+      ctx.body = { code: 200, message: 'ok', data: result }
+    }
+    catch(e) {
+      ctx.body = { code: 502, message: '获取数据时出错', data: e }
+    }
+  }
+
+  static async createOrder(ctx) {
+    let { bugId, title, content } = ctx.query
+    if(!bugId || !title || !content ) {
+      return ctx.body = { code: 401, message: '缺少必要的参数params: bugId, title, content', data: '' }
+    }
+    
+
+  }
+
+
 
 
 }
