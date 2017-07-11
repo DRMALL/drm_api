@@ -105,6 +105,7 @@ class Admin {
 
   static async uploadImg(ctx) {
     const upload = await busboys (ctx)
+    console.log(upload)
     if(upload.fieldname !== 'news')
       return ctx.body = { code: 405, message: '参数值错误, key: news', data: '' }
     if(!upload.success)
