@@ -153,6 +153,8 @@ DELETE https://api.wardenger.me/admin/users/:id?token=${token}
 ```
 POST https://api.wardenger.me/admin/news/uploadimg?token=${token} 
 ```
+
+```
 {
   key: 'news'
 }
@@ -187,6 +189,7 @@ POST https://api.wardenger.me/admin/news/delete?id=${id}&token=${token}
 ```
 
 ### 更新单个消息
+
 ```
 POST https://api.wardenger.me/admin/news/update?id=${id}&token=${token}  
 ```
@@ -202,6 +205,7 @@ POST https://api.wardenger.me/admin/news/update?id=${id}&token=${token}
 ```
 
 ### 获取单个信息
+
 ```
 GET https://api.wardenger.me/admin/news/one?id=${id}&token=${token}   
 ```
