@@ -79,7 +79,7 @@ describe('drm admin test', () => {
   })
 
   // it('获取单个用户', (done) => {
-  //   request.post('/admin/users')
+  //   request.get('/admin/users')
   // })
 
 })

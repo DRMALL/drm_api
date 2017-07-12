@@ -23,10 +23,10 @@ class Admin {
       return item.admin === admin && item.password === password
     })
     if(!valid)
-      return ctx.body = { code: 401, message: '用户名或密码错误', data: '' }
+      return ctx.body = { code: 403, message: '用户名或密码错误', data: '' }
 
     const token = jwt.sign({ admin, password }, cert)
-    ctx.body = { code: 201, message: '', data: token }
+    ctx.body = { code: 201, message: 'ok', data: token }
   }
 
   //新增用户
@@ -45,7 +45,7 @@ class Admin {
       ctx.body = { code: 201, message: 'ok', data: result }
     }
     catch(e) {
-      ctx.body = { code: 500, message: '保存数据时出错', data: e }
+      ctx.body = { code: 500, message: '操作数据库时出错', data: e }
     }
   }
 
@@ -56,7 +56,7 @@ class Admin {
       ctx.body = { code: 200, message: 'ok', data: result }
     }
     catch(e) {
-      ctx.body = { code: 501, message: '查找数据时出错', data: e }
+      ctx.body = { code: 500, message: '操作数据库时出错', data: e }
     }
   }
 
@@ -70,7 +70,7 @@ class Admin {
       ctx.body = { code: 200, message: 'ok', data: result }
     }
     catch(e) {
-      ctx.body = { code: 501, message: '查找数据时出错', data: e }
+      ctx.body = { code: 500, message: '操作数据库时出错', data: e }
     }
   }
 
@@ -78,6 +78,7 @@ class Admin {
   static async UpdateUser(ctx) {
     const userId = ctx.userId
     const bodyData = ctx.request.body
+    bodyData.assign({}, bodyData)
     if(!userId) return ctx.body = { code: 400, message: '缺少必要的param: id', data: ''}
 
     try {
@@ -85,7 +86,7 @@ class Admin {
       ctx.body = { code: 201, message: 'ok', data: result }
     }
     catch(e) {
-      ctx.body = { code: 502, message: '更新数据时出错', data: e }
+      ctx.body = { code: 500, message: '操作数据库时出错', data: e }
     }
   }
 
@@ -98,7 +99,7 @@ class Admin {
       ctx.body = { code: 201, message: 'ok', data: {} }
     }
     catch(e) {
-      ctx.body = { code: 503, message: '删除数据时出错', data: e }
+      ctx.body = { code: 500, message: '操作数据库时出错', data: e }
     }
   }
 
@@ -107,9 +108,9 @@ class Admin {
     const upload = await busboys (ctx)
     console.log(upload)
     if(upload.fieldname !== 'news')
-      return ctx.body = { code: 405, message: '参数值错误, key: news', data: '' }
+      return ctx.body = { code: 400, message: '参数值错误, key: news', data: '' }
     if(!upload.success)
-      return ctx.body = { code: 403, message: '上传文件失败', data: upload }
+      return ctx.body = { code: 501, message: '上传文件失败', data: upload }
     return ctx.body = { code: 201, message: '上传成功', data: { url: upload.file } }
   }
 
@@ -118,7 +119,7 @@ class Admin {
     if( !title || !abstract || !content || published === undefined || !images.length )
       return ctx.body = {
         code: 400, 
-        message: '缺少必要的params: title, abstract, content, published, images',
+        message: '缺少必要的参数: title, abstract, content, published, images',
         data: ''
       }
     const author = ctx.request.decoded.admin
@@ -157,7 +158,7 @@ class Admin {
     let { id } = ctx.query
     try {
       const result = await News.findById({ _id: id })
-      ctx.body = { code: 201, message: '获取成功', data: result }
+      ctx.body = { code: 200, message: '获取成功', data: result }
     }
     catch(e) {
       ctx.body = { code: 503, message: '获取数据时出错', data: e }
