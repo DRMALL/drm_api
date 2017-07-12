@@ -139,8 +139,12 @@ class Admin {
   static async updateNew(ctx) {
     const { id } = ctx.query
     const bodyData = ctx.request.body
-
     const result = await News.findOneAndUpdate({ _id: id }, bodyData, { new: true })
+
+    if(ctx.request.body.published === true) {
+      return  ctx.body = { code: 201, message: '发布成功', data: result }
+    }
+    
     ctx.body = { code: 201, message: '更新成功', data: result }
 
   }
