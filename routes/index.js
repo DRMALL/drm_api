@@ -10,7 +10,6 @@ const router = new Router()
 router.get('/', home)
 router.post('/admin/session', Admin.session)
 router.post('/app/session', App.session)
-// router.post('/app/upload', App.Upload)
 
 
 router.use('*', verifyToken)
@@ -51,6 +50,8 @@ router.get('/admin/bugs/one', Admin.getBug)
 router.get('/app', App.Index)
 router.get('/app/user', App.getUserInfo)
 router.post('/app/user/update', App.UpdateUser)
+router.post('/app/user/update/password', App.UpdateUserPassword)
+
 router.get('/app/news', App.getNews)
 router.get('/app/news/one', App.getNewsById)
 

@@ -4,7 +4,7 @@ import mongoose from 'mongoose'
 import User from '../model/User'
 import jwt from 'jsonwebtoken'
 import { cert, initAdmins } from '../config'
-import { hash, compare } from '../utils/util'
+import { hash } from '../utils/util'
 import { busboys } from '../utils/upload'
 import News from '../model/News'
 import Bug from '../model/Bug'
@@ -52,7 +52,7 @@ class Admin {
   //获取所有用户
   static async getUsers (ctx) {
     try {
-      const result = await User.find()
+      const result = await User.find({}, '-password')
       ctx.body = { code: 200, message: 'ok', data: result }
     }
     catch(e) {
@@ -65,7 +65,7 @@ class Admin {
     const userId = ctx.userId
     if(!userId) return ctx.body = { code: 400, message: '缺少必要的param: id', data: ''}
     try {
-      const result = await User.findById(userId)
+      const result = await User.findById(userId, '-password')
       if(!result) return ctx.body = { code: '404', message: '未找到该用户', data: result }
       ctx.body = { code: 200, message: 'ok', data: result }
     }
@@ -77,8 +77,9 @@ class Admin {
   //更新单个用户
   static async UpdateUser(ctx) {
     const userId = ctx.userId
-    const bodyData = ctx.request.body
-    bodyData.assign({}, bodyData)
+    const encryptPass = await hash(ctx.request.body.password)
+    const bodyData = Object.assign({}, ctx.request.body, { password: encryptPass })
+
     if(!userId) return ctx.body = { code: 400, message: '缺少必要的param: id', data: ''}
 
     try {
@@ -103,7 +104,7 @@ class Admin {
     }
   }
 
-
+  //news images
   static async uploadImg(ctx) {
     const upload = await busboys (ctx)
     console.log(upload)
@@ -111,9 +112,10 @@ class Admin {
       return ctx.body = { code: 400, message: '参数值错误, key: news', data: '' }
     if(!upload.success)
       return ctx.body = { code: 501, message: '上传文件失败', data: upload }
-    return ctx.body = { code: 201, message: '上传成功', data: { url: upload.file } }
+    ctx.body = { code: 201, message: '上传成功', data: { url: upload.file } }
   }
 
+  //创建消息
   static async createNew(ctx) {
     let { title, abstract, content, published, images } = ctx.request.body
     if( !title || !abstract || !content || published === undefined || !images.length )
@@ -127,16 +129,16 @@ class Admin {
     ctx.body = { code: 201, message: '创建成功', data: result }
   }
 
+  //获取所有消息
   static async getNews(ctx) {
     const result = await News.find()
     ctx.body = { code: 200, message: '获取成功', data: result }
-
   }
 
+  //更新消息
   static async updateNew(ctx) {
-
-    let { id } = ctx.query
-    let bodyData = ctx.request.body
+    const { id } = ctx.query
+    const bodyData = ctx.request.body
 
     const result = await News.findOneAndUpdate({ _id: id }, bodyData, { new: true })
     ctx.body = { code: 201, message: '更新成功', data: result }
@@ -144,13 +146,13 @@ class Admin {
   }
 
   static async deleteNew(ctx) {
-    let { id } = ctx.query
+    const { id } = ctx.query
     try {
       const result = await News.remove({ _id: id })
       ctx.body = { code: 201, message: '删除成功', data: {} }
     }
     catch(e) {
-      ctx.body = { code: 503, message: '删除数据时出错', data: e }
+      ctx.body = { code: 500, message: '操作数据时出错', data: e }
     }
   }
 
@@ -161,7 +163,7 @@ class Admin {
       ctx.body = { code: 200, message: '获取成功', data: result }
     }
     catch(e) {
-      ctx.body = { code: 503, message: '获取数据时出错', data: e }
+      ctx.body = { code: 500, message: '操作数据时出错', data: e }
     }
   }
 

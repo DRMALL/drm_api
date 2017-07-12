@@ -18,6 +18,7 @@ app = https://api.wardenger.me/app
   * [登录](#登录)
   * [获取用户信息](#获取用户信息)
   * [更新用户信息](#更新用户信息)
+  * [修改用户密码](#修改用户密码)
   * [获取消息列表](#获取所有消息)
   * [GET单个消息](#GET单个消息)
 
@@ -64,11 +65,22 @@ POST https://api.wardenger.me/app/user/update?token=${token}
 ```
 {
   name: '',
-  password: '',
   email: '',
   phone: '',
   company_name: '',
   address: ''
+}
+```
+
+### 修改用户密码
+```
+POST https://api.wardenger.me/app/user/update/password?token=${token}
+```
+```
+{
+  password: '',
+  newPass: '',
+  confirmPass: ''
 }
 ```
 
@@ -144,6 +156,7 @@ POST https://api.wardenger.me/admin/news/uploadimg?token=${token}
 {
   key: 'news'
 }
+```
 
 ### 创建消息
 
