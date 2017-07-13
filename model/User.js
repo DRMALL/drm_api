@@ -31,4 +31,6 @@ const userSchema = new mongoose.Schema({
   },
 }, { timestamps: true })
 
+userSchema.set('validateBeforeSave', true);
+
 export default mongoose.model('User', userSchema)

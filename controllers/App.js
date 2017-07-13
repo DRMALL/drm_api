@@ -117,7 +117,7 @@ class App {
     let { search } = ctx.query
 
     try {
-      const result = await Bug.find().sort({ createdAt: -1 })
+      const result = await Bug.find({}).sort({ createdAt: -1 })
       ctx.body = { code: 200, message: 'ok', data: result }
     }
     catch(e) {
