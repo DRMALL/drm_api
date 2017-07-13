@@ -8,6 +8,7 @@ import { hash } from '../utils/util'
 import { busboys } from '../utils/upload'
 import News from '../model/News'
 import Bug from '../model/Bug'
+import Order from '../model/Order'
 
 
 
@@ -39,14 +40,10 @@ class Admin {
         data: ''
       }
     }
-    try {
-      const encryptPass = await hash(password)
-      const result = await User.create({ name, password: encryptPass , email, phone, company_name, address })
-      ctx.body = { code: 201, message: 'ok', data: result }
-    }
-    catch(e) {
-      ctx.body = { code: 500, message: '操作数据库时出错', data: e }
-    }
+    const encryptPass = await hash(password)
+    const result = await User.create({ name, password: encryptPass , email, phone, company_name, address })
+    ctx.body = { code: 201, message: 'ok', data: Object.assign({}, result, { password: ''}) }
+
   }
 
   //获取所有用户
@@ -224,6 +221,29 @@ class Admin {
     catch(e) {
       ctx.body = { code: 500, message: '操作数据库出错', data: e }
     }
+  }
+
+  static async getOrders(ctx) {
+    const orders = await Order.find().populate('user', 'name')
+
+    ctx.body = { code: 200, message: '获取成功', data: orders }
+  }
+
+  static async getOrder(ctx) {
+    const id = ctx.orderId
+    const result = await Order.findById(id)
+    ctx.body = { code: 200, message: '获取成功', data: result }
+  }
+
+  static async handleOrder(ctx) {
+    const id = ctx.orderId
+    const { advice } = ctx.request.body
+    if(!id || !advice)
+      return ctx.body = { code: 400, message: '缺少必要的参数：id, advice', data: '' }
+    const result = await Order.findOneAndUpdate({ _id: id}, { $set: { handleAdvice: advice, isHanlded: true } }, { new: true } )
+    if(!result)
+      return ctx.body = { code: 500, message: 'server error', data: '' }
+    ctx.body = { code: 201, message: '处理成功', data: result }
   }
 
 

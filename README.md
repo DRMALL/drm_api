@@ -21,6 +21,9 @@ app = https://api.wardenger.me/app
   * [修改用户密码](#修改用户密码)
   * [获取消息列表](#获取所有消息)
   * [GET单个消息](#GET单个消息)
+  * [获取bugs](#获取bugs)
+  * [获取bug](#获取bug)
+  * [创建工单](#创建工单)
 
 * [admin](#admin)
   * [登录](#登录)
@@ -40,6 +43,9 @@ app = https://api.wardenger.me/app
   * [获取所有故障诊断](#获取所有故障诊断)
   * [获取单个故障诊断](#获取单个故障诊断)
   * [删除故障诊断](#删除故障诊断)
+  * [获取所有工单](#获取所有工单)
+  * [获取单个工单](#获取单个工单)
+  * [处理工单](#处理工单)
 
 
 
@@ -98,6 +104,35 @@ GET https://api.wardenger.me/app/news?token=${token}
 ```
 GET https://api.wardenger.me/app/news/one?id=${id}&token=${token} 
 ```
+
+### 获取bugs
+```
+GET https://api.wardenger.me/app/bugs?token=${token}  
+```
+```
+{
+  search: '' //有search时为搜索，不带search即返回全部
+}
+```
+
+### 获取bug
+```
+GET https://api.wardenger.me/app/bugs/one?id=${id}&token=${token}  
+```
+
+### 创建工单
+```
+POST https://api.wardenger.me/app/order/new?token=${token}
+```
+
+```
+{
+  title: '',
+  category: '',
+  content: ''
+}
+```
+
 
 
 
@@ -249,6 +284,25 @@ GET https://api.wardenger.me/admin/bugs/:bugId?token=${token}
 DELETE https://api.wardenger.me/admin/bugs/:bugId?token=${token}
 ```
 
+### 获取所有工单
+```
+GET https://api.wardenger.me/admin/orders?token=${token}
+```
+
+### 获取单个工单
+```
+GET https://api.wardenger.me/admin/orders/:orderId?token=${token}
+```
+### 处理工单
+```
+POST https://api.wardenger.me/admin/orders/:orderId?token=${token} 
+```
+
+```
+{
+  advice: '' //处理意见
+}
+```
 
 
 

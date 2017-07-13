@@ -33,4 +33,15 @@ const userSchema = new mongoose.Schema({
 
 userSchema.set('validateBeforeSave', true);
 
+userSchema.pre('save', function(next) {
+  //this 代表要存储的数据
+  console.log(this)
+  next();
+})
+
+userSchema.post('validate', function(doc, next) {
+  console.log('this gets printed second');
+});
+
+
 export default mongoose.model('User', userSchema)

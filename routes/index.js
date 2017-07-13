@@ -17,6 +17,7 @@ router.use('*', verifyToken)
 
 //users
 router.get('/admin/users', Admin.getUsers)
+router.post('/admin/users/new', Admin.newUser)
 router.param('userId', function (id, ctx, next) {
   ctx.userId = id
   if (!ctx.userId) return ctx.status = 404;
@@ -25,7 +26,6 @@ router.param('userId', function (id, ctx, next) {
 .get('/admin/users/:userId', Admin.getUserById)
 .put('/admin/users/:userId', Admin.UpdateUser)
 .delete('/admin/users/:userId', Admin.DeleteUser)
-router.post('/admin/users/new', Admin.newUser)
 
 
 //news
@@ -41,12 +41,23 @@ router.get('/admin/bugs', Admin.getBugs)
 router.post('/admin/bugs', Admin.createBug)
 router.param('bugId', function(id, ctx, next) {
   ctx.bugId = id
-  if(!ctx.bugId) return ctx.body = {id};
+  if(!ctx.bugId) return ctx.status = 404;
   return next()
 })
 .get('/admin/bugs/:bugId', Admin.getBug)
 .put('/admin/bugs/:bugId', Admin.updateBug)
 .delete('/admin/bugs/:bugId', Admin.deleteBug)
+
+//orders
+
+router.get('/admin/orders', Admin.getOrders)
+router.param('orderId', function(id, ctx, next) {
+  ctx.orderId = id
+  if(!ctx.orderId) return ctx.status = 404
+  return next()
+})
+.get('/admin/orders/:orderId', Admin.getOrder)
+.put('/admin/orders/:orderId', Admin.handleOrder)
 
 
 
