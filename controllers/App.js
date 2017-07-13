@@ -110,9 +110,14 @@ class App {
     }
   }
 
+
+  //获取所有故障工单
   static async getBugs(ctx) {
+
+    let { search } = ctx.query
+
     try {
-      const result = await Bug.find()
+      const result = await Bug.find().sort({ createdAt: -1 })
       ctx.body = { code: 200, message: 'ok', data: result }
     }
     catch(e) {

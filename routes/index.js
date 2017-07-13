@@ -37,11 +37,18 @@ router.post('/admin/news/delete', Admin.deleteNew)
 router.post('/admin/news/update', Admin.updateNew)
 
 //bugs
-router.post('/admin/bugs/new', Admin.createBug)
-router.post('/admin/bugs/update', Admin.updateBug)
-router.post('/admin/bugs/delete', Admin.deleteBug)
-router.get('/admin/bugs/all', Admin.getBugs)
-router.get('/admin/bugs/one', Admin.getBug)
+router.get('/admin/bugs', Admin.getBugs)
+router.post('/admin/bugs', Admin.createBug)
+router.param('bugId', function(id, ctx, next) {
+  ctx.bugId = id
+  if(!ctx.bugId) return ctx.body = {id};
+  return next()
+})
+.get('/admin/bugs/:bugId', Admin.getBug)
+.put('/admin/bugs/:bugId', Admin.updateBug)
+.delete('/admin/bugs/:bugId', Admin.deleteBug)
+
+
 
 
 
@@ -52,14 +59,18 @@ router.get('/app/user', App.getUserInfo)
 router.post('/app/user/update', App.UpdateUser)
 router.post('/app/user/update/password', App.UpdateUserPassword)
 
+//news
 router.get('/app/news', App.getNews)
 router.get('/app/news/one', App.getNewsById)
 
+//bugs
 router.get('/app/bugs', App.getBugs)
 router.get('/app/bugs/one', App.getBug)
 
+//orders
 router.post('/app/order/new', App.createOrder)
 router.get('/app/order/all', App.getOrders)
+
 
 
 

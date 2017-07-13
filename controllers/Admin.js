@@ -171,6 +171,7 @@ class Admin {
     }
   }
 
+  //新建BUG
   static async createBug(ctx) {
     let { title, category, content } = ctx.request.body
     if( !title || !category || !content )
@@ -183,12 +184,10 @@ class Admin {
     catch(e) {
       ctx.body = { code: 503, message: '数据库出错', data: e }
     }
-
- 
   }
 
   static async updateBug(ctx) {
-    let { id } = ctx.query
+    let id = ctx.bugId
     let bodyData = ctx.request.body
 
     const result = await Bug.findOneAndUpdate({ _id: id }, bodyData, { new: true })
@@ -196,35 +195,34 @@ class Admin {
   }
 
   static async deleteBug(ctx) {
-    let { id } = ctx.query
+    let id = ctx.bugId
     try {
       const result = await Bug.remove({ _id: id })
       ctx.body = { code: 201, message: '删除成功', data: {} }
     }
     catch(e) {
-      ctx.body = { code: 503, message: '数据库出错', data: e }
+      ctx.body = { code: 500, message: '操作数据库出错', data: e }
     }
   }
 
   static async getBugs(ctx) {
-    let { id } = ctx.query
     try {
-      const result = await Bug.find()
-      ctx.body = { code: 201, message: '获取成功', data: result }
+      const result = await Bug.find({}, '-isSolved')
+      ctx.body = { code: 200, message: '获取成功', data: result }
     }
     catch(e) {
-      ctx.body = { code: 503, message: '数据库出错', data: e }
+      ctx.body = { code: 500, message: '操作数据库出错', data: e }
     }
   }
 
   static async getBug(ctx) {
-    let { id } = ctx.query
+    let id = ctx.bugId
     try {
-      const result = await Bug.findById({ _id: id })
-      ctx.body = { code: 201, message: '获取成功', data: result }
+      const result = await Bug.findById({ _id: id }, '-isSolved')
+      ctx.body = { code: 200, message: '获取成功', data: result }
     }
     catch(e) {
-      ctx.body = { code: 503, message: '数据库出错', data: e }
+      ctx.body = { code: 500, message: '操作数据库出错', data: e }
     }
   }
 

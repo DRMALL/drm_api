@@ -35,6 +35,11 @@ app = https://api.wardenger.me/app
   * [获取单个信息](#获取单个信息)
   * [删除单个消息](#删除单个消息)
   * [更新单个消息](#更新单个消息)
+  * [创建故障诊断](#创建故障诊断)
+  * [修改故障诊断](#修改故障诊断)
+  * [获取所有故障诊断](#获取所有故障诊断)
+  * [获取单个故障诊断](#获取单个故障诊断)
+  * [删除故障诊断](#删除故障诊断)
 
 
 
@@ -207,9 +212,42 @@ POST https://api.wardenger.me/admin/news/update?id=${id}&token=${token}
 ### 获取单个信息
 
 ```
-GET https://api.wardenger.me/admin/news/one?id=${id}&token=${token}   
+GET https://api.wardenger.me/admin/news/one?id=${id}&token=${token}
 ```
 
+### 创建故障诊断
+
+```
+POST https://api.wardenger.me/admin/bugs?token=${token}
+```
+```
+{
+  title: '',
+  category: '',
+  content: ''
+}
+```
+
+### 修改故障诊断
+
+```
+PUT https://api.wardenger.me/admin/bugs/:bugId?token=${token}
+```
+### 获取所有故障诊断
+
+```
+GET https://api.wardenger.me/admin/bugs?token=${token}
+```
+
+### 获取单个故障诊断
+```
+GET https://api.wardenger.me/admin/bugs/:bugId?token=${token}
+```
+
+### 删除故障诊断
+```
+DELETE https://api.wardenger.me/admin/bugs/:bugId?token=${token}
+```
 
 
 
