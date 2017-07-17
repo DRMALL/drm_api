@@ -3,7 +3,7 @@ import mongoose from 'mongoose'
 
 const bugSchema = new mongoose.Schema({
   title: { type: String, required: true },
-  category: { type: String, required: true },
+  category: { type: Object, required: true },
   content: { type: String, required: true },
   isSolved: { type: Boolean, default: true },
   hot: []

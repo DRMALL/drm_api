@@ -203,6 +203,7 @@ class Admin {
   }
 
   static async getBugs(ctx) {
+    ctx.socket.emit('newteo', 'result')
     try {
       const result = await Bug.find({}, '-isSolved')
       ctx.body = { code: 200, message: '获取成功', data: result }

@@ -10,22 +10,41 @@ const Koa = require('koa')
     , db = require('./db')
     , cors = require('koa2-cors')
     , static = require('koa-static')
+    , WebSocket = require('./websocket')
     , staticPath = './static'
 
 
 app.use(static(path.join( __dirname, staticPath)))
 
+
 app.use(cors())
 app.use(logger())
+
+// app.use(socket())
+
+
+
+var server = require('http').Server(app.callback())
+var io = require('socket.io')(server)
+
 
 
 app.use(bodyParser())
 app.use(router.routes())
-   .use(router.allowedMethods())
+app.use(router.allowedMethods())
 
 
+const socket = new WebSocket(io)
+
+app.use((ctx, next) => {
+    ctx.socket = socket
+    return next()
+})
+
+
+// for test case
 module.exports = app
 
-app.listen(3000)
+server.listen(3000)
 console.log('[demo] start-quick is starting at port 3000')
 

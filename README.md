@@ -295,7 +295,7 @@ GET https://api.wardenger.me/admin/orders/:orderId?token=${token}
 ```
 ### 处理工单
 ```
-POST https://api.wardenger.me/admin/orders/:orderId?token=${token} 
+PUT https://api.wardenger.me/admin/orders/:orderId?token=${token} 
 ```
 
 ```
