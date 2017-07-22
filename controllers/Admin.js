@@ -10,6 +10,7 @@ import News from '../model/News'
 import Bug from '../model/Bug'
 import Order from '../model/Order'
 import Device from '../model/Device'
+import deleteFile from '../utils/deleteFile'
 
 
 
@@ -42,21 +43,40 @@ class Admin {
         data: ''
       }
     }
-    const curUsers = await User.find({})
-    if(curUsers.some((item, index) => {
-      return item.email === email
-    })) {
+
+    const emailPat = /^([\w-_]+(?:\.[\w-_]+)*)@((?:[a-z0-9]+(?:-[a-zA-Z0-9]+)*)+\.[a-z]{2,6})$/i
+    if(!emailPat.test(email)) {
       return ctx.body = {
         code: 402,
-        message: '该邮箱已被注册',
+        message: '请输入正确的邮箱地址',
         data: ''
       }
     }
 
-    const encryptPass = await hash(password)
-    const result = await User.create({ name, password: encryptPass , email, phone, company_name, address })
-    ctx.body = { code: 201, message: 'ok', data: Object.assign({}, result, { password: ''}) }
+    const phonePat = /^1[3|4|5|7|8][0-9]{9}$/
+    if(!phonePat.test(phone)) {
+      return ctx.body = {
+        code: 402,
+        message: '请输入正确的手机号码',
+        data: ''
+      }
+    }
 
+    const curUsers = await User.find({}, '-password')
+    console.log(curUsers)
+
+    const valida = curUsers.some((element, index) => {
+      return element.email === email
+    })
+
+    if(valida) return ctx.body = { code: 402, message: '该邮箱已被注册', data: ''}    
+    
+    const encryptPass = await hash(password)
+
+    let result = await User.create({ name, email, password: encryptPass, phone, company_name, address })
+    result.password = undefined
+    ctx.body = { code: 201, message: 'ok', data: result }   
+    
   }
 
   //获取所有用户
@@ -148,8 +168,11 @@ class Admin {
   //更新消息
   static async updateNew(ctx) {
     const { id } = ctx.query
-    const bodyData = ctx.request.body
-    //const bodyData = Object.assign({}, bodyData, { publish_time: '' } )
+    let bodyData = ctx.request.body
+
+    if(bodyData.published) {
+      bodyData = Object.assign({}, bodyData, { publish_time: Date.now })
+    }
     const result = await News.findOneAndUpdate({ _id: id }, bodyData, { new: true })
 
     if(ctx.request.body.published === true) {
@@ -163,6 +186,12 @@ class Admin {
   static async deleteNew(ctx) {
     const { id } = ctx.query
     try {
+      const singleNew = await News.find({ _id: id })
+
+      singleNew.images.map((item, index) => {
+        deleteFile(item, '/static/upload/')
+      })
+      
       const result = await News.remove({ _id: id })
       ctx.body = { code: 201, message: '删除成功', data: {} }
     }

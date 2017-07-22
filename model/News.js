@@ -7,6 +7,7 @@ const newsSchema = new mongoose.Schema({
   content: { type: String, required: true },
   images: [],
   author: { type: String },
+  publish_time: { type: Date, default: null },
   published: { type: Boolean, default: false, required: true },
 }, { timestamps: true })
 
