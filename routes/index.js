@@ -36,6 +36,20 @@ router.get('/admin/news/one', Admin.getNewsById)
 router.post('/admin/news/delete', Admin.deleteNew)
 router.post('/admin/news/update', Admin.updateNew)
 
+
+//bugs-category
+router.post('/admin/bugs/categorys/new', Admin.createBugCate)
+router.get('/admin/bugs/categorys', Admin.getBugCates)
+router.post('/admin/bugs/categorys/top', Admin.topBugCates)
+router.param('categoryId', function(id, ctx, next) {
+  ctx.categoryId = id;
+  if(!ctx.categoryId) return ctx.status = 404;
+  return next()
+})
+.delete('/admin/bugs/categorys/:categoryId', Admin.deleteBugCate)
+
+
+
 //bugs
 router.get('/admin/bugs', Admin.getBugs)
 router.post('/admin/bugs', Admin.createBug)

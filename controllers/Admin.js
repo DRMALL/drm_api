@@ -10,7 +10,9 @@ import News from '../model/News'
 import Bug from '../model/Bug'
 import Order from '../model/Order'
 import Device from '../model/Device'
+import Category from '../model/Category'
 import deleteFile from '../utils/deleteFile'
+import Counter from '../model/Counter'
 
 
 
@@ -209,6 +211,38 @@ class Admin {
     catch(e) {
       ctx.body = { code: 500, message: '操作数据时出错', data: e }
     }
+  }
+
+  //bugs-category
+
+  static async createBugCate (ctx) {
+    const { text } = ctx.request.body 
+    if(!text)
+      return ctx.body = { code: 400, message: '缺少必要的参数: text', data: '' }
+    const cate = new Category({
+      text: text,
+    })
+    const doc = await cate.save()
+    ctx.body = { code: 201, message: '创建成功', data: doc }
+  }
+
+  static async getBugCates(ctx) {
+    const result = await Category.find({})
+    ctx.body = { code: 200, message: '获取成功', data: result}
+  }
+
+  static async deleteBugCate(ctx) {
+    const id = ctx.categoryId
+    console.log(id)
+    const result = await Category.remove({ _id: id })
+    ctx.body = { code: 200, message: '删除成功', data: {} }
+  }
+
+  static async topBugCates(ctx) {
+    const { categoryId } = ctx.request.body
+    const { seq } = await Counter.findByIdAndUpdate({ _id: 'categoryId'}, { $inc: {seq: 1} }, { new: true, upsert: true })
+    const result = await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { sortIndex: seq } }, { new: true } )
+    ctx.body = { code: 201, message: '修改成功', data: result }
   }
 
   //新建BUG

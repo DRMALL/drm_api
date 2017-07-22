@@ -1,9 +1,12 @@
 
 import mongoose from 'mongoose'
+const Schema = mongoose.Schema
+ 
 
-const bugSchema = new mongoose.Schema({
+
+const bugSchema = new Schema({
   title: { type: String, required: true },
-  category: { type: Object, required: true },
+  category: { type: Schema.Types.ObjectId, ref: 'Category' },
   content: { type: String, required: true },
   isSolved: { type: Boolean, default: true },
   hot: []

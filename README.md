@@ -43,6 +43,11 @@ app = https://api.wardenger.me/app
   * [获取所有故障诊断](#获取所有故障诊断)
   * [获取单个故障诊断](#获取单个故障诊断)
   * [删除故障诊断](#删除故障诊断)
+    * [故障分类-新增](故障分类-新增)
+    * [故障分类-删除](故障分类-删除)
+    * [故障分类-置顶](故障分类-置顶)
+    * [故障分类-获取所有](故障分类-获取所有)
+
   * [获取所有工单](#获取所有工单)
   * [获取单个工单](#获取单个工单)
   * [处理工单](#处理工单)
@@ -284,6 +289,40 @@ GET https://api.wardenger.me/admin/bugs/:bugId?token=${token}
 ```
 DELETE https://api.wardenger.me/admin/bugs/:bugId?token=${token}
 ```
+
+### 故障分类-新增
+```
+POST https://api.wardenger.me/admin/bugs/categorys/new?token=${token}
+```
+```
+{
+  text: ''
+}
+```
+
+### 故障分类-删除
+```
+DELETE https://api.wardenger.me/admin/bugs/categorys/:categoryId?token=${token}
+```
+
+### 故障分类-置顶
+```
+POST https://api.wardenger.me/admin/bugs/categorys/top?token=${token}
+```
+```
+{
+  categoryId: ''
+}
+```
+
+### 故障分类-获取所有
+```
+GET https://api.wardenger.me/admin/bugs/categorys?token=${token}
+```
+
+
+
+
 
 ### 获取所有工单
 ```
