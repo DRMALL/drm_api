@@ -9,6 +9,7 @@ import { busboys } from '../utils/upload'
 import News from '../model/News'
 import Bug from '../model/Bug'
 import Order from '../model/Order'
+import Device from '../model/Device'
 
 
 
@@ -33,6 +34,7 @@ class Admin {
   //新增用户
   static async newUser(ctx) {
     const { name, password, email, phone, company_name, address } = ctx.request.body
+
     if(!name || !password || !email || !phone || !company_name || !address) {
       return ctx.body = {
         code: 400,
@@ -40,6 +42,17 @@ class Admin {
         data: ''
       }
     }
+    const curUsers = await User.find({})
+    if(curUsers.some((item, index) => {
+      return item.email === email
+    })) {
+      return ctx.body = {
+        code: 402,
+        message: '该邮箱已被注册',
+        data: ''
+      }
+    }
+
     const encryptPass = await hash(password)
     const result = await User.create({ name, password: encryptPass , email, phone, company_name, address })
     ctx.body = { code: 201, message: 'ok', data: Object.assign({}, result, { password: ''}) }
@@ -102,7 +115,7 @@ class Admin {
   }
 
   //news images
-  static async uploadImg(ctx) {
+  static async uploadImgWithNews(ctx) {
     const upload = await busboys (ctx)
     console.log(upload)
     if(upload.fieldname !== 'news')
@@ -136,6 +149,7 @@ class Admin {
   static async updateNew(ctx) {
     const { id } = ctx.query
     const bodyData = ctx.request.body
+    //const bodyData = Object.assign({}, bodyData, { publish_time: '' } )
     const result = await News.findOneAndUpdate({ _id: id }, bodyData, { new: true })
 
     if(ctx.request.body.published === true) {
@@ -203,9 +217,10 @@ class Admin {
   }
 
   static async getBugs(ctx) {
-    ctx.socket.emit('newteo', 'result')
     try {
       const result = await Bug.find({}, '-isSolved')
+
+
       ctx.body = { code: 200, message: '获取成功', data: result }
     }
     catch(e) {
@@ -246,6 +261,29 @@ class Admin {
       return ctx.body = { code: 500, message: 'server error', data: '' }
     ctx.body = { code: 201, message: '处理成功', data: result }
   }
+
+  //devices
+
+  static async uploadImgWithDevice(ctx) {
+    const upload = await busboys (ctx)
+    if(upload.fieldname !== 'device')
+      return ctx.body = { code: 400, message: '参数值错误, key: device', data: '' }
+    if(!upload.success)
+      return ctx.body = { code: 501, message: '上传文件失败', data: upload }
+    ctx.body = { code: 201, message: '上传成功', data: { url: upload.file } }
+  }
+
+  static async createDevice(ctx) {
+    const { name, number, images, cc, pressure, combustible, description, address } = ctx.body
+    if(!name || !number || !cc || !pressure || !combustible || !description || !address) {
+      return ctx.body = { code: 400, message: '缺少必要的参数：name, number, cc, pressure, combustible, description, address', data: '' }
+    }
+
+    const result = await Device.create({ name, number, images, cc, pressure, combustible, description, address })
+    ctx.body = { code: 201, message: '创建成功', data: result}
+  }
+
+  
 
 
 }

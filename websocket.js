@@ -1,4 +1,5 @@
-import Admin from './controllers/Admin'
+
+import Bug from './model/Bug'
 
 class WebSocket {
 
@@ -8,29 +9,19 @@ class WebSocket {
   }
 
   init() {
-    this.io.on('connection', socket => {
-      
-      this.socket = socket
-      this.emit = (event, data) => socket.emit(event, data)
+    this.io.of('/socket').on('connection', socket => {
 
-      // console.log('there is connection')
-      // const bugs = await Admin.getBugs()
+      socket.on('newteo', (name, fn) => {
+          Bug.find({}).exec((err, res) => {
+              fn(res)
+          })
+      })
 
-      // socket.emit('newteo','bugs')
-
-      // socket.on('order', (data) => {
-      //   console.log(data)
-      //   socket.broadcast.emit('do', { do: 'it'})
-      // })
-
+      socket.join('room 233', () => {
+          let rooms = Object.keys(socket.rooms)
+      })
 
     })
-
-    this.io.on('disconnect', socket => {
-      console.log('disconnect')
-      socket.disconnect()
-    })
-
   }
 }
 

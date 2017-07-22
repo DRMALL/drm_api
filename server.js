@@ -20,13 +20,8 @@ app.use(static(path.join( __dirname, staticPath)))
 app.use(cors())
 app.use(logger())
 
-// app.use(socket())
-
-
-
 var server = require('http').Server(app.callback())
 var io = require('socket.io')(server)
-
 
 
 app.use(bodyParser())
@@ -34,12 +29,8 @@ app.use(router.routes())
 app.use(router.allowedMethods())
 
 
-const socket = new WebSocket(io)
+new WebSocket(io)
 
-app.use((ctx, next) => {
-    ctx.socket = socket
-    return next()
-})
 
 
 // for test case
@@ -47,4 +38,6 @@ module.exports = app
 
 server.listen(3000)
 console.log('[demo] start-quick is starting at port 3000')
+
+
 

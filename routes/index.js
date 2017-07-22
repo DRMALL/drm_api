@@ -29,7 +29,7 @@ router.param('userId', function (id, ctx, next) {
 
 
 //news
-router.post('/admin/news/uploadimg', Admin.uploadImg)
+router.post('/admin/news/uploadimg', Admin.uploadImgWithNews)
 router.post('/admin/news/new', Admin.createNew)
 router.get('/admin/news/all', Admin.getNews)
 router.get('/admin/news/one', Admin.getNewsById)
@@ -58,6 +58,11 @@ router.param('orderId', function(id, ctx, next) {
 })
 .get('/admin/orders/:orderId', Admin.getOrder)
 .put('/admin/orders/:orderId', Admin.handleOrder)
+
+
+//device
+router.post('/admin/devices/uploadimg', Admin.uploadImgWithDevice)
+router.post('/admin/devices/new', Admin.createDevice)
 
 
 

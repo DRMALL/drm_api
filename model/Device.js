@@ -1,12 +1,23 @@
 
 import mongoose from 'mongoose'
+const Schema = mongoose.Schema
 
-const deviceSchema = new mongoose.schema({
-  name: { type: String, required: true },
-  number: { type: Number, required: true },
-  pressure: { type: String, required: true },
-  combustible: { type: String, required: true },
-  displacement: { type: String, required: true },
-  discription: { type: String, required: true },
-  covers: [],
-})
+const deviceSchema = Schema({
+  name: String,
+  number: String,
+  images: [],
+  cc: String,
+  pressure: String,
+  combustible: String,
+  description: String,
+  online: Boolean,
+  incharge: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  address: String,
+  timelines: [{
+    time: String,
+    type: String,
+    description: String
+  }]
+}, { timestamps: true })
+
+export default mongoose.model('Device', deviceSchema)

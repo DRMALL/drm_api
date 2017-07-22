@@ -46,6 +46,7 @@ app = https://api.wardenger.me/app
   * [获取所有工单](#获取所有工单)
   * [获取单个工单](#获取单个工单)
   * [处理工单](#处理工单)
+  * [创建设备](#创建设备)
 
 
 
@@ -304,6 +305,23 @@ PUT https://api.wardenger.me/admin/orders/:orderId?token=${token}
 }
 ```
 
+### 创建设备
+```
+POST https://api.wardenger.me/admin/devices/new?token=${token}
+```
+
+
+### 上传设备图片
+
+```
+POST https://api.wardenger.me/admin/devices/uploadimg?token=${token}
+```
+
+```
+{
+  key: device
+}
+```
 
 
 
