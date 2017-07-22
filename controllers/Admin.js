@@ -282,8 +282,7 @@ class Admin {
   static async getBugs(ctx) {
     try {
       const result = await Bug.find({}, '-isSolved')
-
-
+                              .populate('category', 'text sortIndex')
       ctx.body = { code: 200, message: '获取成功', data: result }
     }
     catch(e) {
@@ -295,6 +294,7 @@ class Admin {
     let id = ctx.bugId
     try {
       const result = await Bug.findById({ _id: id }, '-isSolved')
+                              .populate('category', 'text sortIndex')
       ctx.body = { code: 200, message: '获取成功', data: result }
     }
     catch(e) {

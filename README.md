@@ -264,7 +264,7 @@ POST https://api.wardenger.me/admin/bugs?token=${token}
 ```
 {
   title: '',
-  category: '',
+  category: 'categoryId',
   content: ''
 }
 ```

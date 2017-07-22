@@ -9,8 +9,8 @@ const bugSchema = new Schema({
   category: { type: Schema.Types.ObjectId, ref: 'Category' },
   content: { type: String, required: true },
   isSolved: { type: Boolean, default: true },
-  hot: []
-}, { timestamps: true } )
+  hots: []
+}, { timestamps: true })
 
 bugSchema.statics.searchByContent = function(search) {
   return new Promise((resolve, reject) => {
