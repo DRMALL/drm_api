@@ -344,8 +344,13 @@ class Admin {
     }
 
     const result = await Device.create({ name, number, images, cc, pressure, combustible, description, address })
-    ctx.body = { code: 201, message: '创建成功', data: result}
+    ctx.body = { code: 201, message: '创建成功', data: result }
   }
+
+  static async getDevices(ctx) {
+    const result = await Device.find()
+    ctx.body = { code: 200, message: '获取成功', data: result }
+  } 
 
   
 
@@ -354,4 +359,3 @@ class Admin {
 
 export default Admin
 
-//59632253ff393307374553c6

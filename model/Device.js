@@ -20,4 +20,5 @@ const deviceSchema = Schema({
   }]
 }, { timestamps: true })
 
-export default mongoose.model('Device', deviceSchema)
+const Device = mongoose.model('Device', deviceSchema)
+export default Device

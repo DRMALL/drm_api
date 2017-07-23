@@ -1,5 +1,6 @@
 
 import Bug from './model/Bug'
+import Order from './model/Order'
 
 class WebSocket {
 
@@ -11,10 +12,11 @@ class WebSocket {
   init() {
     this.io.of('/socket').on('connection', socket => {
 
-      socket.on('orderIsHandled', (name, fn) => {
-        // console.log(name)
-        Bug.find({}).exec((err, res) => {
-          this.io.emit('some', { code: 200, message: 'ok', res})
+      socket.on('orderIsHandled', (id, fn) => {
+        console.log(id)
+        Order.find({_id: id}).exec((err, res) => {
+          if(err) console.error(err) 
+          this.io.emit('orderNotice', { code: 200, message: 'ok', data: res })
         })
       })
 

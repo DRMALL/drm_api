@@ -53,6 +53,7 @@ app = https://api.wardenger.me/app
   * [获取单个工单](#获取单个工单)
   * [处理工单](#处理工单)
   * [创建设备](#创建设备)
+  * [获取设备](#获取设备)
 
 
 
@@ -367,6 +368,11 @@ POST https://api.wardenger.me/admin/devices/uploadimg?token=${token}
 {
   key: device
 }
+```
+
+### 获取设备
+```
+GET https://api.wardenger.me/admin/devices?token=${token}
 ```
 
 
