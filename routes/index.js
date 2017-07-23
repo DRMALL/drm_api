@@ -77,7 +77,7 @@ router.param('orderId', function(id, ctx, next) {
 //device
 router.post('/admin/devices/uploadimg', Admin.uploadImgWithDevice)
 router.post('/admin/devices/new', Admin.createDevice)
-router.get('/admin/decices', Admin.getDevices)
+router.get('/admin/devices', Admin.getDevices)
 
 
 
