@@ -93,9 +93,13 @@ router.post('/app/user/update/password', App.UpdateUserPassword)
 router.get('/app/news', App.getNews)
 router.get('/app/news/one', App.getNewsById)
 
+
 //bugs
 router.get('/app/bugs', App.getBugs)
 router.get('/app/bugs/one', App.getBug)
+router.get('/app/bugs/hots', App.getHots)
+
+
 
 //orders
 router.post('/app/order/new', App.createOrder)

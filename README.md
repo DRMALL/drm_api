@@ -117,13 +117,19 @@ GET https://api.wardenger.me/app/bugs?token=${token}
 ```
 ```
 {
-  search: '' //有search时为搜索，不带search即返回全部
+  type: '',   // onchange, submit, null, null 代表返回全部
+  search: '' //search 为搜索内容
 }
 ```
 
 ### 获取bug
 ```
 GET https://api.wardenger.me/app/bugs/one?id=${id}&token=${token}  
+```
+
+### 获取热门搜索词
+```
+GET https://api.wardenger.me/app/bugs/hots?token=${token}  
 ```
 
 ### 创建工单

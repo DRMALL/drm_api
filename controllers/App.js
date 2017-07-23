@@ -5,6 +5,7 @@ import User from '../model/User'
 import News from '../model/News'
 import Bug from '../model/Bug'
 import Order from '../model/Order'
+import Hot from '../model/Hot'
 import jwt from 'jsonwebtoken'
 import { cert } from '../config'
 import { busboys } from '../utils/upload'
@@ -111,18 +112,22 @@ class App {
   }
 
 
-  //获取所有故障+搜索
+  //获取所有 故障+搜索
   static async getBugs(ctx) {
+    const { type, search } = ctx.query
 
-    let { search } = ctx.query
-    let result = null
-    if(search) {
-      result = await Bug.searchByContent(search)
+    if(type === 'submit') {
+      
     }
+
+    else if(type === 'onchange') {
+      
+    }
+
     else {
-      result = await Bug.find({})
+      let result = await Bug.find({})
+      ctx.body = { code: 200, message: 'ok', data: result }      
     }
-    ctx.body = { code: 200, message: 'ok', data: result }
   }
 
   //获取单个故障

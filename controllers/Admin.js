@@ -227,7 +227,7 @@ class Admin {
   }
 
   static async getBugCates(ctx) {
-    const result = await Category.find({})
+    const result = await Category.find({}).sort({'-sortIndex'})
     ctx.body = { code: 200, message: '获取成功', data: result}
   }
 
