@@ -7,8 +7,8 @@ const orderSchema = new Schema({
   title: { type: String },
   category: { type: String },
   content: { type: String },
-  user: { type: Schema.Types.ObjectId, ref: 'User'},
-  handleAdvice: { type: String },
+  user: { type: Schema.Types.ObjectId, ref: 'User' },
+  advice: { type: String },
   isHanlded: { type: Boolean, default: false },
   isDone: { type: Boolean, default: false },
 }, { timestamps: true })

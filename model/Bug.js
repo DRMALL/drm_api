@@ -7,9 +7,7 @@ const Schema = mongoose.Schema
 const bugSchema = new Schema({
   title: { type: String, required: true },
   category: { type: Schema.Types.ObjectId, ref: 'Category' },
-  content: { type: String, required: true },
-  isSolved: { type: Boolean, default: true },
-  hots: []
+  content: { type: String, required: true }
 }, { timestamps: true })
 
 bugSchema.statics.searchByContent = function(search) {

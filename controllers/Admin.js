@@ -303,7 +303,8 @@ class Admin {
   }
 
   static async getOrders(ctx) {
-    const orders = await Order.find().populate('user', 'name')
+    const orders = await Order.find({})
+    .populate('user', 'name')
 
     ctx.body = { code: 200, message: '获取成功', data: orders }
   }
@@ -319,7 +320,7 @@ class Admin {
     const { advice } = ctx.request.body
     if(!id || !advice)
       return ctx.body = { code: 400, message: '缺少必要的参数：id, advice', data: '' }
-    const result = await Order.findOneAndUpdate({ _id: id}, { $set: { handleAdvice: advice, isHanlded: true } }, { new: true } )
+    const result = await Order.findOneAndUpdate({ _id: id}, { $set: { advice: advice, isHanlded: true } }, { new: true } )
     if(!result)
       return ctx.body = { code: 500, message: 'server error', data: '' }
     ctx.body = { code: 201, message: '处理成功', data: result }
@@ -352,3 +353,5 @@ class Admin {
 }
 
 export default Admin
+
+//59632253ff393307374553c6

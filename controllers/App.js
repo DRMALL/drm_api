@@ -125,12 +125,12 @@ class App {
 
     else if(type === 'onchange') {
       const titleArr = await Bug.find({title: new RegExp(search, 'i')}).limit(5).exec()
-      const contentArr = await Bug.find({title: new RegExp(search, 'i')}).limit(5).exec()
+      const contentArr = await Bug.find({content: new RegExp(search, 'i')}).limit(5).exec()
       ctx.body = { code: 200, message: 'ok', data: titleArr.concat(contentArr) }
     }
 
     else {
-      let result = await Bug.find({})
+      let result = await Bug.find({}).populate('category', 'text sortIndex')
       ctx.body = { code: 200, message: 'ok', data: result }      
     }
   }
@@ -141,7 +141,7 @@ class App {
     let { id } = ctx.query
 
     try {
-      const result = await Bug.findById({ _id: id })
+      const result = await Bug.findById({ _id: id }).populate('category', 'text sortIndex')
       ctx.body = { code: 200, message: 'ok', data: result }
     }
     catch(e) {
@@ -150,7 +150,7 @@ class App {
   }
 
   static async getHots(ctx) {
-    const hots = await Hot.find({}).limit(10)
+    const hots = await Hot.find({}).sort('-weights').limit(10)
     ctx.body = { code: 200, message: 'ok', data: hots }
   }
 

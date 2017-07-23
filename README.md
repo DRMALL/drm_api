@@ -23,6 +23,7 @@ app = https://api.wardenger.me/app
   * [GET单个消息](#GET单个消息)
   * [获取bugs](#获取bugs)
   * [获取bug](#获取bug)
+  * [获取热门搜索词](#获取热门搜索词)
   * [创建工单](#创建工单)
 
 * [admin](#admin)
