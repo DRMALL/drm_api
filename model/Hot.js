@@ -1,6 +1,6 @@
 
 import mongoose from 'mongoose'
-const Schema = mongosoe.Schema
+const Schema = mongoose.Schema
 
 const hotSchema = new Schema({
   text: String,

@@ -97,7 +97,7 @@ router.get('/app/news/one', App.getNewsById)
 //bugs
 router.get('/app/bugs', App.getBugs)
 router.get('/app/bugs/one', App.getBug)
-router.get('/app/bugs/hots', App.getHots)
+// router.get('/app/bugs/hots', App.getHots)
 
 
 
