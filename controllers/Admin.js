@@ -235,7 +235,7 @@ class Admin {
     const id = ctx.categoryId
     console.log(id)
     const result = await Category.remove({ _id: id })
-    ctx.body = { code: 200, message: '删除成功', data: {} }
+    ctx.body = { code: 201, message: '删除成功', data: {} }
   }
 
   static async topBugCates(ctx) {

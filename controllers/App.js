@@ -117,11 +117,16 @@ class App {
     const { type, search } = ctx.query
 
     if(type === 'submit') {
-      
+      // hots
+      // 有这个词就权重加1,没有这个词就创建。
+      const hot = await Hot.findOneAndUpdate({ text: search }, { $inc: { weights: 1 }}, { new: true, upsert: true })
+      ctx.body = { code: 200, message: 'ok', data: hot }
     }
 
     else if(type === 'onchange') {
-      
+      const titleArr = await Bug.find({title: new RegExp(search, 'i')}).limit(5).exec()
+      const contentArr = await Bug.find({title: new RegExp(search, 'i')}).limit(5).exec()
+      ctx.body = { code: 200, message: 'ok', data: titleArr.concat(contentArr) }
     }
 
     else {
@@ -142,6 +147,11 @@ class App {
     catch(e) {
       ctx.body = { code: 500, message: '操作数据时出错', data: e }
     }
+  }
+
+  static async getHots(ctx) {
+    const hots = await Hot.find({}).limit(10)
+    ctx.body = { code: 200, message: 'ok', data: hots }
   }
 
 
