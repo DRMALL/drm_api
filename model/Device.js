@@ -18,7 +18,8 @@ const deviceSchema = Schema({
     time: String,
     type: String,
     description: String
-  }]
+  }],
+  remark: String,
 }, { timestamps: true })
 
 const Device = mongoose.model('Device', deviceSchema)

@@ -25,6 +25,7 @@ app = https://api.wardenger.me/app
   * [获取bug](#获取bug)
   * [获取热门搜索词](#获取热门搜索词)
   * [创建工单](#创建工单)
+  * [获取devices](#获取devices)
 
 * [admin](#admin)
   * [登录](#登录)
@@ -149,6 +150,60 @@ POST https://api.wardenger.me/app/order/new?token=${token}
 }
 ```
 
+### 获取devices
+
+```
+GET https://api.wardenger.me/app/devices?token=${token}  
+```
+```
+0. 分类:
+  type: enum: ['cc', 'pressure', 'combustible']
+  value: ''
+  示例: type=pressure&value=25Mpa
+1. 排序:
+  createTime: ['1', '-1'] //升序，降序
+2. 筛选:
+  cc=''&pressure=''&combustible=''
+```
+
+### 获取device
+```
+GET https://api.wardenger.me/app/devices/one?deviceId=${deviceId}&start=${start}&end=${end}&token=${token}  
+```
+
+### 更新备注
+```
+POST https://api.wardenger.me/app/devices/one/remark?token=${token} 
+```
+```
+{
+  deviceId: '',
+  remark: ''
+}
+```
+
+### 增加时间线
+```
+POST https://api.wardenger.me/app/devices/one/timelines?token=${token} 
+```
+```
+{
+  deviceId: '',
+  type: '',
+  time: '',
+  description: ''
+}
+```
+
+### 增加设备图片
+```
+POST https://api.wardenger.me/app/devices/one/images?deviceId=${deviceId}&token=${token} 
+```
+```
+{
+  key:devices
+}
+```
 
 
 

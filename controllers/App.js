@@ -6,6 +6,7 @@ import News from '../model/News'
 import Bug from '../model/Bug'
 import Order from '../model/Order'
 import Hot from '../model/Hot'
+import Device from '../model/Device'
 import jwt from 'jsonwebtoken'
 import { cert } from '../config'
 import { busboys } from '../utils/upload'
@@ -175,8 +176,61 @@ class App {
     ctx.body = { code: 200, message: 'ok', data: result }
   }
 
+  static async getDevices(ctx) {
+    const { createTime, type, value, filter, cc, pressure, combustible } = ctx.request.query
+    var devices
+    if(createTime) {
+      devices = await Device.find().sort({ createTime: createTime })
+    }
+    else if(type && value) {
+      const find = {}
+      find[type] = value
+      devices = await Device.find({ find })
+    }
+    else if(cc || pressure || combustible) {
+      devices = await Device.find({$and: [
+                          {'cc': cc },
+                          {'pressure': pressure},
+                          {'combustible': combustible}
+                         ]
+                  })
+    }
+    else {
+      ctx.body = { code: 200, message: 'ok', data: devices }
+    }
+  }
 
+  static async getDevice(ctx) {
+    const { deviceId, start, end } = ctx.query
+    const doc = Device.find({_id: deviceId }).where('timesline.time').gte(start).lte(end)
+    ctx.body = { code: 200, message: 'ok', data: doc }
+  }
 
+  static async updateDeviceRemark(ctx) {
+    const { deviceId, remark } = ctx.request.body
+    const result = Device.update({ _id: deviceId }, { $set: { remark: remark } }, { new: true })
+    ctx.body = { code: 200, message: 'ok', data: result }
+  }
+
+  static async addDeviceTimeline(ctx) {
+    const { deviceId, type, time, description } = ctx.request.body
+    const result = Device.update( { _id   : deviceId },
+                                  { $push : { timelines: { type, time, description }}}
+                                )
+    ctx.body = { code: 201, message: 'ok', data: result }
+  }
+
+  static async addDeviceImages(ctx) {
+    const { deviceId } = ctx.query
+    const upload = await busboys (ctx)
+    if(upload.fieldname !== 'devices') {
+      return ctx.body = { code: 400, message: '参数值错误, key: devices', data: '' }
+    }
+    const result = Device.update({ _id: deviceId },
+                                 { $push: { images: { url: upload.file }}}
+                                )
+    ctx.body = { code: 201, message: 'ok', data: result }
+  }
 
 }
 
