@@ -26,6 +26,12 @@ app = https://api.wardenger.me/app
   * [获取热门搜索词](#获取热门搜索词)
   * [创建工单](#创建工单)
   * [获取devices](#获取devices)
+  * [获取device](#获取device)
+  * [更新备注](#更新备注)
+  * [增加时间线](#增加时间线)
+  * [增加设备图片](#增加设备图片)
+
+
 
 * [admin](#admin)
   * [登录](#登录)
@@ -201,7 +207,7 @@ POST https://api.wardenger.me/app/devices/one/images?deviceId=${deviceId}&token=
 ```
 ```
 {
-  key:devices
+  key: devices
 }
 ```
 
