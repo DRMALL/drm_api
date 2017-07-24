@@ -1,5 +1,5 @@
 
-import mongoose from 'mongoose'
+const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 
@@ -14,13 +14,9 @@ const deviceSchema = Schema({
   online: Boolean,
   incharge: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   address: String,
-  timelines: [{
-    time: String,
-    type: String,
-    description: String
-  }],
+  timelines: [{}],
   remark: String,
 }, { timestamps: true })
 
 const Device = mongoose.model('Device', deviceSchema)
-export default Device
+module.exports = Device

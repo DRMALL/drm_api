@@ -338,12 +338,24 @@ class Admin {
   }
 
   static async createDevice(ctx) {
-    const { name, number, images, cc, pressure, combustible, description, address } = ctx.body
+    const { name, number, images, cc, pressure, combustible, description, address, timelines } = ctx.request.body
     if(!name || !number || !cc || !pressure || !combustible || !description || !address) {
       return ctx.body = { code: 400, message: '缺少必要的参数：name, number, cc, pressure, combustible, description, address', data: '' }
     }
 
-    const result = await Device.create({ name, number, images, cc, pressure, combustible, description, address })
+    const device = new Device({
+      name,
+      number,
+      images,
+      cc,
+      pressure,
+      combustible,
+      description,
+      address,
+      timelines
+    })
+    const result = await device.save()
+    // const result = await Device.create({ name, number, images, cc, pressure, combustible, description, address, timesline })
     ctx.body = { code: 201, message: '创建成功', data: result }
   }
 
