@@ -374,7 +374,7 @@ class Admin {
     const deviceId = ctx.deviceId
     const updateBody = ctx.request.body
     const result = await Device.findByIdAndUpdate({_id: deviceId}, updateBody, { new: true, upsert: false })
-    ctx.body = { code: 200, message: '更新成功', data: result }
+    ctx.body = { code: 201, message: '更新成功', data: result }
   }
 
 
