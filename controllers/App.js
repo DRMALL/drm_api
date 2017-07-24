@@ -13,13 +13,22 @@ import { busboys } from '../utils/upload'
 import { hash } from '../utils/util'
 import bcrypt from 'bcrypt'
 
+import nodeExcel from '../utils/nodeExcel'
+
+
+  // res.setHeader('Content-Type', 'application/vnd.openxmlformats');
+  // res.setHeader("Content-Disposition", "attachment; filename=" + "Report.xlsx");
 
 
 
 class App {
 
   static async Index (ctx) {
-    ctx.body = 'app is coming'
+    ctx.set('Content-Type', 'application/vnd.openxmlformats');
+    // ctx.set("Content-Disposition", "attachment; filename=" + "Report.xlsx");
+    ctx.attachment("Report2.xlsx")
+    const result = new Buffer(nodeExcel,'binary');  
+    ctx.body = result
   }
 
   //登录
@@ -178,44 +187,49 @@ class App {
 
   static async getDevices(ctx) {
     const { createTime, type, value, filter, cc, pressure, combustible } = ctx.request.query
-    var devices
-    if(createTime) {
-      devices = await Device.find().sort({ createTime: createTime })
+    if(createTime === 'asc' || createTime === 'desc') {
+      const devices = await Device.find().sort({ createTime: createTime })
+      return ctx.body = { code: 200, message: 'ok', data: devices }
     }
     else if(type && value) {
       const find = {}
       find[type] = value
-      devices = await Device.find({ find })
+      // console.log(find)
+      const devices = await Device.find( find )
+      return ctx.body = { code: 200, message: 'ok', data: devices }
     }
     else if(cc || pressure || combustible) {
-      devices = await Device.find({$and: [
+      const devices = await Device.find({$and: [
                           {'cc': cc },
                           {'pressure': pressure},
                           {'combustible': combustible}
                          ]
                   })
+      return ctx.body = { code: 200, message: 'ok', data: devices }
     }
     else {
+      const devices = await Device.find({})
       ctx.body = { code: 200, message: 'ok', data: devices }
     }
   }
 
   static async getDevice(ctx) {
     const { deviceId, start, end } = ctx.query
-    const doc = Device.find({_id: deviceId }).where('timesline.time').gte(start).lte(end)
+    const doc = await Device.find({_id: deviceId }).where('timesline.time').gte(start).lte(end)
     ctx.body = { code: 200, message: 'ok', data: doc }
   }
 
   static async updateDeviceRemark(ctx) {
     const { deviceId, remark } = ctx.request.body
-    const result = Device.update({ _id: deviceId }, { $set: { remark: remark } }, { new: true })
-    ctx.body = { code: 200, message: 'ok', data: result }
+    const result = await Device.findByIdAndUpdate({ _id: deviceId }, { remark }, { new: true })
+    ctx.body = { code: 201, message: 'ok', data: result }
   }
 
   static async addDeviceTimeline(ctx) {
     const { deviceId, type, time, description } = ctx.request.body
-    const result = Device.update( { _id   : deviceId },
-                                  { $push : { timelines: { type, time, description }}}
+    const result = await Device.findByIdAndUpdate({ _id : deviceId },
+                                  { $push : { timelines: { type, time, description }}},
+                                  { new: true }
                                 )
     ctx.body = { code: 201, message: 'ok', data: result }
   }
@@ -226,8 +240,9 @@ class App {
     if(upload.fieldname !== 'devices') {
       return ctx.body = { code: 400, message: '参数值错误, key: devices', data: '' }
     }
-    const result = Device.update({ _id: deviceId },
-                                 { $push: { images: { url: upload.file }}}
+    const result = await Device.findByIdAndUpdate({ _id: deviceId },
+                                 { $push: { images: { url: upload.file }}},
+                                 { new: true }
                                 )
     ctx.body = { code: 201, message: 'ok', data: result }
   }

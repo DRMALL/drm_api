@@ -355,7 +355,7 @@ class Admin {
       timelines
     })
     const result = await device.save()
-    // const result = await Device.create({ name, number, images, cc, pressure, combustible, description, address, timesline })
+    // const result = await Device.create({ name, number, images, cc, pressure, combustible, description, address, timelines })
     ctx.body = { code: 201, message: '创建成功', data: result }
   }
 
@@ -366,7 +366,7 @@ class Admin {
 
   static async getDevice(ctx) {
     const deviceId = ctx.deviceId
-    const doc = await Device.find({_id: deviceId })
+    const doc = await Device.findById({_id: deviceId })
     ctx.body = { code: 200, message: '获取成功', data: doc }
   }
 
