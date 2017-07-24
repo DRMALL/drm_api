@@ -350,7 +350,22 @@ class Admin {
   static async getDevices(ctx) {
     const result = await Device.find()
     ctx.body = { code: 200, message: '获取成功', data: result }
-  } 
+  }
+
+  static async getDevice(ctx) {
+    const deviceId = ctx.deviceId
+    const doc = await Device.find({_id: deviceId })
+    ctx.body = { code: 200, message: '获取成功', data: doc }
+  }
+
+  static async updateDevice(ctx) {
+    const deviceId = ctx.deviceId
+    const updateBody = ctx.request.body
+    const result = await Device.findByIdAndUpdate({_id: deviceId}, updateBody, { new: true, upsert: false })
+    ctx.body = { code: 200, message: '更新成功', data: result }
+  }
+
+
 
   
 

@@ -54,6 +54,8 @@ app = https://api.wardenger.me/app
   * [处理工单](#处理工单)
   * [创建设备](#创建设备)
   * [获取设备](#获取设备)
+  * [获取单个设备](#获取单个设备)
+  * [更新单个设备](#更新单个设备)
 
 
 
@@ -356,6 +358,21 @@ PUT https://api.wardenger.me/admin/orders/:orderId?token=${token}
 ```
 POST https://api.wardenger.me/admin/devices/new?token=${token}
 ```
+```
+  name: ''   // 设备名称
+  number: '' // 设备编号
+  images: [] // 设备图片
+  cc: [单发生器，双发生器，三发生器，四发生器] //排量
+  pressure: [25Mpa, 30Mpa, 35Mpa, 50Mpa] //压力
+  combustible: [柴油，天然气，原油型]   //燃料
+  description: '' //描述
+  address：'' //所在地
+  timelines: [{
+    time: '',
+    type: '',
+    description: ''
+  }]
+```
 
 
 ### 上传设备图片
@@ -373,6 +390,16 @@ POST https://api.wardenger.me/admin/devices/uploadimg?token=${token}
 ### 获取设备
 ```
 GET https://api.wardenger.me/admin/devices?token=${token}
+```
+
+### 获取单个设备
+```
+GET https://api.wardenger.me/admin/devices/deviceId?token=${token}
+```
+
+### 更新单个设备
+```
+PUT https://api.wardenger.me/admin/devices/deviceId?token=${token}
 ```
 
 

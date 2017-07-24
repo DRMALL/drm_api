@@ -78,6 +78,13 @@ router.param('orderId', function(id, ctx, next) {
 router.post('/admin/devices/uploadimg', Admin.uploadImgWithDevice)
 router.post('/admin/devices/new', Admin.createDevice)
 router.get('/admin/devices', Admin.getDevices)
+router.param('deviceId', function(id, ctx, next) {
+  ctx.deviceId = id
+  if(!ctx.deviceId) return ctx.status = 404
+  return next()
+})
+.get('/admin/devices/:deviceId', Admin.getDevice)
+.put('/admin/devices/:deviceId', Admin.updateDevice)
 
 
 

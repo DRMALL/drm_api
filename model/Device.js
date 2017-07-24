@@ -2,13 +2,14 @@
 import mongoose from 'mongoose'
 const Schema = mongoose.Schema
 
+
 const deviceSchema = Schema({
   name: String,
   number: String,
   images: [],
-  cc: String,
-  pressure: String,
-  combustible: String,
+  cc: String,   //排量
+  pressure: String,   //压力
+  combustible: String,  //燃料
   description: String,
   online: Boolean,
   incharge: [{ type: Schema.Types.ObjectId, ref: 'User' }],
