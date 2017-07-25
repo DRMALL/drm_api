@@ -11,6 +11,7 @@ import Bug from '../model/Bug'
 import Order from '../model/Order'
 import Device from '../model/Device'
 import Category from '../model/Category'
+import Auth from '../model/Auth'
 import deleteFile from '../utils/deleteFile'
 import Counter from '../model/Counter'
 
@@ -377,9 +378,28 @@ class Admin {
     ctx.body = { code: 201, message: '更新成功', data: result }
   }
 
+  static async addAuth(ctx) {
+    const { userId, deviceId, canView, canMonitor } = ctx.request.body
+    if( !userId || !deviceId || !canView || !canMonitor)
+      return ctx.body = { code: 400, message: '缺少必要的参数', data: '' }
+    const result = await Auth.create({ userId, deviceId, canView, canMonitor })
+    ctx.body = { code: 201, message: '创建成功', data: result }
+  }
 
+  static async getAuths(ctx) {
+    const result = await Auth.find({})
+                .populate('user', 'name')
+                .populate('device', 'name number')
+    ctx.body = { code: 200, message: '获取成功', data: result }
+  }
 
-  
+  static async updateAuth(ctx) {
+    const { authId } = ctx.query
+    const updateBody = ctx.request.body
+
+    const result = await Auth.findByIdAndUpdate({_id: authId}, updateBody, { new: true })
+    ctx.body = { code: 201, message: '更新成功', data: result }
+  }
 
 
 }

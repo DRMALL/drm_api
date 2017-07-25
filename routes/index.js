@@ -78,6 +78,7 @@ router.param('orderId', function(id, ctx, next) {
 router.post('/admin/devices/uploadimg', Admin.uploadImgWithDevice)
 router.post('/admin/devices/new', Admin.createDevice)
 router.get('/admin/devices', Admin.getDevices)
+// router.get('/admin/devices/change/timelines', )
 router.param('deviceId', function(id, ctx, next) {
   ctx.deviceId = id
   if(!ctx.deviceId) return ctx.status = 404
@@ -87,7 +88,10 @@ router.param('deviceId', function(id, ctx, next) {
 .put('/admin/devices/:deviceId', Admin.updateDevice)
 
 
-
+//auth
+router.post('/admin/auths/new', Admin.addAuth)
+router.get('/admin/auths', Admin.getAuths)
+router.post('/admin/auth/change', Admin.updateAuth)
 
 
 

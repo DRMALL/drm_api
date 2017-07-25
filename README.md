@@ -63,6 +63,9 @@ app = https://api.wardenger.me/app
   * [获取设备](#获取设备)
   * [获取单个设备](#获取单个设备)
   * [更新单个设备](#更新单个设备)
+  * [新增权限](#新增权限)
+  * [获取权限](#获取权限)
+  * [更新权限](#更新权限)
 
 
 
@@ -461,6 +464,39 @@ GET https://api.wardenger.me/admin/devices/deviceId?token=${token}
 ### 更新单个设备
 ```
 PUT https://api.wardenger.me/admin/devices/deviceId?token=${token}
+```
+
+### 新增权限
+
+```
+POST https://api.wardenger.me/admin/auths/new?token=${token}
+```
+```
+{
+  userId: '',
+  deviceId: '',
+  canView: Boolean,
+  canMonitor: Boolean
+}
+```
+
+### 获取权限
+```
+GET https://api.wardenger.me/admin/auths?token=${token}
+```
+
+### 更新权限
+```
+POST https://api.wardenger.me/admin/auth/change?authId=${authId}&token=${token}
+```
+
+```
+{
+  userId: '',
+  deviceId: '',
+  canView: Boolean,
+  canMonitor: Boolean 
+}
 ```
 
 
