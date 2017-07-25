@@ -2,11 +2,13 @@
 var { host } = require('../config')
 
 var home = (ctx) => {
-  console.log(ctx.newteo)
   ctx.body = {
     host: host,
-    hello: 'ssh2',
-    middware: 'ctx.newteo'
+    users: `${host}users`,
+    devices: `${host}devices`,
+    news: `${host}news`,
+    bugs: `${host}bugs`,
+    orders: `${host}orders`,
   }
 }
 
