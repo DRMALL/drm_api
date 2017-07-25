@@ -7,6 +7,7 @@ import Bug from '../model/Bug'
 import Order from '../model/Order'
 import Hot from '../model/Hot'
 import Device from '../model/Device'
+import Auth from '../model/Auth'
 import jwt from 'jsonwebtoken'
 import { cert } from '../config'
 import { busboys } from '../utils/upload'
@@ -14,10 +15,6 @@ import { hash } from '../utils/util'
 import bcrypt from 'bcrypt'
 
 import nodeExcel from '../utils/nodeExcel'
-
-
-  // res.setHeader('Content-Type', 'application/vnd.openxmlformats');
-  // res.setHeader("Content-Disposition", "attachment; filename=" + "Report.xlsx");
 
 
 
@@ -214,8 +211,25 @@ class App {
   }
 
   static async getDevice(ctx) {
+    const { userId } = ctx.request.decoded
     const { deviceId, start, end } = ctx.query
-    const doc = await Device.find({_id: deviceId }).where('timesline.time').gte(start).lte(end)
+
+    const mathArr = await Auth.find( { $and: [
+                            { user: userId },
+                            { device: deviceId }
+                          ] })
+    const canView = matchArr.some((item, index) => {
+      return item.canView === true
+    })
+
+    const canMonitor = matchArr.some((item, index) => {
+      return item.canMonitor === true
+    })
+
+    if(!canView)
+      return ctx.body = { code: 503, message: 'you has no authority to watch this device', data: ''}
+
+    const doc = await Device.find({_id: deviceId }).where('timelines.time').gte(start).lte(end)
     ctx.body = { code: 200, message: 'ok', data: doc }
   }
 

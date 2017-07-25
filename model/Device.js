@@ -16,6 +16,8 @@ const deviceSchema = Schema({
   address: String,
   timelines: [{}],
   remark: String,
+  // canViews: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  // canMonitors: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 }, { timestamps: true })
 
 const Device = mongoose.model('Device', deviceSchema)

@@ -84,6 +84,11 @@ class Admin {
 
   //获取所有用户
   static async getUsers (ctx) {
+    const { type } = ctx.query
+    if(type === 'name') {
+      let docs = await User.find({}, 'name')
+      return ctx.body = { code: 200, message: 'ok', data: docs }
+    }
     try {
       const result = await User.find({}, '-password')
       ctx.body = { code: 200, message: 'ok', data: result }
@@ -361,6 +366,11 @@ class Admin {
   }
 
   static async getDevices(ctx) {
+    const { type } = ctx.query
+    if(type === 'name') {
+      const docs = await Device.find({}, 'name')
+      return ctx.body = { code: 200, message: '获取成功', data: docs }
+    }
     const result = await Device.find()
     ctx.body = { code: 200, message: '获取成功', data: result }
   }
@@ -380,10 +390,17 @@ class Admin {
 
   static async addAuth(ctx) {
     const { userId, deviceId, canView, canMonitor } = ctx.request.body
-    if( !userId || !deviceId || !canView || !canMonitor)
-      return ctx.body = { code: 400, message: '缺少必要的参数', data: '' }
-    const result = await Auth.create({ userId, deviceId, canView, canMonitor })
+    if( !userId || !deviceId || canView === undefined || canMonitor === undefined )
+      return ctx.body = { code: 400, message: '缺少必要的参数 userId, deviceId, canView, canMonitor', data: '' }
+    const result = await Auth.create({ 
+      user: userId,
+      device: deviceId,
+      canView: canView,
+      canMonitor: canMonitor
+    })
     ctx.body = { code: 201, message: '创建成功', data: result }
+
+    // Device.update({ _id: deviceId }, { $push: {canViews: userId},  })
   }
 
   static async getAuths(ctx) {

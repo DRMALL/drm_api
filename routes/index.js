@@ -119,6 +119,7 @@ router.get('/app/order/all', App.getOrders)
 //devices
 router.get('/app/devices', App.getDevices)
 router.get('/app/devices/one', App.getDevice)
+
 router.post('/app/devices/one/remark', App.updateDeviceRemark)
 router.post('/app/devices/one/timelines', App.addDeviceTimeline)
 router.post('/app/devices/one/images', App.addDeviceImages)

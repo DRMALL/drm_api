@@ -250,7 +250,7 @@ POST https://api.wardenger.me/admin/users/new?token=${token}
 
 ### 获取所有用户
 ```
-GET https://api.wardenger.me/admin/users?token=${token}
+GET https://api.wardenger.me/admin/users?type=name&token=${token}
 ```
 
 ### 获取单个用户
@@ -453,7 +453,7 @@ POST https://api.wardenger.me/admin/devices/uploadimg?token=${token}
 
 ### 获取设备
 ```
-GET https://api.wardenger.me/admin/devices?token=${token}
+GET https://api.wardenger.me/admin/devices?type=name&token=${token}
 ```
 
 ### 获取单个设备
