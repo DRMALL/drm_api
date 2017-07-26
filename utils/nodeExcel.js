@@ -1,15 +1,17 @@
 
 var nodeExcel = require('excel-export')
+var Device = require('../model/Device')
+
 var conf = {}
 conf.stylesXmlFile = 'styles.xml'
 conf.name = 'mysheet'
 conf.cols = [{
     caption: 'string',
     type: 'string',
-    beforeCellWrite: (row, cellData) => {
-      return cellData.toUpperCase()
-    },
-    width: 28.7109375 
+    // beforeCellWrite: (row, cellData) => {
+    //   return cellData.toUpperCase()
+    // },
+    // width: 28.7109375
   }, {
     caption: 'date',
     type: 'date',
@@ -35,14 +37,31 @@ conf.cols = [{
       caption: 'number',
       type: 'number'
     }]
+
 conf.rows = [
   ['pi', new Date(Date.UTC(2013, 4, 1)), true, 3.14],
   ['e' , new Date(2012,4,1), false, 2.7182],
   ["M&M<>'", new Date(Date.UTC(2013, 6, 9)), false, 1.61803],
   ["null date", null, true, 1.414]
 ]
-var result = nodeExcel.execute(conf)
 
+var result = nodeExcel.execute(conf)
 export default result
+
+function transforExcel(arr) {
+  const array = []
+  const inArr = []
+
+  arr.map((obj, index) => {
+    inArr.length = 0
+    Object.keys(obj).map((key, index) => {
+      inArr.push(obj[key])
+    })
+    array.push(inArr)
+  })
+  return array
+}
+
+
 
 

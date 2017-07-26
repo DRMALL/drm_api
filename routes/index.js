@@ -91,6 +91,7 @@ router.param('deviceId', function(id, ctx, next) {
 //auth
 router.post('/admin/auths/new', Admin.addAuth)
 router.get('/admin/auths', Admin.getAuths)
+router.get('/admin/auths/one', Admin.getAuth)
 router.post('/admin/auth/change', Admin.updateAuth)
 
 

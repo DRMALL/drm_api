@@ -485,6 +485,11 @@ POST https://api.wardenger.me/admin/auths/new?token=${token}
 GET https://api.wardenger.me/admin/auths?token=${token}
 ```
 
+### 获取单个权限
+```
+GET https://api.wardenger.me/admin/auths/one?authId=${authId}token=${token}
+```
+
 ### 更新权限
 ```
 POST https://api.wardenger.me/admin/auth/change?authId=${authId}&token=${token}

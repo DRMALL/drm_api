@@ -392,6 +392,7 @@ class Admin {
     const { userId, deviceId, canView, canMonitor } = ctx.request.body
     if( !userId || !deviceId || canView === undefined || canMonitor === undefined )
       return ctx.body = { code: 400, message: '缺少必要的参数 userId, deviceId, canView, canMonitor', data: '' }
+  
     const result = await Auth.create({ 
       user: userId,
       device: deviceId,
@@ -409,6 +410,15 @@ class Admin {
                 .populate('device', 'name number')
     ctx.body = { code: 200, message: '获取成功', data: result }
   }
+
+  static async getAuth(ctx) {
+    const { authId } = ctx.query
+    const result = await Auth.findOne({_id: authId})
+                .populate('user', 'name')
+                .populate('device', 'name number')
+    ctx.body = { code: 200, message: '获取成功', data: result }
+  }
+
 
   static async updateAuth(ctx) {
     const { authId } = ctx.query

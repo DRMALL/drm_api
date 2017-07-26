@@ -14,15 +14,15 @@ import { busboys } from '../utils/upload'
 import { hash } from '../utils/util'
 import bcrypt from 'bcrypt'
 
-import nodeExcel from '../utils/nodeExcel'
-
 
 
 class App {
 
   static async Index (ctx) {
+    const fileName = new Date().toLocaleString()
+
+
     ctx.set('Content-Type', 'application/vnd.openxmlformats');
-    // ctx.set("Content-Disposition", "attachment; filename=" + "Report.xlsx");
     ctx.attachment("Report2.xlsx")
     const result = new Buffer(nodeExcel,'binary');  
     ctx.body = result
