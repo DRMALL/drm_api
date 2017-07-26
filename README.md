@@ -497,8 +497,8 @@ POST https://api.wardenger.me/admin/auth/change?authId=${authId}&token=${token}
 
 ```
 {
-  userId: '',
-  deviceId: '',
+  user: '',
+  device: '',
   canView: Boolean,
   canMonitor: Boolean 
 }

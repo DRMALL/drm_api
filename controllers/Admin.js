@@ -389,7 +389,9 @@ class Admin {
   }
 
   static async addAuth(ctx) {
+    
     const { userId, deviceId, canView, canMonitor } = ctx.request.body
+
     if( !userId || !deviceId || canView === undefined || canMonitor === undefined )
       return ctx.body = { code: 400, message: '缺少必要的参数 userId, deviceId, canView, canMonitor', data: '' }
   
@@ -424,7 +426,7 @@ class Admin {
     const { authId } = ctx.query
     const updateBody = ctx.request.body
 
-    const result = await Auth.findByIdAndUpdate({_id: authId}, updateBody, { new: true })
+    const result = await Auth.findByIdAndUpdate({ _id: authId }, updateBody, { new: true })
     ctx.body = { code: 201, message: '更新成功', data: result }
   }
 
