@@ -19,13 +19,23 @@ import bcrypt from 'bcrypt'
 class App {
 
   static async Index (ctx) {
-    const fileName = new Date().toLocaleString()
+    // const fileName = new Date().toLocaleString()
 
 
-    ctx.set('Content-Type', 'application/vnd.openxmlformats');
-    ctx.attachment("Report2.xlsx")
-    const result = new Buffer(nodeExcel,'binary');  
-    ctx.body = result
+    // ctx.set('Content-Type', 'application/vnd.openxmlformats');
+    // ctx.attachment("Report2.xlsx")
+    // const result = new Buffer(nodeExcel,'binary');  
+    // ctx.body = result
+    // const devices = await Device.aggregate([{
+    //   { $unwind: '$images'},
+    //   { $group: { _id: ""}}
+    // }])
+    const devices = await Device.aggregate([
+      { $unwind: "$timelines"},
+      { $group : { _id : "$timelines.type" , numbers : { $push : { cc: '$cc', pressure: '$pressure'} } } },
+      { $sort: { number: 1 } }
+    ])
+    ctx.body = { data: devices }
   }
 
   //登录
@@ -180,6 +190,12 @@ class App {
     // .populate({ path: 'bug', select: 'category ', })
 
     ctx.body = { code: 200, message: 'ok', data: result }
+  }
+
+  static async getLastLocation(ctx) {
+    //how to do it ? hello ?
+    const locations = await Device.find({}).select('loctime address').sort('-loctime').limit(5)
+    ctx.body = { code: 200, message: 'ok', data: locations }
   }
 
   static async getDevices(ctx) {

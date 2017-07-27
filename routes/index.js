@@ -86,6 +86,7 @@ router.param('deviceId', function(id, ctx, next) {
 })
 .get('/admin/devices/:deviceId', Admin.getDevice)
 .put('/admin/devices/:deviceId', Admin.updateDevice)
+.put('/admin/devices/:deviceId/location', Admin.updateDeviceLoaction)
 
 
 //auth
@@ -118,6 +119,7 @@ router.post('/app/order/new', App.createOrder)
 router.get('/app/order/all', App.getOrders)
 
 //devices
+router.get('/app/devices/address', App.getLastLocation)
 router.get('/app/devices', App.getDevices)
 router.get('/app/devices/one', App.getDevice)
 

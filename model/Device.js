@@ -13,10 +13,18 @@ const deviceSchema = Schema({
   description: String,
   online: Boolean,
   incharge: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-  address: String,
+
+  location: [
+    // {
+    //   time: { type: Date, default: Date.now },
+    //   text: String    
+    // }
+  ],
+
   timelines: [{}],
   remark: String,
 }, { timestamps: true })
+
 
 const Device = mongoose.model('Device', deviceSchema)
 module.exports = Device

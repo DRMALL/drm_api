@@ -466,6 +466,16 @@ GET https://api.wardenger.me/admin/devices/deviceId?token=${token}
 PUT https://api.wardenger.me/admin/devices/deviceId?token=${token}
 ```
 
+### 更改设备时间
+```
+PUT https://api.wardenger.me/admin/devices/deviceId/location?token=${token}
+```
+```
+{
+  address:
+}
+```
+
 ### 新增权限
 
 ```

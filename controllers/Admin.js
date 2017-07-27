@@ -179,14 +179,14 @@ class Admin {
     let bodyData = ctx.request.body
 
     if(bodyData.published) {
-      bodyData = Object.assign({}, bodyData, { publish_time: Date.now })
+      bodyData = Object.assign({}, bodyData, { publish_time: new Date() })
     }
     const result = await News.findOneAndUpdate({ _id: id }, bodyData, { new: true })
 
-    if(ctx.request.body.published === true) {
+    if(bodyData.published === true) {
       return  ctx.body = { code: 201, message: '发布成功', data: result }
     }
-    
+
     ctx.body = { code: 201, message: '更新成功', data: result }
 
   }
@@ -349,6 +349,12 @@ class Admin {
       return ctx.body = { code: 400, message: '缺少必要的参数：name, number, cc, pressure, combustible, description, address', data: '' }
     }
 
+    const location = []
+    location.push({
+      text: address,
+      time: new Date()
+    })
+
     const device = new Device({
       name,
       number,
@@ -357,21 +363,30 @@ class Admin {
       pressure,
       combustible,
       description,
-      address,
-      timelines
+      location,
+      timelines,
     })
     const result = await device.save()
-    // const result = await Device.create({ name, number, images, cc, pressure, combustible, description, address, timelines })
     ctx.body = { code: 201, message: '创建成功', data: result }
   }
 
   static async getDevices(ctx) {
     const { type } = ctx.query
+
     if(type === 'name') {
       const docs = await Device.find({}, 'name')
       return ctx.body = { code: 200, message: '获取成功', data: docs }
     }
-    const result = await Device.find()
+
+    // var result = await Device.aggregate([
+
+    // ])
+    var result = await Device.find({})
+    result = result.map((item, index) => {
+      item.address = item.location[item.location.length - 1].text
+      return item
+    })
+    console.log(result)
     ctx.body = { code: 200, message: '获取成功', data: result }
   }
 
@@ -384,7 +399,17 @@ class Admin {
   static async updateDevice(ctx) {
     const deviceId = ctx.deviceId
     const updateBody = ctx.request.body
-    const result = await Device.findByIdAndUpdate({_id: deviceId}, updateBody, { new: true, upsert: false })
+    const result = await Device.update({ _id: deviceId }, updateBody, { upsert: false })
+    ctx.body = { code: 201, message: '更新成功', data: result }
+  }
+
+  static async updateDeviceLoaction(ctx) {
+    const deviceId = ctx.deviceId
+    const { address } = ctx.request.body
+    const obj = {}
+    obj.text = address
+    obj.time = new Date()
+    const result = await Device.findByIdAndUpdate({ _id: deviceId }, { $push : { 'location' : obj } }, { new: true , upsert: false })
     ctx.body = { code: 201, message: '更新成功', data: result }
   }
 
@@ -403,7 +428,7 @@ class Admin {
     })
     ctx.body = { code: 201, message: '创建成功', data: result }
 
-    // Device.update({ _id: deviceId }, { $push: {canViews: userId},  })
+    // Device.update({ _id: deviceId }, { $push: { canViews: userId } })
   }
 
   static async getAuths(ctx) {

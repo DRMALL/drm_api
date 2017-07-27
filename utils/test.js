@@ -7,7 +7,10 @@ const cols = [{
   type: 'string'
 }, {
   caption: 'date',
-  type: 'string'
+  type: 'date'
+}, {
+  caption: 'date',
+  type: 'date'  
 }]
 
 class NodeExcel {
