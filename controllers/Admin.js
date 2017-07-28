@@ -14,7 +14,7 @@ import Category from '../model/Category'
 import Auth from '../model/Auth'
 import deleteFile from '../utils/deleteFile'
 import Counter from '../model/Counter'
-
+import Part from '../model/Part'
 
 
 
@@ -382,11 +382,13 @@ class Admin {
 
     // ])
     var result = await Device.find({})
-    result = result.map((item, index) => {
-      item.address = item.location[item.location.length - 1].text
-      return item
-    })
-    console.log(result)
+
+    // var newResult = result.map((item, index) => {
+      // item.location 
+      // return item
+      // return Object.assign({}, item, { address: item.location[item.location.length - 1].text })
+    // })
+
     ctx.body = { code: 200, message: '获取成功', data: result }
   }
 
@@ -453,6 +455,11 @@ class Admin {
 
     const result = await Auth.findByIdAndUpdate({ _id: authId }, updateBody, { new: true })
     ctx.body = { code: 201, message: '更新成功', data: result }
+  }
+
+  static async getParts(ctx) {
+    const docs = await Part.find({})
+    ctx.body = { code: 200, message: 'ok', data: docs }
   }
 
 

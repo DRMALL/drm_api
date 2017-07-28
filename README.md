@@ -66,6 +66,7 @@ app = https://api.wardenger.me/app
   * [新增权限](#新增权限)
   * [获取权限](#获取权限)
   * [更新权限](#更新权限)
+  * [获取配件](#获取配件)
 
 
 
@@ -514,7 +515,10 @@ POST https://api.wardenger.me/admin/auth/change?authId=${authId}&token=${token}
 }
 ```
 
-
+### 获取配件
+```
+GET https://api.wardenger.me/admin/parts?token=${token}
+```
 
 
 

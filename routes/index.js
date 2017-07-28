@@ -95,6 +95,9 @@ router.get('/admin/auths', Admin.getAuths)
 router.get('/admin/auths/one', Admin.getAuth)
 router.post('/admin/auth/change', Admin.updateAuth)
 
+//part
+router.get('/admin/parts', Admin.getParts)
+
 
 
 router.get('/app', App.Index)
@@ -111,7 +114,6 @@ router.get('/app/news/one', App.getNewsById)
 router.get('/app/bugs', App.getBugs)
 router.get('/app/bugs/one', App.getBug)
 router.get('/app/bugs/hots', App.getHots)
-
 
 
 //orders

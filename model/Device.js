@@ -12,16 +12,13 @@ const deviceSchema = Schema({
   combustible: String,  //燃料
   description: String,
   online: Boolean,
-  incharge: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-
-  location: [
-    // {
-    //   time: { type: Date, default: Date.now },
-    //   text: String    
-    // }
-  ],
-
-  timelines: [{}],
+  location: [{
+      time: { type: Date, default: Date.now },
+      text: String
+  }],
+  timelines: [{
+    
+  }],
   remark: String,
 }, { timestamps: true })
 
