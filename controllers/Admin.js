@@ -433,13 +433,12 @@ class Admin {
     const currentAuth = await Auth.find({})
 
     const isReap = currentAuth.some((item, index) => {
-      return item.user === userId && item.device === deviceId
+      return item.user == userId && item.device == deviceId
     })
 
     if(isReap) {
       return ctx.body = { code: 403, message: '已创建该用户和该设备的权限', data: ''}
     }
-
 
     const result = await Auth.create({
       user: userId,
