@@ -436,7 +436,7 @@ class Admin {
       return item.user === userId && item.device === deviceId
     })
 
-    if(isReap) {
+    if(!isReap) {
       return ctx.body = { code: 403, message: '已创建该用户和该设备的权限', data: ''}
     }
 
