@@ -1,6 +1,4 @@
 
-// var mongoose = require('mongoose')
-
 import User from '../model/User'
 import News from '../model/News'
 import Bug from '../model/Bug'

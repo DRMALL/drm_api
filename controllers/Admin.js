@@ -1,21 +1,18 @@
 
-
-import mongoose from 'mongoose'
 import User from '../model/User'
-import jwt from 'jsonwebtoken'
-import { cert, initAdmins } from '../config'
-import { hash } from '../utils/util'
-import { busboys } from '../utils/upload'
 import News from '../model/News'
 import Bug from '../model/Bug'
 import Order from '../model/Order'
 import Device from '../model/Device'
 import Category from '../model/Category'
 import Auth from '../model/Auth'
-import deleteFile from '../utils/deleteFile'
 import Counter from '../model/Counter'
 import Part from '../model/Part'
-
+import jwt from 'jsonwebtoken'
+import deleteFile from '../utils/deleteFile'
+import { busboys } from '../utils/upload'
+import { hash } from '../utils/util'
+import { cert, initAdmins } from '../config'
 
 
 class Admin {
@@ -66,7 +63,6 @@ class Admin {
     }
 
     const curUsers = await User.find({}, '-password')
-    console.log(curUsers)
 
     const valida = curUsers.some((element, index) => {
       return element.email === email
@@ -78,8 +74,7 @@ class Admin {
 
     let result = await User.create({ name, email, password: encryptPass, phone, company_name, address })
     result.password = undefined
-    ctx.body = { code: 201, message: 'ok', data: result }   
-    
+    ctx.body = { code: 201, message: 'ok', data: result } 
   }
 
   //获取所有用户
@@ -183,7 +178,7 @@ class Admin {
     }
     const result = await News.findOneAndUpdate({ _id: id }, bodyData, { new: true })
 
-    if(bodyData.published === true) {
+    if(bodyData.publidshed === true) {
       return  ctx.body = { code: 201, message: '发布成功', data: result }
     }
 
@@ -379,7 +374,23 @@ class Admin {
       const docs = await Device.find({}, 'name')
       return ctx.body = { code: 200, message: '获取成功', data: docs }
     }
+
     var result = await Device.find({})
+
+    const addIncharge = (result) => {
+      const promise = result.map(async (item, index) => {
+          var incharges = await Auth.find({ device: item._id }).populate('user', 'name')
+          var user = []
+          incharges.map((auth, i) => {
+            user.push(auth.user.name)
+          })
+          return Object.assign({}, item._doc, { incharges: user })
+      })
+      return Promise.all(promise)
+    }
+
+    result = await addIncharge(result)
+
     ctx.body = { code: 200, message: '获取成功', data: result }
   }
 
@@ -417,7 +428,7 @@ class Admin {
     if( !userId || !deviceId || canView === undefined || canMonitor === undefined )
       return ctx.body = { code: 400, message: '缺少必要的参数 userId, deviceId, canView, canMonitor', data: '' }
   
-    const result = await Auth.create({ 
+    const result = await Auth.create({
       user: userId,
       device: deviceId,
       canView: canView,

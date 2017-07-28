@@ -14,12 +14,13 @@ const deviceSchema = Schema({
   online: Boolean,
   address: String,
   location: [{
-      time: { type: Date, default: Date.now },
-      text: String
+    time: { type: Date, default: Date.now },
+    text: String
   }],
   timelines: [{
     
   }],
+  incharges: [],
   remark: String,
 }, { timestamps: true })
 

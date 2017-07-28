@@ -15,14 +15,11 @@ const Koa = require('koa')
 
 
 app.use(static(path.join( __dirname, staticPath)))
-
-
 app.use(cors())
 app.use(logger())
 
 var server = require('http').Server(app.callback())
 var io = require('socket.io')(server)
-
 
 app.use(bodyParser())
 app.use(router.routes())
@@ -37,7 +34,7 @@ new WebSocket(io)
 module.exports = app
 
 server.listen(3000)
-console.log('[demo] start-quick is starting at port 3000')
+console.log('[drm] start-quick is starting at port 3000')
 
 
 

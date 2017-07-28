@@ -6,14 +6,10 @@ import verifyToken from '../utils/verifyToken'
 
 const router = new Router()
 
-
 router.get('/', home)
 router.post('/admin/session', Admin.session)
 router.post('/app/session', App.session)
-
-
 router.use('*', verifyToken)
-
 
 //users
 router.get('/admin/users', Admin.getUsers)
@@ -63,7 +59,6 @@ router.param('bugId', function(id, ctx, next) {
 .delete('/admin/bugs/:bugId', Admin.deleteBug)
 
 //orders
-
 router.get('/admin/orders', Admin.getOrders)
 router.param('orderId', function(id, ctx, next) {
   ctx.orderId = id
@@ -121,13 +116,15 @@ router.post('/app/order/new', App.createOrder)
 router.get('/app/order/all', App.getOrders)
 
 //devices
-router.get('/app/devices/address', App.getLastLocation)
+router.get('/app/devices/address' , App.getLastLocation)
 router.get('/app/devices', App.getDevices)
 router.get('/app/devices/one', App.getDevice)
 
 router.post('/app/devices/one/remark', App.updateDeviceRemark)
 router.post('/app/devices/one/timelines', App.addDeviceTimeline)
 router.post('/app/devices/one/images', App.addDeviceImages)
+
+
 
 module.exports = router
 
