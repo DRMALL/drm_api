@@ -365,30 +365,21 @@ class Admin {
       description,
       location,
       timelines,
+      address,
     })
     const result = await device.save()
     ctx.body = { code: 201, message: '创建成功', data: result }
   }
 
   static async getDevices(ctx) {
+
     const { type } = ctx.query
 
     if(type === 'name') {
       const docs = await Device.find({}, 'name')
       return ctx.body = { code: 200, message: '获取成功', data: docs }
     }
-
-    // var result = await Device.aggregate([
-
-    // ])
     var result = await Device.find({})
-
-    // var newResult = result.map((item, index) => {
-      // item.location 
-      // return item
-      // return Object.assign({}, item, { address: item.location[item.location.length - 1].text })
-    // })
-
     ctx.body = { code: 200, message: '获取成功', data: result }
   }
 
@@ -411,7 +402,11 @@ class Admin {
     const obj = {}
     obj.text = address
     obj.time = new Date()
-    const result = await Device.findByIdAndUpdate({ _id: deviceId }, { $push : { 'location' : obj } }, { new: true , upsert: false })
+    const result = await Device.findByIdAndUpdate({ _id: deviceId }, { 
+      $push : { 'location' : obj },
+      $set : { 'address' : address }
+    }, 
+    { new: true , upsert: false })
     ctx.body = { code: 201, message: '更新成功', data: result }
   }
 

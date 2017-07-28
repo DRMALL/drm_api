@@ -194,8 +194,8 @@ class App {
 
   static async getLastLocation(ctx) {
     //how to do it ? hello ?
-    const locations = await Device.find({}).select('loctime address').sort('-loctime').limit(5)
-    ctx.body = { code: 200, message: 'ok', data: locations }
+    // const locations = await Device.find({}).select('loctime address').sort('-loctime').limit(5)
+    ctx.body = { code: 200, message: 'ok', data: 'to be continue' }
   }
 
   static async getDevices(ctx) {

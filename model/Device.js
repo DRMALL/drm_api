@@ -12,6 +12,7 @@ const deviceSchema = Schema({
   combustible: String,  //燃料
   description: String,
   online: Boolean,
+  address: String,
   location: [{
       time: { type: Date, default: Date.now },
       text: String
