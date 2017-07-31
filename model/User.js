@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const userSchema = new Schema({
-  name: { 
+  name: {
     type: String,
     required: true
   },
@@ -20,6 +20,7 @@ const userSchema = new Schema({
   company_name: String,
   address: String,
 }, { timestamps: true })
+
 
 
 export default mongoose.model('User', userSchema)

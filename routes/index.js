@@ -72,6 +72,7 @@ router.param('orderId', function(id, ctx, next) {
 //device
 router.post('/admin/devices/uploadimg', Admin.uploadImgWithDevice)
 router.post('/admin/devices/new', Admin.createDevice)
+router.get('/admin/devices/excel', Admin.getExcel)
 router.get('/admin/devices', Admin.getDevices)
 // router.get('/admin/devices/change/timelines', )
 router.param('deviceId', function(id, ctx, next) {
@@ -92,8 +93,6 @@ router.post('/admin/auth/change', Admin.updateAuth)
 
 //part
 router.get('/admin/parts', Admin.getParts)
-
-
 
 router.get('/app', App.Index)
 router.get('/app/user', App.getUserInfo)

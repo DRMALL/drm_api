@@ -10,7 +10,8 @@ const partSchema = new Schema({
   types: String,      //类型
   remark: String,     //备注
   unit: String,       //单位
-  device: String,     //设备编号,使用设备
+  deviceCode: String, //设备编号,使用设备
+  deviceName: String
 }, { timestamps: true })
 
 module.exports = mongoose.model('Part', partSchema)

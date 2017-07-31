@@ -45,23 +45,11 @@ conf.rows = [
   ["null date", null, true, 1.414]
 ]
 
+
+
+
+
+
 var result = nodeExcel.execute(conf)
+
 export default result
-
-function transforExcel(arr) {
-  const array = []
-  const inArr = []
-
-  arr.map((obj, index) => {
-    inArr.length = 0
-    Object.keys(obj).map((key, index) => {
-      inArr.push(obj[key])
-    })
-    array.push(inArr)
-  })
-  return array
-}
-
-
-
-

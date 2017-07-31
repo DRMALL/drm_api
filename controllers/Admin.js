@@ -13,6 +13,9 @@ import deleteFile from '../utils/deleteFile'
 import { busboys } from '../utils/upload'
 import { hash } from '../utils/util'
 import { cert, initAdmins } from '../config'
+import transforExcel from '../utils/transforExcel'
+import nodeExcel  from 'excel-export'
+
 
 
 class Admin {
@@ -329,6 +332,46 @@ class Admin {
 
   //devices
 
+  static async getExcel(ctx) {
+
+    const {startTime, endTime} = ctx.body
+
+    const devices = await Device.aggregate([
+      { $unwind: "$timelines" },
+      { $project: { 
+        "linestime" : "$timelines.time",
+        "linestype" : "$timelines.type",
+        "linesdes" : "$timelines.description",
+        "name" : 1,
+        "number": 1,
+        "_id" : 0,
+        "address": "$address",
+        "cc": "$cc",
+        "pressure": "$pressure",
+        "combustible": "$combustible",
+       }
+     },
+      { $gt: { linestime: startTime} },
+      { $lt: { linestime: endTime} },
+      { $sort: { linestime: 1 } }
+    ])
+
+    const { keyArray , valueArray } = transforExcel(devices)
+    var conf = {}
+    conf.stylesXmlFile = 'styles.xml'
+    conf.name = 'mysheet'
+    conf.cols = keyArray
+    conf.rows = valueArray
+
+    const time = new Date()
+    ctx.set('Content-Type', 'application/vnd.openxmlformats');
+    ctx.attachment(`${time}.xlsx`)
+
+    const result = new Buffer(nodeExcel.execute(conf),'binary'); 
+
+    ctx.body = result
+  }
+
   static async uploadImgWithDevice(ctx) {
     const upload = await busboys (ctx)
     if(upload.fieldname !== 'device')
@@ -475,9 +518,19 @@ class Admin {
     ctx.body = { code: 201, message: '更新成功', data: result }
   }
 
+  //parts
   static async getParts(ctx) {
     const docs = await Part.find({})
     ctx.body = { code: 200, message: 'ok', data: docs }
+  }
+
+  static async setPartRemark(ctx) {
+    const { deviceCode, deviceName, remark } = ctx.request.body
+    const { partId } = ctx.query
+
+    const result = await Part.findByIdAndUpdate({ _id: partId }, { deviceCode, deviceName, remark }, { new: true} )
+    ctx.body = { code: 201, message: '修改成功', data: result }
+
   }
 
 

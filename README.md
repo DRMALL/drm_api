@@ -61,6 +61,7 @@ app = https://api.wardenger.me/app
   * [处理工单](#处理工单)
   * [创建设备](#创建设备)
   * [获取设备](#获取设备)
+  * [导出文件](#导出文件)
   * [获取单个设备](#获取单个设备)
   * [更新单个设备](#更新单个设备)
   * [更新设备所在地](#更新设备所在地)
@@ -458,6 +459,11 @@ POST https://api.wardenger.me/admin/devices/uploadimg?token=${token}
 GET https://api.wardenger.me/admin/devices?type=name&token=${token}
 ```
 
+### 导出文件
+```
+GET https://api.wardenger.me/admin/devices/excel?startTime=${startTime}&endTime=${endTime}&token=${token}
+```
+
 ### 获取单个设备
 ```
 GET https://api.wardenger.me/admin/devices/deviceId?token=${token}
@@ -520,6 +526,20 @@ POST https://api.wardenger.me/admin/auth/change?authId=${authId}&token=${token}
 ### 获取配件
 ```
 GET https://api.wardenger.me/admin/parts?token=${token}
+```
+
+### 更新配件备注
+
+```
+POST https://api.wardenger.me/admin/parts/remark?partId=${partId}&token=${token}
+```
+
+```
+{
+  deviceCode: '',
+  deviceName: '',
+  remark: ''
+}
 ```
 
 

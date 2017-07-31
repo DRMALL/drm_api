@@ -11,29 +11,48 @@ import { cert } from '../config'
 import { busboys } from '../utils/upload'
 import { hash } from '../utils/util'
 import bcrypt from 'bcrypt'
+import transforExcel from '../utils/transforExcel'
+import nodeExcel  from 'excel-export'
 
 
 
 class App {
 
   static async Index (ctx) {
-    // const fileName = new Date().toLocaleString()
 
-
-    // ctx.set('Content-Type', 'application/vnd.openxmlformats');
-    // ctx.attachment("Report2.xlsx")
-    // const result = new Buffer(nodeExcel,'binary');  
-    // ctx.body = result
-    // const devices = await Device.aggregate([{
-    //   { $unwind: '$images'},
-    //   { $group: { _id: ""}}
-    // }])
     const devices = await Device.aggregate([
-      { $unwind: "$timelines"},
-      { $group : { _id : "$timelines.type" , numbers : { $push : { cc: '$cc', pressure: '$pressure'} } } },
-      { $sort: { number: 1 } }
+      { $unwind: "$timelines" },
+      { $project: { 
+        "linestime" : "$timelines.time",
+        "linestype" : "$timelines.type",
+        "linesdes" : "$timelines.description",
+        "name" : 1,
+        "number": 1,
+        "_id" : 0,
+        "address": "$address",
+        "cc": "$cc",
+        "pressure": "$pressure",
+        "combustible": "$combustible",
+       }
+     },
+      { $sort: { linestime: 1 } }
     ])
-    ctx.body = { data: devices }
+
+    const { keyArray , valueArray } = transforExcel(devices)
+    var conf = {}
+    conf.stylesXmlFile = 'styles.xml'
+    conf.name = 'mysheet'
+    conf.cols = keyArray
+    conf.rows = valueArray
+
+    const time = new Date()
+    ctx.set('Content-Type', 'application/vnd.openxmlformats');
+    ctx.attachment(`${time}.xlsx`)
+
+    const result = new Buffer(nodeExcel.execute(conf),'binary'); 
+
+    ctx.body = result
+
   }
 
   //登录
