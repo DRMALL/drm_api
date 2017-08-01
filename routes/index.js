@@ -123,7 +123,11 @@ router.post('/app/devices/one/remark', App.updateDeviceRemark)
 router.post('/app/devices/one/timelines', App.addDeviceTimeline)
 router.post('/app/devices/one/images', App.addDeviceImages)
 
-
+//notices
+router.get('/app/notices', App.getNotices)
+router.get('/app/notices/one', App.getOneNotice)
+router.post('/app/notices/all/read', App.setAllRead)
+router.post('/app/notices/one/read', App.setOneRead)
 
 module.exports = router
 

@@ -30,6 +30,10 @@ app = https://api.wardenger.me/app
   * [更新备注](#更新备注)
   * [增加时间线](#增加时间线)
   * [增加设备图片](#增加设备图片)
+  * [获取通知](#获取通知)
+  * [获取单个通知](#获取单个通知)
+  * [设置所有已读](#设置所有已读)
+  * [设置单个已读](#设置单个已读)
 
 
 
@@ -217,6 +221,30 @@ POST https://api.wardenger.me/app/devices/one/images?deviceId=${deviceId}&token=
 }
 ```
 
+### 获取通知
+```
+GET https://api.wardenger.me/app/notices?&token=${token} 
+```
+
+### 获取单个通知
+```
+GET https://api.wardenger.me/app/notices/one?id=${id}&token=${token} 
+```
+
+### 设置所有已读
+```
+POST https://api.wardenger.me/app/notices/all/read?&token=${token} 
+```
+
+### 设置单个已读
+```
+POST https://api.wardenger.me/app/notices/one/read?token=${token}  
+```
+```
+{
+  id: ''
+}
+```
 
 
 # admin

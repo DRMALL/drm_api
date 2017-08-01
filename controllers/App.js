@@ -6,6 +6,7 @@ import Order from '../model/Order'
 import Hot from '../model/Hot'
 import Device from '../model/Device'
 import Auth from '../model/Auth'
+import Notice from '../model/Notice'
 import jwt from 'jsonwebtoken'
 import { cert } from '../config'
 import { busboys } from '../utils/upload'
@@ -292,6 +293,35 @@ class App {
                                  { new: true }
                                 )
     ctx.body = { code: 201, message: 'ok', data: result }
+  }
+
+  static async getNotices(ctx) {
+    const docs = await Notice.find({})
+    ctx.body = { code: 200, message: 'ok', data: docs }
+  }
+
+  static async getOneNotice(ctx) {
+    const { id } = ctx.query
+    const doc = await Notice.findById({ _id: id })
+    ctx.body = { code: 200, message: 'ok', data: doc }
+  }
+
+  static async setAllRead(ctx) {
+    try {
+      const docs = await Notice.updateMany({}, { readed: true })
+      ctx.body = { code: 201, message: 'ok', data: docs }
+    } catch(e) {
+      console.log('notice: setAllread error:', e)
+    }
+  }
+
+  static async setOneRead(ctx) {
+    const { id } = ctx.request.body
+    try {
+      const docs = await Notice.update({_id: id}, { readed: true })
+    } catch(e) {
+      console.log('notice: setOneRead error:', e)
+    }
   }
 
 }
