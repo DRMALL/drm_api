@@ -256,7 +256,7 @@ class App {
     const { userId } = ctx.request.decoded
     const { deviceId, start, end } = ctx.query
 
-    const mathArr = await Auth.find( { $and: [
+    const matchArr = await Auth.find( { $and: [
                             { user: userId },
                             { device: deviceId }
                           ] })
