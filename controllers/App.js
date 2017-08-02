@@ -108,22 +108,27 @@ class App {
   static async UpdateUserPassword(ctx) {
     const { password, newPass, confirmPass } = ctx.request.body
 
+    if(!password || !newPass || !confirmPass)
+      return ctx.body = { code: 400, message: '缺少必要的参数 password, newPass, confirmPass', data: ''}
 
 
     if(newPass !== confirmPass)
       return ctx.body = { code: 403, message: '两次新密码不相同,不允许修改', data: '' }
 
     const { id } = ctx.request.decoded
-    const userinfo = User.findById({ _id: id })
+    const userinfo = await User.findById({ _id: id })
+    
     const isValid = await bcrypt.compare(password, userinfo.password)
     if(!isValid)
       return ctx.body = { code: 410, message: '密码不正确，不允许修改', data: '' }
 
     const encryptPass = await hash(newPass)
-    const result = User.findOneAndUpdate({ _id: id }, { password: encryptPass}, { new: true }) 
+
+    const result = await User.findOneAndUpdate({ _id: id }, { password: encryptPass }, { new: true }) 
     if(!result)
-      return ctx.body = { code: 500, message: '操作数据时出错', data: e }
-    ctx.body = { code: 201, message: '修改成功', data: '' }
+      ctx.body = { code: 500, message: '修改出错', data: '' }
+    result.password = undefined
+    ctx.body = { code: 201, message: '修改成功', data: result }
   }
 
   //获取所有信息
