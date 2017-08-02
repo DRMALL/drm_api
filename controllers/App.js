@@ -272,12 +272,12 @@ class App {
     if(!canView)
       return ctx.body = { code: 503, message: 'you has no authority to watch this device', data: ''}
 
-
+    var doc;
     if(start && end) {
-      let doc = await Device.find({_id: deviceId }).where('timelines.time').gte(start).lte(end)
+      doc = await Device.find({_id: deviceId }).where('timelines.time').gte(start).lte(end)
     }
     else 
-      let doc = await Device.find({_id: deviceId })
+      doc = await Device.find({_id: deviceId })
     ctx.body = { code: 200, message: 'ok', data: doc }
   }
 
