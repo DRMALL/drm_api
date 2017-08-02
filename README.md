@@ -149,6 +149,11 @@ GET https://api.wardenger.me/app/bugs?token=${token}
 GET https://api.wardenger.me/app/bugs/one?id=${id}&token=${token}  
 ```
 
+### 获取故障种类
+```
+GET https://api.wardenger.me/app/bugs/cate?token=${token}  
+```
+
 ### 获取热门搜索词
 ```
 GET https://api.wardenger.me/app/bugs/hots?token=${token}  
@@ -545,7 +550,7 @@ POST https://api.wardenger.me/admin/auth/change?authId=${authId}&token=${token}
 
 ### 删除权限
 ```
-
+POST https://api.wardenger.me/admin/auth/del?authId=${authId}&token=${token}
 ```
 
 ```

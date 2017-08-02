@@ -2,12 +2,19 @@
 import mongoose from 'mongoose'
 const Schema = mongoose.Schema
  
-
-
 const bugSchema = new Schema({
-  title: { type: String, required: true },
-  category: { type: Schema.Types.ObjectId, ref: 'Category' },
-  content: { type: String, required: true }
+  title: { 
+    type: String,
+    required: true
+  },
+  category: { 
+    type: Schema.Types.ObjectId,
+    ref: 'Category'
+  },
+  content: {
+    type: String,
+    required: true
+  }
 }, { timestamps: true })
 
 bugSchema.statics.searchByContent = function(search) {
@@ -19,13 +26,6 @@ bugSchema.statics.searchByContent = function(search) {
         })
   })
 }
-
-bugSchema.post('find', function (doc, next) {
-    // console.log('post-find-this:', this)
-    // console.log('post-find-doc', doc);
-    next();
-});
-
 
 export default mongoose.model('Bug', bugSchema)
 

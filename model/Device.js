@@ -18,7 +18,9 @@ const deviceSchema = Schema({
     text: String
   }],
   timelines: [{
-    
+    line_type: String,
+    line_des: String,
+    line_time: Date
   }],
   incharges: [],
   remark: String,

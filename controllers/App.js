@@ -192,6 +192,13 @@ class App {
     }
   }
 
+
+  static async getBugsCate(ctx) {
+    const result = await Category.find({}).sort('-sortIndex').exec()
+    ctx.body = { code: 200, message: 'ok', data: result }
+  }
+
+
   static async getHots(ctx) {
     const hots = await Hot.find({}).sort('-weights').limit(10)
     ctx.body = { code: 200, message: 'ok', data: hots }

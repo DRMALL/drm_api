@@ -87,6 +87,7 @@ router.post('/admin/auths/new', Admin.addAuth)
 router.get('/admin/auths', Admin.getAuths)
 router.get('/admin/auths/one', Admin.getAuth)
 router.post('/admin/auth/change', Admin.updateAuth)
+router.post('/admin/auth/del', Admin.deleteAuth)
 
 //part
 router.get('/admin/parts', Admin.getParts)
@@ -105,6 +106,7 @@ router.get('/app/news/one', App.getNewsById)
 router.get('/app/bugs', App.getBugs)
 router.get('/app/bugs/one', App.getBug)
 router.get('/app/bugs/hots', App.getHots)
+router.get('/app/bugs/cate', App.getBugsCate)
 
 
 //orders

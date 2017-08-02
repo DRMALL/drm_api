@@ -291,7 +291,9 @@ class Admin {
   static async getBugs(ctx) {
     try {
       const result = await Bug.find({}, '-isSolved')
+                              .sort('-updatedAt')
                               .populate('category', 'text sortIndex')
+
       ctx.body = { code: 200, message: '获取成功', data: result }
     }
     catch(e) {
@@ -495,8 +497,6 @@ class Admin {
       canMonitor: canMonitor
     })
     ctx.body = { code: 201, message: '创建成功', data: result }
-
-    // Device.update({ _id: deviceId }, { $push: { canViews: userId } })
   }
 
   static async getAuths(ctx) {
@@ -512,6 +512,17 @@ class Admin {
                 .populate('user', 'name')
                 .populate('device', 'name number')
     ctx.body = { code: 200, message: '获取成功', data: result }
+  }
+
+  static async deleteAuth(ctx) {
+    const { authId } = ctx.query
+    try {
+      const result = await Auth.remove({ _id: authId })
+      ctx.body = { code: 201, message: '删除成功', data: {} }
+    }
+    catch(e) {
+      console.error('删除权限时出错', new Date())
+    }
   }
 
 
