@@ -3,7 +3,9 @@ var { host } = require('../config')
 
 var home = (ctx) => {
   ctx.body = {
-    host: host
+    host: host,
+    admin: `${host}admin`,
+    app: `${host}app`
   }
 }
 

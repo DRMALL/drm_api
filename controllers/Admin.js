@@ -17,8 +17,6 @@ import transforExcel from '../utils/transforExcel'
 import nodeExcel  from 'excel-export'
 import Validate from '../utils/Validate'
 
-
-
 class Admin {
 
   //管理员登录
@@ -469,6 +467,34 @@ class Admin {
     }, 
     { new: true , upsert: false })
     ctx.body = { code: 201, message: '更新成功', data: result }
+  }
+
+  static async deleteTimeLine(ctx) {
+    const deviceId = ctx.deviceId
+    const { lineId } = ctx.query
+    if(!lineId)
+      return ctx.body = { code: 400, message: '缺少必要的参数 lineId', data: '' }
+    try {
+      const result = await Device.update({ _id: deviceId}, { $pull : { 'timelines._id' : lineId } })
+      ctx.body = { code: 201, message: '删除成功', data: result }
+    } catch(e) {
+      console.error('删除时间线时发生错误', new Date())
+    }
+  }
+
+  static async updateTimeLine(ctx) {
+    const deviceId = ctx.deviceId
+    const { lineId, line_type, line_des, line_time } = ctx.request.body
+    try {
+      const result = await Device.findOneAndUpdate(
+        { _id: deviceId },
+        { line_type, line_des, line_time },
+        { new : true, upsert: false }
+      )
+    } catch(e) {
+      console.error('更新时间线失败', e, new Date())
+    }
+
   }
 
   static async addAuth(ctx) {

@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 const userSchema = new Schema({
   name: {
     type: String,
-    required: [true, 'why no names?']
+    required: true
   },
   password: {
     type: String,

@@ -6,6 +6,7 @@ import verifyToken from '../utils/verifyToken'
 
 const router = new Router()
 
+router.get('/', home)
 router.post('/admin/session', Admin.session)
 router.post('/app/session', App.session)
 
@@ -71,7 +72,6 @@ router.post('/admin/devices/uploadimg', Admin.uploadImgWithDevice)
 router.post('/admin/devices/new', Admin.createDevice)
 router.get('/admin/devices/excel', Admin.getExcel)
 router.get('/admin/devices', Admin.getDevices)
-// router.get('/admin/devices/change/timelines', )
 router.param('deviceId', function(id, ctx, next) {
   ctx.deviceId = id
   if(!ctx.deviceId) return ctx.status = 404
@@ -80,6 +80,8 @@ router.param('deviceId', function(id, ctx, next) {
 .get('/admin/devices/:deviceId', Admin.getDevice)
 .put('/admin/devices/:deviceId', Admin.updateDevice)
 .put('/admin/devices/:deviceId/location', Admin.updateDeviceLoaction)
+.post('/admin/devices/:deviceId/timeline/del', Admin.deleteTimeLine)
+.put('/admin/devices/:deviceId/timeline/update', Admin.updateTimeLine)
 
 
 //auth
