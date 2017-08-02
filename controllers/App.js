@@ -260,6 +260,7 @@ class App {
                             { user: userId },
                             { device: deviceId }
                           ] })
+
     const canView = matchArr.some((item, index) => {
       return item.canView === true
     })
@@ -271,7 +272,12 @@ class App {
     if(!canView)
       return ctx.body = { code: 503, message: 'you has no authority to watch this device', data: ''}
 
-    const doc = await Device.find({_id: deviceId }).where('timelines.time').gte(start).lte(end)
+
+    if(start && end) {
+      let doc = await Device.find({_id: deviceId }).where('timelines.time').gte(start).lte(end)
+    }
+    else 
+      let doc = await Device.find({_id: deviceId })
     ctx.body = { code: 200, message: 'ok', data: doc }
   }
 
