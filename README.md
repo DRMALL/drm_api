@@ -543,6 +543,11 @@ GET https://api.wardenger.me/admin/auths/one?authId=${authId}token=${token}
 POST https://api.wardenger.me/admin/auth/change?authId=${authId}&token=${token}
 ```
 
+### 删除权限
+```
+
+```
+
 ```
 {
   user: '',

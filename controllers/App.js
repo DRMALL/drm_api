@@ -225,18 +225,21 @@ class App {
   }
 
   static async getDevices(ctx) {
+    
     const { createTime, type, value, filter, cc, pressure, combustible } = ctx.request.query
+    
     if(createTime === 'asc' || createTime === 'desc') {
       const devices = await Device.find().sort({ createTime: createTime })
       return ctx.body = { code: 200, message: 'ok', data: devices }
     }
+
     else if(type && value) {
       const find = {}
       find[type] = value
-      // console.log(find)
       const devices = await Device.find( find )
       return ctx.body = { code: 200, message: 'ok', data: devices }
     }
+
     else if(cc || pressure || combustible) {
       const devices = await Device.find({$and: [
                           {'cc': cc },
@@ -246,6 +249,7 @@ class App {
                   })
       return ctx.body = { code: 200, message: 'ok', data: devices }
     }
+
     else {
       const devices = await Device.find({})
       ctx.body = { code: 200, message: 'ok', data: devices }

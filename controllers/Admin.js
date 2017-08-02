@@ -430,7 +430,7 @@ class Admin {
           var incharges = await Auth.find({ device: item._id }).populate('user', 'name')
           var user = []
           incharges.map((auth, i) => {
-            user.push(auth.user.name)
+            if(auth.user && auth.user.name) user.push(auth.user.name)
           })
           return Object.assign({}, item._doc, { incharges: user })
       })
