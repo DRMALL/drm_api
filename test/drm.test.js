@@ -10,7 +10,7 @@ const appToken = require('../config').appToken
 const request = supertest( app.listen() )
 
 
-describe('drm no token test', () => {
+describe('DRM without token test', () => {
 
   it ('首页正常返回', (done) => {
     request.get('/')
@@ -47,7 +47,8 @@ describe('drm no token test', () => {
 
 })
 
-describe('drm admin test', () => {
+describe('drm admin user test', () => {
+
   it('新增用户', (done) => {
     request.post('/admin/users/new')
     .query({
@@ -77,12 +78,7 @@ describe('drm admin test', () => {
       done()
     })
   })
-
-  // it('获取单个用户', (done) => {
-  //   request.get('/admin/users')
-  // })
-
+  
 })
-
 
 

@@ -1,6 +1,4 @@
 
-
-
 import jwt from 'jsonwebtoken'
 import { cert } from '../config'
 

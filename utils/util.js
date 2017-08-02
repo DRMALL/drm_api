@@ -11,10 +11,9 @@ function hash(password) {
           reject(err)
         else
           resolve(hash)
-      })   
+      })
   })
 }
-
 
 export {
   hash,

@@ -6,9 +6,9 @@ import verifyToken from '../utils/verifyToken'
 
 const router = new Router()
 
-router.get('/', home)
 router.post('/admin/session', Admin.session)
 router.post('/app/session', App.session)
+
 router.use('*', verifyToken)
 
 //users
@@ -23,7 +23,6 @@ router.param('userId', function (id, ctx, next) {
 .put('/admin/users/:userId', Admin.UpdateUser)
 .delete('/admin/users/:userId', Admin.DeleteUser)
 
-
 //news
 router.post('/admin/news/uploadimg', Admin.uploadImgWithNews)
 router.post('/admin/news/new', Admin.createNew)
@@ -31,7 +30,6 @@ router.get('/admin/news/all', Admin.getNews)
 router.get('/admin/news/one', Admin.getNewsById)
 router.post('/admin/news/delete', Admin.deleteNew)
 router.post('/admin/news/update', Admin.updateNew)
-
 
 //bugs-category
 router.post('/admin/bugs/categorys/new', Admin.createBugCate)
@@ -44,8 +42,6 @@ router.param('categoryId', function(id, ctx, next) {
 })
 .delete('/admin/bugs/categorys/:categoryId', Admin.deleteBugCate)
 
-
-
 //bugs
 router.get('/admin/bugs', Admin.getBugs)
 router.post('/admin/bugs', Admin.createBug)
@@ -57,6 +53,7 @@ router.param('bugId', function(id, ctx, next) {
 .get('/admin/bugs/:bugId', Admin.getBug)
 .put('/admin/bugs/:bugId', Admin.updateBug)
 .delete('/admin/bugs/:bugId', Admin.deleteBug)
+
 
 //orders
 router.get('/admin/orders', Admin.getOrders)

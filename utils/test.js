@@ -36,5 +36,4 @@ class NodeExcel {
       this.array.push(inArr)
     })
   }
-
 }

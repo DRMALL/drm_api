@@ -15,6 +15,7 @@ import { hash } from '../utils/util'
 import { cert, initAdmins } from '../config'
 import transforExcel from '../utils/transforExcel'
 import nodeExcel  from 'excel-export'
+import Validate from '../utils/Validate'
 
 
 
@@ -22,12 +23,15 @@ class Admin {
 
   //管理员登录
   static async session(ctx) {
+
     const { admin, password } = ctx.request.body
     if(!admin || !password)
       return ctx.body = { code: 400, message: '缺少必要的参数 admin, password', data: '' }
+    
     const valid = initAdmins.some((item, index) => {
       return item.admin === admin && item.password === password
     })
+
     if(!valid)
       return ctx.body = { code: 403, message: '用户名或密码错误', data: '' }
 
@@ -37,18 +41,20 @@ class Admin {
 
   //新增用户
   static async newUser(ctx) {
+
     const { name, password, email, phone, company_name, address } = ctx.request.body
 
-    if(!name || !password || !email || !phone || !company_name || !address) {
+    const val = Validate.ifLackPara({ name, password, email, phone, company_name, address })
+
+    if(!val.result) {
       return ctx.body = {
         code: 400,
-        message: '缺少必要的参数 name, password, email, phone, company_name, address',
+        message: val.message,
         data: ''
       }
     }
 
-    const emailPat = /^([\w-_]+(?:\.[\w-_]+)*)@((?:[a-z0-9]+(?:-[a-zA-Z0-9]+)*)+\.[a-z]{2,6})$/i
-    if(!emailPat.test(email)) {
+    if(!Validate.isEmail(email)) {
       return ctx.body = {
         code: 402,
         message: '请输入正确的邮箱地址',
@@ -56,8 +62,7 @@ class Admin {
       }
     }
 
-    const phonePat = /^1[3|4|5|7|8][0-9]{9}$/
-    if(!phonePat.test(phone)) {
+    if(!Validate.isPhone(phone)) {
       return ctx.body = {
         code: 402,
         message: '请输入正确的手机号码',

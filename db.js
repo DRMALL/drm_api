@@ -10,6 +10,3 @@ db.on('error', console.error.bind(console, 'connect error:'))
 db.once('open', ()=> {
   console.log('mongoose opened!')
 })
-
-
-//mongo ip:port/test -u test -p test

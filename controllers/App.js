@@ -63,16 +63,17 @@ class App {
       return ctx.body = { code: 400, message: '缺少必要的参数 email, password', data: '' }
 
     const result = await User.findOne({ email })
+
     if(!result)
-      return ctx.body = { code: 401, message: '用户名或密码错误', data: '' }
+      return ctx.body = { code: 403, message: '用户名或密码错误', data: '' }
 
     const isvalid = await bcrypt.compare(password, result.password)
+
     if(!isvalid)
-      return ctx.body = { code: 401, message: '用户名或密码错误', data: '' }
+      return ctx.body = { code: 403, message: '用户名或密码错误', data: '' }
 
-    const token = jwt.sign({ id: result._id }, cert)
+    const token = jwt.sign({ id: result._id }, cert )
     ctx.body = { code: 201, message: 'ok', data: token }
-
   }
 
   //获取用户信息
@@ -105,7 +106,9 @@ class App {
 
   //更改用户密码
   static async UpdateUserPassword(ctx) {
-    const { password, newPass, confirmPass } = ctx.query
+    const { password, newPass, confirmPass } = ctx.request.body
+
+
 
     if(newPass !== confirmPass)
       return ctx.body = { code: 403, message: '两次新密码不相同,不允许修改', data: '' }

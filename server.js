@@ -36,6 +36,3 @@ module.exports = app
 server.listen(3000)
 console.log('[drm] start-quick is starting at port 3000')
 
-
-
-
