@@ -264,11 +264,11 @@ class App {
   }
 
   static async getDevice(ctx) {
-    const { userId } = ctx.request.decoded
+    const { id } = ctx.request.decoded
     const { deviceId, start, end } = ctx.query
-    console.log(deviceId, start, end)
-    
-    const matchArr = await Auth.find( { user: userId, device: deviceId } )
+    console.log(userId, deviceId, start, end)
+
+    const matchArr = await Auth.find( { user: id, device: deviceId } )
 
     console.log(matchArr)
 
