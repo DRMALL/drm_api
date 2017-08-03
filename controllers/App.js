@@ -262,11 +262,11 @@ class App {
       ctx.body = { code: 200, message: 'ok', data: devices }
     }
   }
-
+  
   static async getDevice(ctx) {
     const { id } = ctx.request.decoded
     const { deviceId, start, end } = ctx.query
-    console.log(userId, deviceId, start, end)
+    console.log(id, deviceId, start, end)
 
     const matchArr = await Auth.find( { user: id, device: deviceId } )
 
