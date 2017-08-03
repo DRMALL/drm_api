@@ -266,14 +266,16 @@ class App {
   static async getDevice(ctx) {
     const { userId } = ctx.request.decoded
     const { deviceId, start, end } = ctx.query
-
+    console.log(deviceId, start, end)
+    
     const matchArr = await Auth.find( { user: userId, device: deviceId } )
+
+    console.log(matchArr)
 
     if(!matchArr.length) {
       return ctx.body = { code: 503, message: 'you has no authority to watch this device', data: ''}      
     }
-    console.log(matchArr)
-    
+
     const canView = matchArr.some((item, index) => {
       return Boolean(item.canView) == true
     })
