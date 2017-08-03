@@ -262,7 +262,7 @@ class App {
       ctx.body = { code: 200, message: 'ok', data: devices }
     }
   }
-  
+
   static async getDevice(ctx) {
     const { id } = ctx.request.decoded
     const { deviceId, start, end } = ctx.query
@@ -303,9 +303,9 @@ class App {
   }
 
   static async addDeviceTimeline(ctx) {
-    const { deviceId, type, time, description } = ctx.request.body
+    const { deviceId, line_type, line_time, line_des } = ctx.request.body
     const result = await Device.findByIdAndUpdate({ _id : deviceId },
-                                  { $push : { timelines: { type, time, description }}},
+                                  { $push : { timelines: { line_type, line_time, line_des }}},
                                   { new: true }
                                 )
     ctx.body = { code: 201, message: 'ok', data: result }

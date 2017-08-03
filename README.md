@@ -221,9 +221,9 @@ POST https://api.wardenger.me/app/devices/one/timelines?token=${token}
 ```
 {
   deviceId: '',
-  type: '',
-  time: '',
-  description: ''
+  line_type: '',
+  line_time: '',
+  line_des: ''
 }
 ```
 
