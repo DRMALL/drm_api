@@ -267,17 +267,19 @@ class App {
     const { userId } = ctx.request.decoded
     const { deviceId, start, end } = ctx.query
 
-    const matchArr = await Auth.find( { $and: [
-                            { user: userId },
-                            { device: deviceId }
-                          ] })
+    const matchArr = await Auth.find( { user: userId, device: deviceId } )
 
+    if(!matchArr.length) {
+      return ctx.body = { code: 503, message: 'you has no authority to watch this device', data: ''}      
+    }
+    console.log(matchArr)
+    
     const canView = matchArr.some((item, index) => {
-      return item.canView === true
+      return Boolean(item.canView) == true
     })
 
     const canMonitor = matchArr.some((item, index) => {
-      return item.canMonitor === true
+      return Boolean(item.canMonitor) == true
     })
 
     if(!canView)
