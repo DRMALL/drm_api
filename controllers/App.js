@@ -243,8 +243,8 @@ class App {
     // var devices;
 
     //按时间排序
-    if(createTime === 'asc' || createTime === 'desc') {
-      const devices = await Device.find().sort({ createTime: createTime })
+    if(createTime == "desc" || createTime == "asc") {
+      const devices = await Device.find().sort({ createdAt: createTime })
       return ctx.body = { code: 200, message: 'ok', data: devices }
     }
 

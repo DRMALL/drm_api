@@ -11,13 +11,13 @@ const Koa = require('koa')
     , static = require('koa-static')
     , WebSocket = require('./websocket')
     , staticPath = './static'
-//     , log4js = require('koa-log4')
+    , log4js = require('koa-log4')
 
-// require('./log')
-// const logger = log4js.getLogger('app')
+require('./log')
+const logger = log4js.getLogger('app')
 
 
-// app.use(log4js.koaLogger(log4js.getLogger('http'), { level: 'auto'}))
+app.use(log4js.koaLogger(log4js.getLogger('http'), { level: 'auto'}))
 
 app.use(static(path.join( __dirname, staticPath)))
 app.use(cors())
