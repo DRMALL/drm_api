@@ -570,10 +570,13 @@ class Admin {
   }
 
   static async setPartRemark(ctx) {
-    const { deviceCode, deviceName, remark } = ctx.request.body
+    const { deviceId, remark } = ctx.request.body
     const { partId } = ctx.query
 
-    const result = await Part.findByIdAndUpdate({ _id: partId }, { deviceCode, deviceName, remark }, { new: true} )
+    const device = await Device.findOne({ _id: deviceId }, { name, number })
+    const update = Object.assign({}, device, { remark })
+
+    const result = await Part.findByIdAndUpdate({ _id: partId }, update, { new: true} )
     ctx.body = { code: 201, message: '修改成功', data: result }
   }
 

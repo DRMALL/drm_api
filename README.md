@@ -603,8 +603,7 @@ POST https://api.wardenger.me/admin/parts/remark?partId=${partId}&token=${token}
 
 ```
 {
-  deviceCode: '',
-  deviceName: '',
+  deviceId:'',
   remark: ''
 }
 ```
