@@ -475,7 +475,10 @@ class Admin {
     if(!lineId)
       return ctx.body = { code: 400, message: '缺少必要的参数 lineId', data: '' }
     try {
-      const result = await Device.update({ _id: deviceId}, { $pull : { 'timelines._id' : lineId } })
+      const result = await Device.updateOne(
+          { _id: deviceId },
+          { $pull : { timelines: { _id : lineId } } }
+        )
       ctx.body = { code: 201, message: '删除成功', data: result }
     } catch(e) {
       console.error('删除时间线时发生错误', new Date())
@@ -572,7 +575,6 @@ class Admin {
 
     const result = await Part.findByIdAndUpdate({ _id: partId }, { deviceCode, deviceName, remark }, { new: true} )
     ctx.body = { code: 201, message: '修改成功', data: result }
-
   }
 
 
