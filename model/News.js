@@ -15,7 +15,9 @@ const newsSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  images: [],
+  images: [{
+    url: String,
+  }],
   author: String,
   publish_time: {
     type: Date, default: null

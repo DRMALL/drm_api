@@ -198,10 +198,12 @@ GET https://api.wardenger.me/app/devices?token=${token}
   type: enum: ['cc', 'pressure', 'combustible']
   value: ''
   示例: type=pressure&value=25Mpa
+
 1. 排序:
   createTime: ['asc', 'desc'] //升序，降序
+  
 2. 筛选:
-  cc=''&pressure=''&combustible=''
+  cc=''&pressure=''&combustible=''&address=''
 ```
 
 ### 获取device

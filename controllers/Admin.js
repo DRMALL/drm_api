@@ -491,12 +491,20 @@ class Admin {
   static async updateTimeLine(ctx) {
     const deviceId = ctx.deviceId
     const { lineId, line_type, line_des, line_time } = ctx.request.body
+    if( !lineId || !line_type || !line_des || !line_time) {
+      return ctx.body = { code: 200, message: '缺少必要的参数 lineId, lien_type, lien_des, line_time', data: '' }
+    }
     try {
-      const result = await Device.findOneAndUpdate(
-        { _id: deviceId },
-        { line_type, line_des, line_time },
-        { new : true, upsert: false }
-      )
+      const result = await Device.update(
+          { _id: deviceId, "timelines._id" : lineId },
+          { $set: { 
+              "timelines.$.line_type" : line_type,
+              "timelines.$.line_des"  : line_des,
+              "timelines.$.line_time" : line_time 
+            }
+          }
+        )
+      ctx.body = { code: 201, message: '更新成功', data: result }
     } catch(e) {
       console.error('更新时间线失败', e, new Date())
     }

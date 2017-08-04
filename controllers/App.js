@@ -21,38 +21,40 @@ class App {
 
   static async Index (ctx) {
 
-    const devices = await Device.aggregate([
-      { $unwind: "$timelines" },
-      { $project: { 
-        "linestime" : "$timelines.time",
-        "linestype" : "$timelines.type",
-        "linesdes" : "$timelines.description",
-        "name" : 1,
-        "number": 1,
-        "_id" : 0,
-        "address": "$address",
-        "cc": "$cc",
-        "pressure": "$pressure",
-        "combustible": "$combustible",
-       }
-     },
-      { $sort: { linestime: 1 } }
-    ])
+    // const devices = await Device.aggregate([
+    //   { $unwind: "$timelines" },
+    //   { $project: { 
+    //     "linestime" : "$timelines.linetime",
+    //     "linestype" : "$timelines.type",
+    //     "linesdes" : "$timelines.description",
+    //     "name" : 1,
+    //     "number": 1,
+    //     "_id" : 0,
+    //     "address": "$address",
+    //     "cc": "$cc",
+    //     "pressure": "$pressure",
+    //     "combustible": "$combustible",
+    //    }
+    //  },
+    //   { $sort: { linestime: 1 } }
+    // ])
 
-    const { keyArray , valueArray } = transforExcel(devices)
-    var conf = {}
-    conf.stylesXmlFile = 'styles.xml'
-    conf.name = 'mysheet'
-    conf.cols = keyArray
-    conf.rows = valueArray
+    // const { keyArray , valueArray } = transforExcel(devices)
+    // var conf = {}
+    // conf.stylesXmlFile = 'styles.xml'
+    // conf.name = 'mysheet'
+    // conf.cols = keyArray
+    // conf.rows = valueArray
 
-    const time = new Date()
-    ctx.set('Content-Type', 'application/vnd.openxmlformats');
-    ctx.attachment(`${time}.xlsx`)
+    // const time = new Date()
+    // ctx.set('Content-Type', 'application/vnd.openxmlformats');
+    // ctx.attachment(`${time}.xlsx`)
 
-    const result = new Buffer(nodeExcel.execute(conf),'binary'); 
+    // const result = new Buffer(nodeExcel.execute(conf),'binary'); 
 
-    ctx.body = result
+    // ctx.body = result
+
+    ctx.body = 'this is api of drm app'
 
   }
 
@@ -237,7 +239,7 @@ class App {
 
   static async getDevices(ctx) {
     
-    const { createTime, type, value, filter, cc, pressure, combustible } = ctx.request.query
+    const { createTime, type, value, cc, pressure, combustible, address } = ctx.request.query
     // var devices;
 
     //按时间排序
@@ -255,13 +257,16 @@ class App {
     }
 
     //
-    else if(cc || pressure || combustible) {
-      const devices = await Device.find({$and: [
-                          {'cc': cc },
-                          {'pressure': pressure},
-                          {'combustible': combustible}
-                         ]
-                  })
+    else if(cc || pressure || combustible || address) {
+
+      const obj = { cc, pressure, combustible, address }
+
+      for ( var key in obj) {
+        if (obj[key] == undefined)
+          delete obj[key]
+      }
+
+      const devices = await Device.find(obj)
       return ctx.body = { code: 200, message: 'ok', data: devices }
     }
 
