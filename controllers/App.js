@@ -226,9 +226,13 @@ class App {
   }
 
   static async getLastLocation(ctx) {
-    //how to do it ? hello ?
-    // const locations = await Device.find({}).select('loctime address').sort('-loctime').limit(5)
-    ctx.body = { code: 200, message: 'ok', data: 'to be continue' }
+    const locations = await Device.aggregate([
+      { $unwind: "$location"},
+      { $project: { text: '$location.text', time: '$location.time'},  },
+      { $limit: 5 },
+      { $sort: { time: -1 } }
+    ])
+    ctx.body = { code: 200, message: 'ok', data: locations }
   }
 
   static async getDevices(ctx) {

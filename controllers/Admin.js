@@ -456,11 +456,14 @@ class Admin {
   }
 
   static async updateDeviceLoaction(ctx) {
+
     const deviceId = ctx.deviceId
     const { address } = ctx.request.body
+    
     const obj = {}
     obj.text = address
     obj.time = new Date()
+
     const result = await Device.findByIdAndUpdate({ _id: deviceId }, { 
       $push : { 'location' : obj },
       $set : { 'address' : address }

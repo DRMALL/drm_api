@@ -25,6 +25,7 @@ app = https://api.wardenger.me/app
   * [获取bug](#获取bug)
   * [获取热门搜索词](#获取热门搜索词)
   * [创建工单](#创建工单)
+  * [获取最新所在地](#获取最新所在地)
   * [获取devices](#获取devices)
   * [获取device](#获取device)
   * [更新备注](#更新备注)
@@ -180,6 +181,11 @@ POST https://api.wardenger.me/app/order/new?token=${token}
   category: '',
   content: ''
 }
+```
+
+### 获取最新所在地
+```
+GET https://api.wardenger.me/app/devices/address?token=${token}
 ```
 
 ### 获取devices
