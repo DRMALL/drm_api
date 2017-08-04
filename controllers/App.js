@@ -238,12 +238,15 @@ class App {
   static async getDevices(ctx) {
     
     const { createTime, type, value, filter, cc, pressure, combustible } = ctx.request.query
-    
+    // var devices;
+
+    //按时间排序
     if(createTime === 'asc' || createTime === 'desc') {
       const devices = await Device.find().sort({ createTime: createTime })
       return ctx.body = { code: 200, message: 'ok', data: devices }
     }
 
+    //
     else if(type && value) {
       const find = {}
       find[type] = value
@@ -251,6 +254,7 @@ class App {
       return ctx.body = { code: 200, message: 'ok', data: devices }
     }
 
+    //
     else if(cc || pressure || combustible) {
       const devices = await Device.find({$and: [
                           {'cc': cc },
@@ -265,6 +269,7 @@ class App {
       const devices = await Device.find({})
       ctx.body = { code: 200, message: 'ok', data: devices }
     }
+
   }
 
   static async getDevice(ctx) {

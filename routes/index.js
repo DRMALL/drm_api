@@ -93,6 +93,7 @@ router.post('/admin/auth/del', Admin.deleteAuth)
 
 //part
 router.get('/admin/parts', Admin.getParts)
+router.post('/admin/parts/remark', Admin.setPartRemark)
 
 router.get('/app', App.Index)
 router.get('/app/user', App.getUserInfo)

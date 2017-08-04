@@ -459,7 +459,7 @@ class Admin {
 
     const deviceId = ctx.deviceId
     const { address } = ctx.request.body
-    
+
     const obj = {}
     obj.text = address
     obj.time = new Date()
@@ -573,13 +573,18 @@ class Admin {
   }
 
   static async setPartRemark(ctx) {
+
     const { deviceId, remark } = ctx.request.body
     const { partId } = ctx.query
 
-    const device = await Device.findOne({ _id: deviceId }, { name, number })
-    const update = Object.assign({}, device, { remark })
+    const device = await Device.findOne({ _id: deviceId }, { name:1, number: 1})
+    const { name, number } = device
 
-    const result = await Part.findByIdAndUpdate({ _id: partId }, update, { new: true} )
+    const result = await Part.findByIdAndUpdate(
+          { _id: partId },
+          { $set: { deviceCode: number, deviceName: name, remark: remark } },
+          { new: true }
+        )
     ctx.body = { code: 201, message: '修改成功', data: result }
   }
 
