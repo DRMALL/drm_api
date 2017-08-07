@@ -258,11 +258,9 @@ class App {
 
     //
     else if(cc || pressure || combustible || address) {
-
       const obj = { cc, pressure, combustible, address }
-
       for ( var key in obj) {
-        if (obj[key] == undefined)
+        if (obj[key] == 'null')
           delete obj[key]
       }
 

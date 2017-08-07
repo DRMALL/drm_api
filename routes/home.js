@@ -1,8 +1,9 @@
 
 var { host } = require('../config')
+const logger = require('koa-log4').getLogger('home')
+
 
 var home = (ctx) => {
-  ctx.status = 200
   ctx.body = {
     host: host,
     admin: `${host}admin`,

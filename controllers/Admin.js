@@ -339,42 +339,47 @@ class Admin {
 
   static async getExcel(ctx) {
 
-    const {startTime, endTime} = ctx.body
+    const { startTime, endTime } = ctx.query
 
+    if(!startTime || !endTime)
+      return ctx.body = { code: 400, message: '缺少必要的参数 startTime, endTime', data: ''}
+    
     const devices = await Device.aggregate([
       { $unwind: "$timelines" },
-      { $project: { 
-        "linestime" : "$timelines.time",
-        "linestype" : "$timelines.type",
-        "linesdes" : "$timelines.description",
-        "name" : 1,
-        "number": 1,
-        "_id" : 0,
-        "address": "$address",
-        "cc": "$cc",
-        "pressure": "$pressure",
-        "combustible": "$combustible",
+      { $project: 
+        { 
+          "linestime" : "$timelines.line_time",
+          "linestype" : "$timelines.line_type",
+          "linesdes" : "$timelines.line_des",
+          "name" : 1,
+          "number": 1,
+          "_id" : 0,
+          "address": "$address",
+          "cc": "$cc",
+          "pressure": "$pressure",
+          "combustible": "$combustible",
        }
      },
-      { $gt: { linestime: startTime} },
-      { $lt: { linestime: endTime} },
-      { $sort: { linestime: 1 } }
+     { linestime: { $gte: new Date(startTime), $lte: new Date(endTime) } },
+     { $sort: { linestime: 1 } }
     ])
 
-    const { keyArray , valueArray } = transforExcel(devices)
-    var conf = {}
-    conf.stylesXmlFile = 'styles.xml'
-    conf.name = 'mysheet'
-    conf.cols = keyArray
-    conf.rows = valueArray
+    console.log(devices)
 
-    const time = new Date()
-    ctx.set('Content-Type', 'application/vnd.openxmlformats');
-    ctx.attachment(`${time}.xlsx`)
+    // const { keyArray , valueArray } = transforExcel(devices)
+    // var conf = {}
+    // conf.stylesXmlFile = 'styles.xml'
+    // conf.name = 'mysheet'
+    // conf.cols = keyArray
+    // conf.rows = valueArray
 
-    const result = new Buffer(nodeExcel.execute(conf),'binary'); 
+    // const time = new Date()
+    // ctx.set('Content-Type', 'application/vnd.openxmlformats');
+    // ctx.attachment(`${time}.xlsx`)
 
-    ctx.body = result
+    // const result = new Buffer(nodeExcel.execute(conf),'binary'); 
+
+    // ctx.body = result
   }
 
   static async uploadImgWithDevice(ctx) {
