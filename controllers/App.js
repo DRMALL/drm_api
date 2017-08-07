@@ -7,6 +7,7 @@ import Hot from '../model/Hot'
 import Device from '../model/Device'
 import Auth from '../model/Auth'
 import Notice from '../model/Notice'
+import Category from '../model/Category'
 import jwt from 'jsonwebtoken'
 import { cert } from '../config'
 import { busboys } from '../utils/upload'
@@ -196,7 +197,7 @@ class App {
 
 
   static async getBugsCate(ctx) {
-    const result = await Category.find({}).sort('-sortIndex').exec()
+    const result = await Category.find({}).sort('-sortIndex')
     ctx.body = { code: 200, message: 'ok', data: result }
   }
 
