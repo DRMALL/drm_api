@@ -8,6 +8,7 @@ import Category from '../model/Category'
 import Auth from '../model/Auth'
 import Counter from '../model/Counter'
 import Part from '../model/Part'
+import Notice from '../model/Notice'
 import jwt from 'jsonwebtoken'
 import deleteFile from '../utils/deleteFile'
 import { busboys } from '../utils/upload'
@@ -331,6 +332,31 @@ class Admin {
     if(!id || !advice)
       return ctx.body = { code: 400, message: '缺少必要的参数：id, advice', data: '' }
     const result = await Order.findOneAndUpdate({ _id: id}, { $set: { advice: advice, isHanlded: true } }, { new: true } )
+    
+    const notice = new Notice({
+      types: 'order',
+      des: result.title,
+      status: result.isHanlded,
+      readed: false,
+      order: {
+        content: result.content,
+        feedback: result.advice,
+        time: new Date()
+      }
+    })
+    
+    const noticeResult = await notice.save()
+
+      // types: String,      //工单信息或设备检测
+      // des: String,        //描述
+      // status: String,     //状态
+      // readed: Boolean,    //已读/未读
+      // order: {            //工单信息
+      //   content: String,
+      //   feedback: String,
+      //   time: String,
+      // }
+
     if(!result)
       return ctx.body = { code: 500, message: 'server error', data: '' }
     ctx.body = { code: 201, message: '处理成功', data: result }
