@@ -33,7 +33,7 @@ class Admin {
     if(!valid)
       return ctx.body = { code: 403, message: '用户名或密码错误', data: '' }
 
-    const token = jwt.sign({ admin, password }, cert)
+    const token = jwt.sign({ admin, password }, cert, { expiresIn: '7d' })
     ctx.body = { code: 201, message: 'ok', data: token }
   }
 
@@ -195,16 +195,24 @@ class Admin {
   static async deleteNew(ctx) {
     const { id } = ctx.query
     try {
-      const singleNew = await News.find({ _id: id })
+      const singleNew = await News.findOne({ _id: id })
 
       singleNew.images.map((item, index) => {
-        deleteFile(item, '/static/upload/')
+        console.log(item)
+        deleteFile(item.url, 'static/upload')
+        .then(res => {
+          console.log('delete images file success')
+        })
+        .catch(e => {
+          console.error('delete images file failed')
+        })
       })
       
       const result = await News.remove({ _id: id })
       ctx.body = { code: 201, message: '删除成功', data: {} }
     }
     catch(e) {
+      console.log('删除文件失败')
       ctx.body = { code: 500, message: '操作数据时出错', data: e }
     }
   }
