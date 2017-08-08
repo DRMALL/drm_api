@@ -19,7 +19,7 @@ import nodeExcel  from 'excel-export'
 class App {
 
   static async Index (ctx) {
-    ctx.body = 'this is api of drm app'
+
   }
 
   //登录
