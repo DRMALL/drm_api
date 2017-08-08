@@ -197,14 +197,8 @@ class Admin {
     try {
       const singleNew = await News.findOne({ _id: id })
 
-      singleNew.images.map((item, index) => {
-        deleteFile(item.url, 'static/upload')
-        .then(res => {
-          console.log('delete images file success')
-        })
-        .catch(e => {
-          console.error('delete images file failed')
-        })
+      singleNew.images.map(async (item, index) => {
+        await deleteFile(item.url, 'static/upload/')
       })
       
       const result = await News.remove({ _id: id })

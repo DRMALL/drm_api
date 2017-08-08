@@ -54,6 +54,7 @@ exports.busboys = (ctx, options = {}) => {
             file.on('end', () => {
                 console.log(`File [${fieldname}] 上传结束`);
                 resolve({
+                    name: name,
                     success: true,
                     fieldname: fieldname,
                     file: `${host}${path.join(options.uploadDir, name)}`,
@@ -73,6 +74,7 @@ exports.busboys = (ctx, options = {}) => {
             console.log('Done parsing form!');
 
             resolve({
+                name: name,
                 success: true,
                 fieldname: fieldname,
                 file: `${host}${path.join(options.uploadDir, name)}`,
