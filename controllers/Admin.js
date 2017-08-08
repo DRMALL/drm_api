@@ -367,20 +367,20 @@ class Admin {
 
     console.log(devices)
 
-    // const { keyArray , valueArray } = transforExcel(devices)
-    // var conf = {}
-    // conf.stylesXmlFile = 'styles.xml'
-    // conf.name = 'mysheet'
-    // conf.cols = keyArray
-    // conf.rows = valueArray
+    const { keyArray , valueArray } = transforExcel(devices)
+    var conf = {}
+    conf.stylesXmlFile = 'styles.xml'
+    conf.name = 'mysheet'
+    conf.cols = keyArray
+    conf.rows = valueArray
 
-    // const time = new Date()
-    // ctx.set('Content-Type', 'application/vnd.openxmlformats');
-    // ctx.attachment(`${time}.xlsx`)
+    const time = new Date()
+    ctx.set('Content-Type', 'application/vnd.openxmlformats');
+    ctx.attachment(`${time}.xlsx`)
 
-    // const result = new Buffer(nodeExcel.execute(conf),'binary'); 
+    const result = new Buffer(nodeExcel.execute(conf), 'binary'); 
 
-    // ctx.body = result
+    ctx.body = result
   }
 
   static async uploadImgWithDevice(ctx) {

@@ -128,8 +128,10 @@ class App {
     if(type === 'submit') {
       // hots
       // 有这个词就权重加1,没有这个词就创建。
-      const hot = await Hot.findOneAndUpdate({ text: search }, { $inc: { weights: 1 }}, { new: true, upsert: true })
-      ctx.body = { code: 200, message: 'ok', data: hot }
+      if(search) {
+        const hot = await Hot.findOneAndUpdate({ text: search }, { $inc: { weights: 1 }}, { new: true, upsert: true })
+        ctx.body = { code: 200, message: 'ok', data: hot }
+      }
     }
 
     else if(type === 'onchange') {
