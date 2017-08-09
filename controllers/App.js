@@ -302,7 +302,7 @@ class App {
   }
 
   static async getNotices(ctx) {
-    const docs = await Notice.find({}).sort('-time')
+    const docs = await Notice.find({}).sort('-createdAt')
     ctx.body = { code: 200, message: 'ok', data: docs }
   }
 
@@ -328,6 +328,16 @@ class App {
       ctx.body = { code: 201, message: 'ok', data: docs }
     } catch(e) {
       console.log('notice: setOneRead error:', e)
+    }
+  }
+
+  static async setOrderSolved(ctx) {
+    const { id } = ctx.request.body
+    try {
+      const doc = await Order.findByIdAndUpdate({_id: id}, { isDone: true })
+      ctx.body = { code: 201, message: 'ok', data: doc }
+    } catch(e) {
+      console.log('设置工单已解决失败')
     }
   }
 

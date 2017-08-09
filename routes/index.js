@@ -131,6 +131,8 @@ router.get('/app/notices/one', App.getOneNotice)
 router.post('/app/notices/all/read', App.setAllRead)
 router.post('/app/notices/one/read', App.setOneRead)
 
+router.post('/app/order/solved', App.setOrderSolved)
+
 module.exports = router
 
 

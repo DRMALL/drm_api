@@ -270,6 +270,16 @@ POST https://api.wardenger.me/app/notices/one/read?token=${token}
 }
 ```
 
+### 设置已解决工单
+```
+POST https://api.wardenger.me/app/order/solved?token=${token}
+```
+```
+{
+  id: '' //此id为orderid
+}
+```
+
 
 # admin
 

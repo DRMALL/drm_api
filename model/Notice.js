@@ -7,11 +7,12 @@ const noticeSchema = new Schema({
   status: String,     //状态
   readed: Boolean,    //已读/未读
   order: {            //工单信息
+    id: String,
     content: String,
     feedback: String,
     time: String,
   }
-})
+}, { timestamps: true })
 
 const Notice = mongoose.model('Notice', noticeSchema)
 
