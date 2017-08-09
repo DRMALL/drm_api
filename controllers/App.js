@@ -311,7 +311,7 @@ class App {
 
   static async getNotices(ctx) {
     const { id } = ctx.request.decoded 
-    const docs = await Notice.find().sort('-createdAt')
+    const docs = await Notice.find({ 'user.id' : id }).sort('-createdAt')
     ctx.body = { code: 200, message: 'ok', data: docs }
   }
 

@@ -315,7 +315,6 @@ class Admin {
 
   static async getOrders(ctx) {
     const orders = await Order.find({})
-    .populate('user', 'name')
 
     ctx.body = { code: 200, message: '获取成功', data: orders }
   }
