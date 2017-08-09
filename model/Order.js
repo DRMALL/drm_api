@@ -7,7 +7,11 @@ const orderSchema = new Schema({
   title: { type: String },
   category: { type: String },
   content: { type: String },
-  user: { type: Schema.Types.ObjectId, ref: 'User' },
+  user: {
+    id: String,
+    name: String,
+    email: String,
+  } ,
   advice: { type: String },
   isHanlded: { type: Boolean, default: false },
   isDone: { type: Boolean, default: false },

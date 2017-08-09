@@ -6,6 +6,11 @@ const noticeSchema = new Schema({
   des: String,        //描述
   status: String,     //状态
   readed: Boolean,    //已读/未读
+  user: {
+    id: String,
+    name: String,
+    email: String,
+  },
   order: {            //工单信息
     id: String,
     content: String,

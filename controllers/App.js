@@ -179,16 +179,24 @@ class App {
       return ctx.body = { code: 401, message: '缺少必要的参数params: title, category, content', data: '' }
     }
     let { id } = ctx.request.decoded
-    let order = await Order.create({ title, content, category, user: id })
-    ctx.body = { code: 201, message: 'ok', data: order }
+    let user = await User.findOne({_id: id})
+    let order = new Order({
+      title,
+      content,
+      category,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+      }
+    })
+    let result = await order.save()
+    ctx.body = { code: 201, message: 'ok', data: result }
   }
 
   //获取工单
   static async getOrders(ctx) {
     let result = await Order.find()
-    // .populate('user', 'name email')
-    // .populate({ path: 'bug', select: 'category ', })
-
     ctx.body = { code: 200, message: 'ok', data: result }
   }
 
@@ -302,7 +310,8 @@ class App {
   }
 
   static async getNotices(ctx) {
-    const docs = await Notice.find({}).sort('-createdAt')
+    const { id } = ctx.request.decoded 
+    const docs = await Notice.find().sort('-createdAt')
     ctx.body = { code: 200, message: 'ok', data: docs }
   }
 

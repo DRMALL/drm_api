@@ -338,6 +338,11 @@ class Admin {
       des: result.title,
       status: result.isHanlded,
       readed: false,
+      user: {
+        id: result.user.id,
+        name: result.user.name,
+        email: result.user.email,
+      },
       order: {
         id: result._id,
         content: result.content,
