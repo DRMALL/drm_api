@@ -302,7 +302,7 @@ class App {
   }
 
   static async getNotices(ctx) {
-    const docs = await Notice.find({})
+    const docs = await Notice.find({}).sort('-time')
     ctx.body = { code: 200, message: 'ok', data: docs }
   }
 
