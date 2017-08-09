@@ -325,6 +325,7 @@ class App {
     const { id } = ctx.request.body
     try {
       const docs = await Notice.update({_id: id}, { readed: true })
+      ctx.body = { code: 201, message: 'ok', data: docs }
     } catch(e) {
       console.log('notice: setOneRead error:', e)
     }

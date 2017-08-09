@@ -344,18 +344,8 @@ class Admin {
         time: new Date()
       }
     })
-    
-    const noticeResult = await notice.save()
 
-      // types: String,      //工单信息或设备检测
-      // des: String,        //描述
-      // status: String,     //状态
-      // readed: Boolean,    //已读/未读
-      // order: {            //工单信息
-      //   content: String,
-      //   feedback: String,
-      //   time: String,
-      // }
+    const noticeResult = await notice.save()
 
     if(!result)
       return ctx.body = { code: 500, message: 'server error', data: '' }
