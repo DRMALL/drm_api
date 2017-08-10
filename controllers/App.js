@@ -251,35 +251,41 @@ class App {
   static async getDevice(ctx) {
     const { id } = ctx.request.decoded
     let { deviceId, start, end } = ctx.query
-    start = new Date(start)
-    end = new Date(end)
-    console.log(id, deviceId, start, end)
 
-    const matchArr = await Auth.find( { user: id, device: deviceId } )
+    let startTime = new Date(start)
+    let endTime = new Date(end)
 
-    console.log(matchArr)
+    console.log(id, deviceId, startTime, endTime)
 
-    if(!matchArr.length) {
-      return ctx.body = { code: 503, message: 'you has no authority to watch this device', data: ''}      
-    }
+    // const matchArr = await Auth.find( { user: id, device: deviceId } )
 
-    const canView = matchArr.some((item, index) => {
-      return Boolean(item.canView) == true
-    })
+    // console.log(matchArr)
 
-    const canMonitor = matchArr.some((item, index) => {
-      return Boolean(item.canMonitor) == true
-    })
+    // if(!matchArr.length) {
+    //   return ctx.body = { code: 503, message: 'you has no authority to watch this device', data: ''}      
+    // }
 
-    if(!canView)
-      return ctx.body = { code: 503, message: 'you has no authority to watch this device', data: ''}
+    // const canView = matchArr.some((item, index) => {
+    //   return Boolean(item.canView) == true
+    // })
+
+    // const canMonitor = matchArr.some((item, index) => {
+    //   return Boolean(item.canMonitor) == true
+    // })
+
+    // if(!canView)
+      // return ctx.body = { code: 503, message: 'you has no authority to watch this device', data: ''}
 
     var doc;
-    if(start && end) {
-      doc = await Device.find({_id: deviceId }).where('timelines.time').gte(start).lte(end)
-    }
-    else 
-      doc = await Device.find({_id: deviceId })
+    // if(start && end) {
+    //   doc = await Device.find( { {_id: deviceId }, 'timelines.line_time' }, 
+    //           { $gte: { 'timelines.line_time': startTime } }
+    //           { $lte: { 'timelines.line_time': endTime } } 
+    //         })
+    // }
+    // else {
+      doc = await Device.findById({ _id: deviceId })
+    // }
     ctx.body = { code: 200, message: 'ok', data: doc }
   }
 
