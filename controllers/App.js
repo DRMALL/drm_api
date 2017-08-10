@@ -255,37 +255,35 @@ class App {
     let startTime = new Date(start)
     let endTime = new Date(end)
 
-    console.log(id, deviceId, startTime, endTime)
+    const matchArr = await Auth.find( { user: id, device: deviceId } )
 
-    // const matchArr = await Auth.find( { user: id, device: deviceId } )
 
-    // console.log(matchArr)
+    if(!matchArr.length) {
+      return ctx.body = { code: 503, message: 'you has no authority to watch this device', data: ''}      
+    }
 
-    // if(!matchArr.length) {
-    //   return ctx.body = { code: 503, message: 'you has no authority to watch this device', data: ''}      
-    // }
+    const canView = matchArr.some((item, index) => {
+      return Boolean(item.canView) == true
+    })
 
-    // const canView = matchArr.some((item, index) => {
-    //   return Boolean(item.canView) == true
-    // })
+    const canMonitor = matchArr.some((item, index) => {
+      return Boolean(item.canMonitor) == true
+    })
 
-    // const canMonitor = matchArr.some((item, index) => {
-    //   return Boolean(item.canMonitor) == true
-    // })
-
-    // if(!canView)
-      // return ctx.body = { code: 503, message: 'you has no authority to watch this device', data: ''}
+    if(!canView)
+      return ctx.body = { code: 503, message: 'you has no authority to watch this device', data: ''}
 
     var doc;
-    // if(start && end) {
-    //   doc = await Device.find( { {_id: deviceId }, 'timelines.line_time' }, 
-    //           { $gte: { 'timelines.line_time': startTime } }
-    //           { $lte: { 'timelines.line_time': endTime } } 
-    //         })
-    // }
-    // else {
+    if(start && end) {
       doc = await Device.findById({ _id: deviceId })
-    // }
+      doc.timelines = doc.timelines.filter((item, index) => {
+        return item.line_time >= startTime && item.line_time <= endTime
+      })
+      ctx.body = { code: 200, message: 'ok', data: doc }
+    }
+    else {
+      doc = await Device.findById({ _id: deviceId })
+    }
     ctx.body = { code: 200, message: 'ok', data: doc }
   }
 
