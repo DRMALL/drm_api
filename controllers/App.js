@@ -250,7 +250,9 @@ class App {
 
   static async getDevice(ctx) {
     const { id } = ctx.request.decoded
-    const { deviceId, start, end } = ctx.query
+    let { deviceId, start, end } = ctx.query
+    start = new Date(start)
+    end = new Date(end)
     console.log(id, deviceId, start, end)
 
     const matchArr = await Auth.find( { user: id, device: deviceId } )
