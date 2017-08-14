@@ -370,7 +370,7 @@ class Admin {
 
   static async getExcel(ctx) {
 
-    const { startTime, endTime } = ctx.query
+    let { startTime, endTime } = ctx.query
 
     if(!startTime || !endTime)
       return ctx.body = { code: 400, message: '缺少必要的参数 startTime, endTime', data: ''}
