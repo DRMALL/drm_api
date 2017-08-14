@@ -15,6 +15,7 @@ import { hash } from '../utils/util'
 import bcrypt from 'bcrypt'
 import transforExcel from '../utils/transforExcel'
 import nodeExcel  from 'excel-export'
+import { isPhone } from '../utils/Validate'
 
 class App {
 
@@ -59,6 +60,11 @@ class App {
 
     if(ctx.request.body.password) {
       return ctx.body = { code: 404, message: '不允许通过此API修改密码', data: ''}
+    }
+
+    const { phone } = bodyData
+    if( phone && !isPhone(phone) ) {
+      return ctx.body = { code: 402, message: '请输入正确的手机号码' , data: ''}
     }
 
     try {
