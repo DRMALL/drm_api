@@ -14,7 +14,8 @@ const bugSchema = new Schema({
   content: {
     type: String,
     required: true
-  }
+  }, 
+  isSolved: { type: Boolean, default: true }
 }, { timestamps: true })
 
 bugSchema.statics.searchByContent = function(search) {
