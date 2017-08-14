@@ -124,7 +124,7 @@ class Admin {
 
     const { phone } = bodyData
     if( phone && !Validate.isPhone(phone) ) {
-      return ctx.body = { code: 402, message: '请输入正确的手机格式', data: '' }
+      return ctx.body = { code: 405, message: '请输入正确的手机格式', data: '' }
     }
 
     try {
