@@ -372,8 +372,8 @@ class Admin {
 
     let { startTime, endTime } = ctx.query
 
-    // if(!startTime || !endTime)
-      // return ctx.body = { code: 400, message: '缺少必要的参数 startTime, endTime', data: ''}
+    if(!startTime || !endTime)
+      return ctx.body = { code: 400, message: '缺少必要的参数 startTime, endTime', data: ''}
     
     const devices = await Device.aggregate([
       { $unwind: "$timelines" },
@@ -391,7 +391,7 @@ class Admin {
           "combustible": "$combustible",
        }
      },
-     // { linestime: { $gte: new Date(startTime), $lte: new Date(endTime) } },
+     { linestime: { $gte: new Date(startTime), $lte: new Date(endTime) } },
      { $sort: { linestime: 1 } }
     ])
 
@@ -410,7 +410,7 @@ class Admin {
 
     const result = new Buffer(nodeExcel.execute(conf), 'binary'); 
 
-    ctx.body = { code: 200, message: 'ok', data: result }
+    ctx.body = result
   }
 
   static async uploadImgWithDevice(ctx) {
