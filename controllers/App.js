@@ -100,7 +100,7 @@ class App {
   //获取所有信息
   static async getNews(ctx) {
     try {
-      const result = await News.find({ published: true })
+      const result = await News.find({ published: true }).sort('-updatedAt')
       ctx.body = { code: 200, message: 'ok', data: result }
     }
     catch(e) {

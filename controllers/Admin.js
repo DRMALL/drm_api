@@ -171,7 +171,7 @@ class Admin {
 
   //获取所有消息
   static async getNews(ctx) {
-    const result = await News.find()
+    const result = await News.find().sort('-updatedAt')
     ctx.body = { code: 200, message: '获取成功', data: result }
   }
 

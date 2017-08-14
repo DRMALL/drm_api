@@ -11,7 +11,7 @@ const orderSchema = new Schema({
     id: String,
     name: String,
     email: String,
-  } ,
+  },
   advice: { type: String },
   isHanlded: { type: Boolean, default: false },
   isDone: { type: Boolean, default: false },
