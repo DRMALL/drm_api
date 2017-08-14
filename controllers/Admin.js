@@ -410,7 +410,7 @@ class Admin {
 
     const result = new Buffer(nodeExcel.execute(conf), 'binary'); 
 
-    ctx.body = result
+    ctx.body = { code: 200, message: 'ok', data: result }
   }
 
   static async uploadImgWithDevice(ctx) {
