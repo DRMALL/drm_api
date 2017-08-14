@@ -391,7 +391,7 @@ class Admin {
           "combustible": "$combustible",
        }
      },
-     { linestime: { $gte: new Date(startTime), $lte: new Date(endTime) } },
+     // { linestime: { $gte: new Date(startTime), $lte: new Date(endTime) } },
      { $sort: { linestime: 1 } }
     ])
 
