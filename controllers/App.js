@@ -64,7 +64,7 @@ class App {
 
     const { phone } = bodyData
     if( phone && !isPhone(phone) ) {
-      return ctx.body = { code: 402, message: '请输入正确的手机号码' , data: ''}
+      return ctx.body = { code: 402, message: '请输入正确的手机号码' , data: '' }
     }
 
     try {

@@ -122,6 +122,11 @@ class Admin {
 
     if(!userId) return ctx.body = { code: 400, message: '缺少必要的param: id', data: ''}
 
+    const { phone } = bodyData
+    if( phone && !Validate.isPhone(phone) ) {
+      return ctx.body = { code: 402, message: '请输入正确的手机格式', data: '' }
+    }
+
     try {
       const result = await User.findOneAndUpdate({ _id: userId }, bodyData, { new: true })
       ctx.body = { code: 201, message: 'ok', data: result }
