@@ -73,6 +73,7 @@ content: {
 
 ## Counter
 
+计数器，用于故障诊断分类的排序。
 ```
 {
   _id: { type: 'String', required: true },

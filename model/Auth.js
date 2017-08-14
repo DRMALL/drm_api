@@ -22,27 +22,6 @@ const authSchema = new Schema({
   },
 }, { timestamps: true })
 
-// authSchema.post('save', async (doc, next) => {
-//   const { user, device, canView, canMonitor } = doc
-
-//   if(canView) {
-//     Device.where({ _id: device })
-//           .update( { $push: { canViews: user } }, () => {
-//               // next()
-//             }
-//           )
-//   }
-//   if(canMonitor) {
-//     Device.where({ _id: device })
-//           .update( { $push: { canMonitors: user } }, () => {
-//               // next()
-//             }
-//           )
-//   }
-//   await next()
-
-// })
-
 const Auth = mongoose.model('Auth', authSchema)
 
 module.exports = Auth

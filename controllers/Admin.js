@@ -152,7 +152,6 @@ class Admin {
   //news images
   static async uploadImgWithNews(ctx) {
     const upload = await busboys (ctx)
-    console.log(upload)
     if(upload.fieldname !== 'news')
       return ctx.body = { code: 400, message: '参数值错误, key: news', data: '' }
     if(!upload.success)
@@ -319,8 +318,7 @@ class Admin {
   }
 
   static async getOrders(ctx) {
-    const orders = await Order.find({})
-
+    const orders = await Order.find({}).sort('-createdAt')
     ctx.body = { code: 200, message: '获取成功', data: orders }
   }
 
@@ -328,6 +326,12 @@ class Admin {
     const id = ctx.orderId
     const result = await Order.findById(id)
     ctx.body = { code: 200, message: '获取成功', data: result }
+  }
+
+  static async deleteOrder(ctx) {
+    const id = ctx.orderId
+    const result = await Order.findByIdAndRemove({ _id: id })
+    ctx.body = { code: 201, message: 'ok', data: {} }
   }
 
   static async handleOrder(ctx) {

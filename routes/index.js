@@ -65,6 +65,7 @@ router.param('orderId', function(id, ctx, next) {
 })
 .get('/admin/orders/:orderId', Admin.getOrder)
 .put('/admin/orders/:orderId', Admin.handleOrder)
+.delete('/admin/orders/:orderId', Admin.deleteOrder)
 
 
 //device

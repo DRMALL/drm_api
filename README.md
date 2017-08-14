@@ -67,6 +67,8 @@ app = https://api.wardenger.me/app
   * [获取所有工单](#获取所有工单)
   * [获取单个工单](#获取单个工单)
   * [处理工单](#处理工单)
+  * [删除工单](#删除工单)
+
 
   * [创建设备](#创建设备)
   * [获取设备](#获取设备)
@@ -481,6 +483,11 @@ PUT https://api.wardenger.me/admin/orders/:orderId?token=${token}
 {
   advice: '' //处理意见
 }
+```
+
+### 删除工单
+```
+DELETE https://api.wardenger.me/admin/orders/:orderId?token=${token} 
 ```
 
 ### 创建设备
