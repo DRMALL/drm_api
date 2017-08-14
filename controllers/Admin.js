@@ -372,8 +372,8 @@ class Admin {
 
     let { startTime, endTime } = ctx.query
 
-    if(!startTime || !endTime)
-      return ctx.body = { code: 400, message: '缺少必要的参数 startTime, endTime', data: ''}
+    // if(!startTime || !endTime)
+      // return ctx.body = { code: 400, message: '缺少必要的参数 startTime, endTime', data: ''}
     
     const devices = await Device.aggregate([
       { $unwind: "$timelines" },
@@ -384,7 +384,7 @@ class Admin {
           "linesdes" : "$timelines.line_des",
           "name" : 1,
           "number": 1,
-          "_id" : 0,
+          "_id" : "$linestime",
           "address": "$address",
           "cc": "$cc",
           "pressure": "$pressure",

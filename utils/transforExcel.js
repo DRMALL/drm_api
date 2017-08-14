@@ -11,6 +11,8 @@ function switchCaption(key) {
       return '类型'
     case 'linesdes':
       return '描述'
+    case 'address':
+      return '地址'
     case 'cc':
       return '排量'
     case 'pressure':
@@ -41,6 +43,8 @@ export default function transforExcel(sourceArray) {
 
     valueArray.push(insideArray)
   })
+  console.log('keyArray', keyArray)
+  console.log('valueArray', valueArray)
 
   return {
     valueArray,
