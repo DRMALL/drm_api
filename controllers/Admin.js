@@ -474,6 +474,12 @@ class Admin {
     }
 
     result = await addIncharge(result)
+    result = result.map((item, index) => {
+      item.location = item.location.sort((a, b) => {
+        return new Date(b.time).getTime() - new Date(a.time).getTime()
+      })
+      return item
+    })
 
     ctx.body = { code: 200, message: '获取成功', data: result }
   }
