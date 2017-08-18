@@ -461,7 +461,7 @@ class Admin {
       return ctx.body = { code: 200, message: '获取成功', data: docs }
     }
 
-    var result = await Device.find({}).sort('-createAt')
+    var result = await Device.find({}).sort('-createdAt')
 
     const addIncharge = (result) => {
       const promise = result.map(async (item, index) => {
