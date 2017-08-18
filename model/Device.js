@@ -13,6 +13,7 @@ const deviceSchema = Schema({
   description: String,
   online: Boolean,
   address: String,
+  classify: String,
   location: [{
     time: { type: Date, default: Date.now },
     text: String

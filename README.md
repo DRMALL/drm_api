@@ -503,6 +503,7 @@ POST https://api.wardenger.me/admin/devices/new?token=${token}
   combustible: [柴油，天然气，原油型]   //燃料
   description: '' //描述
   address：'' //所在地
+  classify: '' //分类
   timelines: [{
     time: '',
     type: '',

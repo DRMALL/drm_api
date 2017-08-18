@@ -423,9 +423,9 @@ class Admin {
   }
 
   static async createDevice(ctx) {
-    const { name, number, images, cc, pressure, combustible, description, address, timelines } = ctx.request.body
-    if(!name || !number || !cc || !pressure || !combustible || !description || !address) {
-      return ctx.body = { code: 400, message: '缺少必要的参数：name, number, cc, pressure, combustible, description, address', data: '' }
+    const { name, number, images, cc, pressure, combustible, classify, description, address, timelines } = ctx.request.body
+    if(!name || !number || !cc || !pressure || !combustible || !description || !address ||!classify) {
+      return ctx.body = { code: 400, message: '缺少必要的参数：name, number, cc, pressure, combustible, description, address, classify', data: '' }
     }
 
     const location = []
@@ -445,6 +445,7 @@ class Admin {
       location,
       timelines,
       address,
+      classify
     })
     const result = await device.save()
     ctx.body = { code: 201, message: '创建成功', data: result }
@@ -454,12 +455,13 @@ class Admin {
 
     const { type } = ctx.query
 
+    //获取设备名称
     if(type === 'name') {
       const docs = await Device.find({}, 'name')
       return ctx.body = { code: 200, message: '获取成功', data: docs }
     }
 
-    var result = await Device.find({})
+    var result = await Device.find({}).sort('-createAt')
 
     const addIncharge = (result) => {
       const promise = result.map(async (item, index) => {
