@@ -26,7 +26,9 @@ exports.busboys = (ctx, options = {}) => {
     mkdirsSync(path.join(options.publicDir, options.uploadDir))
 
     return new Promise((resolve, reject) => {
-        const busboy = new Busboy({ headers: ctx.req.headers });
+        const busboy = new Busboy({ 
+            headers: ctx.req.headers
+        });
         let name = '';
         let fieldname = ''
         let result = []
@@ -37,7 +39,7 @@ exports.busboys = (ctx, options = {}) => {
             name = Date.now() + '_' + path.basename(filename);
             // fieldname = fieldname
 
-            console.log(`File [${fieldname}] 文件名: ${filename}`);
+            console.log(`File [${fieldname}] 文件名: ${filename}`, `mimetype: ${mimetype}` );
 
             // 通过管道的方式，把文件流保存到特定路径
 
@@ -64,9 +66,7 @@ exports.busboys = (ctx, options = {}) => {
 
         // 监听请求中的字段
         busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated) {
-
             console.log(`Field [${fieldname}]: value: ${inspect(val)}`);
-
         });
 
         // 监听结束事件
@@ -83,12 +83,12 @@ exports.busboys = (ctx, options = {}) => {
 
         // 解析错误事件
         busboy.on('error', function (err) {
-            console.log('文件上出错');
             reject({
                 success: false,
                 file: null,
             });
         });
+
         // 流
         ctx.req.pipe(busboy);
     });

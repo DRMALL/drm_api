@@ -1,6 +1,6 @@
 
-import Bug from './model/Bug'
-import Order from './model/Order'
+const Bug = require('./model/Bug')
+const Order = require('./model/Order')
 
 class WebSocket {
 

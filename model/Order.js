@@ -1,5 +1,5 @@
 
-import mongoose from 'mongoose'
+const mongoose = require('mongoose')
 
 const  Schema = mongoose.Schema
 
@@ -17,4 +17,4 @@ const orderSchema = new Schema({
   isDone: { type: Boolean, default: false },
 }, { timestamps: true })
 
-export default mongoose.model('Order', orderSchema)
+module.exports =  mongoose.model('Order', orderSchema)

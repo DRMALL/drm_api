@@ -4,7 +4,6 @@ const bcrypt = require('bcrypt');
 
 function hash(password) {
   return new Promise((resolve, reject) => {
-
     bcrypt.hash(password, 10, (err, hash) => {
       // Store hash in database
         if(err)
@@ -15,6 +14,6 @@ function hash(password) {
   })
 }
 
-export {
+module.exports = {
   hash,
 }

@@ -1,9 +1,10 @@
 
-import jwt from 'jsonwebtoken'
-import { cert } from '../config'
+const jwt = require('jsonwebtoken')
+const { cert } = require('../config')
 
-export default (ctx, next) => {
+module.exports = (ctx, next) => {
   const token = ctx.request.query.token
+  
   if(!token)
     return ctx.body = { code: 400, message: '缺少必要的参数token', data: '' }
 

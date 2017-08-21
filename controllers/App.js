@@ -1,21 +1,21 @@
 
-import User from '../model/User'
-import News from '../model/News'
-import Bug from '../model/Bug'
-import Order from '../model/Order'
-import Hot from '../model/Hot'
-import Device from '../model/Device'
-import Auth from '../model/Auth'
-import Notice from '../model/Notice'
-import Category from '../model/Category'
-import jwt from 'jsonwebtoken'
-import { cert } from '../config'
-import { busboys } from '../utils/upload'
-import { hash } from '../utils/util'
-import bcrypt from 'bcrypt'
-import transforExcel from '../utils/transforExcel'
-import nodeExcel  from 'excel-export'
-import { isPhone } from '../utils/Validate'
+const User = require('../model/User')
+const News = require('../model/News')
+const Bug = require('../model/Bug')
+const Order = require('../model/Order')
+const Hot = require('../model/Hot')
+const Device = require('../model/Device')
+const Auth = require('../model/Auth')
+const Notice = require('../model/Notice')
+const Category = require('../model/Category')
+const jwt = require('jsonwebtoken')
+const { cert } = require('../config')
+const { busboys } = require('../utils/upload')
+const { hash } = require('../utils/util')
+const bcrypt = require('bcrypt')
+const transforExcel = require('../utils/transforExcel')
+const nodeExcel  = require('excel-export')
+const { isPhone } = require('../utils/Validate')
 
 class App {
 
@@ -389,4 +389,4 @@ class App {
 
 }
 
-export default App
+module.exports = App

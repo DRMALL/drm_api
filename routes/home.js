@@ -1,9 +1,7 @@
 
-var { host } = require('../config')
-const logger = require('koa-log4').getLogger('home')
+const { host } = require('../config')
 
-
-var home = (ctx) => {
+const home = (ctx) => {
   ctx.body = {
     host: host,
     admin: `${host}admin`,

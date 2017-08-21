@@ -1,22 +1,22 @@
 
-import User from '../model/User'
-import News from '../model/News'
-import Bug from '../model/Bug'
-import Order from '../model/Order'
-import Device from '../model/Device'
-import Category from '../model/Category'
-import Auth from '../model/Auth'
-import Counter from '../model/Counter'
-import Part from '../model/Part'
-import Notice from '../model/Notice'
-import jwt from 'jsonwebtoken'
-import deleteFile from '../utils/deleteFile'
-import { busboys } from '../utils/upload'
-import { hash } from '../utils/util'
-import { cert, initAdmins } from '../config'
-import transforExcel from '../utils/transforExcel'
-import nodeExcel  from 'excel-export'
-import Validate from '../utils/Validate'
+const User = require('../model/User')
+const News = require('../model/News')
+const Bug = require('../model/Bug')
+const Order = require('../model/Order')
+const Device = require('../model/Device')
+const Category = require('../model/Category')
+const Auth = require('../model/Auth')
+const Counter = require('../model/Counter')
+const Part = require('../model/Part')
+const Notice = require('../model/Notice')
+const jwt = require('jsonwebtoken')
+const deleteFile = require('../utils/deleteFile')
+const { busboys } = require('../utils/upload')
+const { hash } = require('../utils/util')
+const { cert, initAdmins } = require('../config')
+const transforExcel = require('../utils/transforExcel')
+const nodeExcel  = require('excel-export')
+const Validate = require('../utils/Validate')
 
 class Admin {
 
@@ -649,5 +649,5 @@ class Admin {
 
 }
 
-export default Admin
+module.exports = Admin
 

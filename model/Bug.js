@@ -1,5 +1,5 @@
 
-import mongoose from 'mongoose'
+const mongoose = require('mongoose')
 const Schema = mongoose.Schema
  
 const bugSchema = new Schema({
@@ -28,5 +28,5 @@ bugSchema.statics.searchByContent = function(search) {
   })
 }
 
-export default mongoose.model('Bug', bugSchema)
+module.exports = mongoose.model('Bug', bugSchema)
 

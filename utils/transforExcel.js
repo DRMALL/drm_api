@@ -24,7 +24,7 @@ function switchCaption(key) {
   }
 }
 
-export default function transforExcel(sourceArray) {
+module.exports = function transforExcel(sourceArray) {
 
   var keyArray = []
   var valueArray = []

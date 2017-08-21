@@ -1,5 +1,5 @@
 
-import mongoose from 'mongoose'
+const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const hotSchema = new Schema({
@@ -8,6 +8,4 @@ const hotSchema = new Schema({
   weights: { type: Number, default: 0 },
 })
 
-const Hot = mongoose.model('Hot', hotSchema)
-
-export default Hot
+module.exports = mongoose.model('Hot', hotSchema)

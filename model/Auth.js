@@ -1,7 +1,6 @@
 
-import mongoose from 'mongoose'
+const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const Device = require('./Device')
 
 const authSchema = new Schema({
   user: {

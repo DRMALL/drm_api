@@ -1,30 +1,28 @@
 
-import Router from 'koa-router'
-import { Admin, App } from '../controllers'
-import home from './home'
-import verifyToken from '../utils/verifyToken'
+const Router = require('koa-router')
+const { Admin, App } = require('../controllers')
+
+const home = require('./home')
+const verifyToken = require('../utils/verifyToken')
+
+const adminLogin = require('./adminLogin')
+const userLogin = require('./userLogin')
+
+const adminUser = require('./admin/adminUser')
+const adminNew = require('./admin/adminNew')
 
 const router = new Router()
 
 router.get('/', home)
-router.post('/admin/session', Admin.session)
-router.post('/app/session', App.session)
+router.post('/admin/session', adminLogin)
+router.post('/app/session', userLogin)
 
 router.use('*', verifyToken)
 
-//users
-router.get('/admin/users', Admin.getUsers)
-router.post('/admin/users/new', Admin.newUser)
-router.param('userId', function (id, ctx, next) {
-  ctx.userId = id
-  if (!ctx.userId) return ctx.status = 404;
-  return next();
-})
-.get('/admin/users/:userId', Admin.getUserById)
-.put('/admin/users/:userId', Admin.UpdateUser)
-.delete('/admin/users/:userId', Admin.DeleteUser)
+router.use('/admin/users', adminUser.routes(), adminUser.allowedMethods())
+// router.use('/admin/news', adminNew.routes(), adminNew.allowedMethods())
 
-//news
+
 router.post('/admin/news/uploadimg', Admin.uploadImgWithNews)
 router.post('/admin/news/new', Admin.createNew)
 router.get('/admin/news/all', Admin.getNews)

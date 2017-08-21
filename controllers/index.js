@@ -1,8 +1,8 @@
 
-import Admin from './Admin'
-import App from './App'
+const Admin = require('./Admin')
+const App = require('./App')
 
-export {
+module.exports = {
   Admin,
   App
 }
