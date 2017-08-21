@@ -74,7 +74,6 @@ adminUser.put('/:id', async (ctx) => {
   try {
     let { id } = ctx.params
     let { name, password, email, phone, company_name, address } = ctx.request.body
-    let encrypt = await hash(password)
 
     if(!isEmail(email)) {
       return ctx.body = { code: 400, message: '请输入正确的邮箱地址', data: '' }
@@ -84,9 +83,16 @@ adminUser.put('/:id', async (ctx) => {
       return ctx.body = { code: 400, message: '请输入正确的手机号码', data: '' }    
     }
 
-    const doc = await User.findByIdAndUpdate({ _id: id }, Object.assign({}, ctx.request.body, { password: encrypt }), { new: true })
-    doc.password = undefined
-    ctx.body = { code: 201, message: 'ok', data: doc }
+    if(password) {
+        let encrypt = await hash(password)
+        const doc = await User.findByIdAndUpdate({ _id: id }, Object.assign({}, ctx.request.body, { password: encrypt }), { new: true })
+        doc.password = undefined
+        ctx.body = { code: 201, message: 'ok', data: doc }
+    } else {
+      const doc = await User.findByIdAndUpdate({ _id: id }, ctx.request.body, { new: true })
+      doc.password = undefined
+      ctx.body = { code: 201, message: 'ok', data: doc }     
+    }
   } catch(e) {
     logger.error('admin update user error', e)
   }
