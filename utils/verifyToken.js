@@ -13,6 +13,6 @@ export default (ctx, next) => {
     return next()
   }
   catch(e) {
-    ctx.body = { code: 402, message: '验证access_token失败', data: e }
+    ctx.body = { code: 5050, message: '验证access_token失败', data: e }
   }
 }

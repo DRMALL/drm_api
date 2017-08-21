@@ -9,7 +9,7 @@ exports.busboys = (ctx, options = {}) => {
     options = Object.assign(options, {
         uploadDir: './upload',
         publicDir: './static',
-    });
+    })
 
     function mkdirsSync( dirname ) {
       if (fs.existsSync( dirname )) {

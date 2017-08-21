@@ -41,7 +41,7 @@ describe('DRM without token test', () => {
     request.post('/app/session')
     .send({
       email: 'wardenger@gmail.com',
-      password: 'hello'
+      password: '123456'
     })
     .end((err, res) => {
       expect(res.body.code).to.equal(201)
