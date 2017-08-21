@@ -27,6 +27,8 @@ app = https://api.wardenger.me/app
   * [创建工单](#创建工单)
   * [获取最新所在地](#获取最新所在地)
   * [获取devices](#获取devices)
+  * [搜索设备](#搜索设备)
+  * [设备热门搜索词](#设备热门搜索词)
   * [获取device](#获取device)
   * [更新备注](#更新备注)
   * [增加时间线](#增加时间线)
@@ -71,6 +73,7 @@ app = https://api.wardenger.me/app
 
 
   * [创建设备](#创建设备)
+  * [删除设备](#删除设备)
   * [获取设备](#获取设备)
   * [获取单个设备](#获取单个设备)
   * [更新单个设备](#更新单个设备)
@@ -206,6 +209,22 @@ GET https://api.wardenger.me/app/devices?token=${token}
   
 2. 筛选:
   cc=''&pressure=''&combustible=''&address=''
+```
+
+### 搜索设备
+```
+GET https://api.wardenger.me/app/devices/search?token=${token}  
+```
+```
+{
+  type: '',   // onchange, submit, null。 null代表返回全部
+  search: ''  // search 为搜索内容
+}
+```
+
+### 设备热门搜索词
+```
+GET https://api.wardenger.me/app/devices/hots?token=${token}
 ```
 
 ### 获取device
@@ -511,7 +530,6 @@ POST https://api.wardenger.me/admin/devices/new?token=${token}
   }]
 ```
 
-
 ### 上传设备图片
 
 ```
@@ -542,6 +560,11 @@ GET https://api.wardenger.me/admin/devices/deviceId?token=${token}
 ### 更新单个设备
 ```
 PUT https://api.wardenger.me/admin/devices/deviceId?token=${token}
+```
+
+### 删除设备
+```
+DELETE https://api.wardenger.me/admin/devices/deviceId?token=${token}
 ```
 
 

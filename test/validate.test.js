@@ -44,11 +44,5 @@ describe('validate isEmail tests', () => {
   })
 })
 
-describe('validate ifLackPara tests', () => {
-  it('the input is empty', () => {
-    expect(ifLackPara()).to.be.an('error');
-
-  })
-})
 
 

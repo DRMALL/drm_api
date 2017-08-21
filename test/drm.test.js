@@ -10,6 +10,8 @@ const appToken = require('../config').appToken
 const request = supertest( app.listen() )
 
 
+var admin_token, app_token;
+
 describe('DRM without token test', () => {
 
   it ('首页正常返回', (done) => {
@@ -29,6 +31,8 @@ describe('DRM without token test', () => {
     })
     .end((err, res) => {
       expect(res.body.code).to.equal(201)
+      admin_token = res.body.data
+      console.log(admin_token)
       done()
     })
   })

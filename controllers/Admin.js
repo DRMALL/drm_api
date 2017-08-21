@@ -88,11 +88,11 @@ class Admin {
   static async getUsers (ctx) {
     const { type } = ctx.query
     if(type === 'name') {
-      let docs = await User.find({}, 'name')
+      let docs = await User.find({}, 'name').sort('-createdAt')
       return ctx.body = { code: 200, message: 'ok', data: docs }
     }
     try {
-      const result = await User.find({}, '-password')
+      const result = await User.find({}, '-password').sort('-createdAt')
       ctx.body = { code: 200, message: 'ok', data: result }
     }
     catch(e) {
@@ -497,6 +497,12 @@ class Admin {
     const updateBody = ctx.request.body
     const result = await Device.update({ _id: deviceId }, updateBody, { upsert: false })
     ctx.body = { code: 201, message: '更新成功', data: result }
+  }
+
+  static async deleteDevice(ctx) {
+    const deviceId = ctx.deviceId
+    const result = await Device.remove({ _id: id})
+    ctx.body = { code: 201, message: 'ok', data: result }
   }
 
   static async updateDeviceLoaction(ctx) {

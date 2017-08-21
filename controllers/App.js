@@ -135,7 +135,7 @@ class App {
       // hots
       // 有这个词就权重加1,没有这个词就创建。
       if(search) {
-        const hot = await Hot.findOneAndUpdate({ text: search }, { $inc: { weights: 1 }}, { new: true, upsert: true })
+        const hot = await Hot.findOneAndUpdate({ type: 'bug', text: search }, { $inc: { weights: 1 }}, { new: true, upsert: true })
         ctx.body = { code: 200, message: 'ok', data: hot }
       }
     }
@@ -173,7 +173,7 @@ class App {
 
 
   static async getHots(ctx) {
-    const hots = await Hot.find({}).sort('-weights').limit(10)
+    const hots = await Hot.find({ type: 'bug' }).sort('-weights').limit(10)
     ctx.body = { code: 200, message: 'ok', data: hots }
   }
 
@@ -216,7 +216,32 @@ class App {
     ctx.body = { code: 200, message: 'ok', data: locations }
   }
 
-  static async getDevices(ctx) {
+  static async searchDevice (ctx) {
+
+    const { type, search } = ctx.query
+
+    if(type === 'onchange' && search ) {
+      const titleArr = await Device.find({name: new RegExp(search, 'i')}).limit(5).exec()
+      const contentArr = await Device.find({description: new RegExp(search, 'i')}).limit(5).exec()
+      ctx.body = { code: 200, message: 'ok', data: titleArr.concat(contentArr) }
+    } 
+    else if (type === 'submit' && search) {
+      const hot = await Hot.findOneAndUpdate({ type: 'device', text: search }, { $inc: { weights: 1 }}, { new: true, upsert: true })
+      ctx.body = { code: 200, message: 'ok', data: hot }
+    }
+    else {
+      let docs = await Device.find()
+      ctx.body = { code: 200, message: 'ok', data: docs }
+    }
+
+  }
+
+  static async getDeviceHots (ctx) {
+    const hots = await Hot.find({ type: 'device' }).sort('-weights').limit(10)
+    ctx.body = { code: 200, message: 'ok', data: hots }
+  }
+
+  static async getDevices (ctx) {
     
     const { createTime, type, value, cc, pressure, combustible, address } = ctx.request.query
     // var devices;

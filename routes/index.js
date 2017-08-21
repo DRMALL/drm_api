@@ -80,6 +80,7 @@ router.param('deviceId', function(id, ctx, next) {
 })
 .get('/admin/devices/:deviceId', Admin.getDevice)
 .put('/admin/devices/:deviceId', Admin.updateDevice)
+.delete('/admin/devices/:deviceId', Admin.deleteDevice)
 .put('/admin/devices/:deviceId/location', Admin.updateDeviceLoaction)
 .post('/admin/devices/:deviceId/timeline/del', Admin.deleteTimeLine)
 .put('/admin/devices/:deviceId/timeline/update', Admin.updateTimeLine)
@@ -120,7 +121,9 @@ router.get('/app/order/all', App.getOrders)
 //devices
 router.get('/app/devices/address' , App.getLastLocation)
 router.get('/app/devices', App.getDevices)
+router.get('/app/devices/search', App.searchDevice)
 router.get('/app/devices/one', App.getDevice)
+router.get('/app/devices/hots', App.getDeviceHots)
 
 router.post('/app/devices/one/remark', App.updateDeviceRemark)
 router.post('/app/devices/one/timelines', App.addDeviceTimeline)
