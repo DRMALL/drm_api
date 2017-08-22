@@ -100,129 +100,150 @@ class Admin {
         let docs = await User.find({}, 'name').sort('-createdAt')
         return ctx.body = { code: 200, message: 'ok', data: docs }
       }
-      try {
-        const result = await User.find({}, '-password').sort('-createdAt')
-        ctx.body = { code: 200, message: 'ok', data: result }
-      }
-      catch(e) {
-        ctx.body = { code: 500, message: '操作数据库时出错', data: e }
-      }
-    } catch(e) {
-      logger.error('admin get all users failed')
+      const result = await User.find({}, '-password').sort('-createdAt')
+      ctx.body = { code: 200, message: 'ok', data: result }
+    } 
+    catch(e) {
+      logger.error('admin get all users error', e)
     }
   }
 
   //获取单个用户
   static async getUserById(ctx) {
-    const userId = ctx.userId
-    if(!userId) return ctx.body = { code: 400, message: '缺少必要的param: id', data: ''}
     try {
+      const userId = ctx.userId
+      if(!userId)
+        return ctx.body = { code: 400, message: '缺少必要的param: id', data: ''}
+
       const result = await User.findById(userId, '-password')
-      if(!result) return ctx.body = { code: '404', message: '未找到该用户', data: result }
+
+      if(!result)
+        return ctx.body = { code: '404', message: '未找到该用户', data: result }
+
       ctx.body = { code: 200, message: 'ok', data: result }
     }
     catch(e) {
-      ctx.body = { code: 500, message: '操作数据库时出错', data: e }
+      logger.error('admin get user error', e)
     }
   }
 
   //更新单个用户
   static async UpdateUser(ctx) {
-    const userId = ctx.userId
-    const encryptPass = await hash(ctx.request.body.password)
-    const bodyData = Object.assign({}, ctx.request.body, { password: encryptPass })
-
-    if(!userId) return ctx.body = { code: 400, message: '缺少必要的param: id', data: ''}
-
-    const { phone } = bodyData
-    if( phone && !Validate.isPhone(phone) ) {
-      return ctx.body = { code: 405, message: '请输入正确的手机格式', data: '' }
-    }
 
     try {
+      const userId = ctx.userId
+      const encryptPass = await hash(ctx.request.body.password)
+      const bodyData = Object.assign({}, ctx.request.body, { password: encryptPass })
+
+      if(!userId) return ctx.body = { code: 400, message: '缺少必要的param: id', data: ''}
+
+      const { phone } = bodyData
+      if( phone && !Validate.isPhone(phone) ) {
+        return ctx.body = { code: 405, message: '请输入正确的手机格式', data: '' }
+      }
+
       const result = await User.findOneAndUpdate({ _id: userId }, bodyData, { new: true })
       ctx.body = { code: 201, message: 'ok', data: result }
     }
     catch(e) {
-      ctx.body = { code: 500, message: '操作数据库时出错', data: e }
+      logger.error('admin update user error', e)
     }
   }
 
   //删除单个用户
   static async DeleteUser(ctx) {
-    const userId = ctx.userId
-    if(!userId) return ctx.body = { code: 400, message: '缺少必要的param: id', data: ''}
+
     try {
+      const userId = ctx.userId
+      if(!userId)
+        return ctx.body = { code: 400, message: '缺少必要的param: id', data: ''}
       const result = await User.remove({ _id: userId })
       ctx.body = { code: 201, message: 'ok', data: {} }
     }
     catch(e) {
-      ctx.body = { code: 500, message: '操作数据库时出错', data: e }
+      logger.error('admin delete user error', e)
     }
   }
 
   //news images
   static async uploadImgWithNews(ctx) {
-    const upload = await busboys (ctx)
-    if(upload.fieldname !== 'news')
-      return ctx.body = { code: 400, message: '参数值错误, key: news', data: '' }
-    if(!upload.success)
-      return ctx.body = { code: 501, message: '上传文件失败', data: upload }
-    ctx.body = { code: 201, message: '上传成功', data: { url: upload.file } }
+    try {
+      const upload = await busboys (ctx)
+      if(upload.fieldname !== 'news')
+        return ctx.body = { code: 400, message: '参数值错误, key: news', data: '' }
+      if(!upload.success)
+        return ctx.body = { code: 501, message: '上传文件失败', data: upload }
+      ctx.body = { code: 201, message: '上传成功', data: { url: upload.file } }
+    } catch(e) {
+      logger.error('admin upload news image error', e)
+    }
   }
 
   //创建消息
   static async createNew(ctx) {
-    let { title, abstract, content, published, images } = ctx.request.body
-    if( !title || !abstract || !content || !images.length )
-      return ctx.body = {
-        code: 400, 
-        message: '缺少必要的参数: title, abstract, content, published, images',
-        data: ''
-      }
-    const author = ctx.request.decoded.admin
-    const publish_time = published ? new Date() : null
+    try {
+      let { title, abstract, content, published, images } = ctx.request.body
+      if( !title || !abstract || !content || !images.length )
+        return ctx.body = {
+          code: 400, 
+          message: '缺少必要的参数: title, abstract, content, published, images',
+          data: ''
+        }
+      const author = ctx.request.decoded.admin
+      const publish_time = published ? new Date() : null
 
-    const news = new News({
-      title,
-      abstract,
-      content,
-      images,
-      author,
-      publish_time,
-      published
-    })
-    const result = await news.save()
-    ctx.body = { code: 201, message: '创建成功', data: result }
+      const news = new News({
+        title,
+        abstract,
+        content,
+        images,
+        author,
+        publish_time,
+        published
+      })
+      const result = await news.save()
+      ctx.body = { code: 201, message: '创建成功', data: result }
+    } catch (e) {
+      logger.error('admin create news error')
+    }
   }
 
   //获取所有消息
   static async getNews(ctx) {
-    const result = await News.find().sort('-updatedAt')
-    ctx.body = { code: 200, message: '获取成功', data: result }
+    try {
+      const result = await News.find().sort('-updatedAt')
+      ctx.body = { code: 200, message: '获取成功', data: result }
+    } catch(e) {
+      logger.error('admin get all news error', e)
+    }
   }
 
   //更新消息
   static async updateNew(ctx) {
-    const { id } = ctx.query
-    let bodyData = ctx.request.body
 
-    if(bodyData.published) {
-      bodyData = Object.assign({}, bodyData, { publish_time: new Date() })
+    try {
+      const { id } = ctx.query
+      let bodyData = ctx.request.body
+
+      if(bodyData.published) {
+        bodyData = Object.assign({}, bodyData, { publish_time: new Date() })
+      }
+      const result = await News.findOneAndUpdate({ _id: id }, bodyData, { new: true })
+
+      if(bodyData.publidshed === true) {
+        return  ctx.body = { code: 201, message: '发布成功', data: result }
+      }
+
+      ctx.body = { code: 201, message: '更新成功', data: result }
+    } catch(e) {
+      logger.error('admin update new error', e)
     }
-    const result = await News.findOneAndUpdate({ _id: id }, bodyData, { new: true })
-
-    if(bodyData.publidshed === true) {
-      return  ctx.body = { code: 201, message: '发布成功', data: result }
-    }
-
-    ctx.body = { code: 201, message: '更新成功', data: result }
 
   }
 
   static async deleteNew(ctx) {
-    const { id } = ctx.query
     try {
+      const { id } = ctx.query
       const singleNew = await News.findOne({ _id: id })
 
       singleNew.images.map(async (item, index) => {
@@ -233,85 +254,104 @@ class Admin {
       ctx.body = { code: 201, message: '删除成功', data: {} }
     }
     catch(e) {
-      console.log('删除文件失败')
-      ctx.body = { code: 500, message: '操作数据时出错', data: e }
+      logger.error('admin delete new error', e)
     }
   }
 
   static async getNewsById(ctx) {
-    let { id } = ctx.query
     try {
+      let { id } = ctx.query
       const result = await News.findById({ _id: id })
       ctx.body = { code: 200, message: '获取成功', data: result }
     }
     catch(e) {
-      ctx.body = { code: 500, message: '操作数据时出错', data: e }
+      logger.error('admin get new error', e)
     }
   }
 
   //bugs-category
 
   static async createBugCate (ctx) {
-    const { text } = ctx.request.body 
-    if(!text)
-      return ctx.body = { code: 400, message: '缺少必要的参数: text', data: '' }
-    const cate = new Category({
-      text: text,
-    })
-    const doc = await cate.save()
-    ctx.body = { code: 201, message: '创建成功', data: doc }
+    try {
+      const { text } = ctx.request.body 
+      if(!text)
+        return ctx.body = { code: 400, message: '缺少必要的参数: text', data: '' }
+      const cate = new Category({
+        text: text,
+      })
+      const doc = await cate.save()
+      ctx.body = { code: 201, message: '创建成功', data: doc }
+    } catch(e) {
+      logger.error('admin create bug category error', e)
+    }
   }
 
   static async getBugCates(ctx) {
-    const result = await Category.find({}).sort('-sortIndex').exec()
-    ctx.body = { code: 200, message: '获取成功', data: result}
+    try {
+      const result = await Category.find({}).sort('-sortIndex').exec()
+      ctx.body = { code: 200, message: '获取成功', data: result}
+    } catch(e) {
+      logger.error('admin get bug category error', e)
+    }
   }
 
   static async deleteBugCate(ctx) {
-    const id = ctx.categoryId
-    console.log(id)
-    const result = await Category.remove({ _id: id })
-    ctx.body = { code: 201, message: '删除成功', data: {} }
+    try {
+      const id = ctx.categoryId
+      console.log(id)
+      const result = await Category.remove({ _id: id })
+      ctx.body = { code: 201, message: '删除成功', data: {} }
+    } catch(e) {
+      logger.error('admin delete bug category error', e)
+    }
   }
 
   static async topBugCates(ctx) {
-    const { categoryId } = ctx.request.body
-    const { seq } = await Counter.findByIdAndUpdate({ _id: 'categoryId'}, { $inc: {seq: 1} }, { new: true, upsert: true })
-    const result = await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { sortIndex: seq } }, { new: true } )
-    ctx.body = { code: 201, message: '修改成功', data: result }
+    try {
+      const { categoryId } = ctx.request.body
+      const { seq } = await Counter.findByIdAndUpdate({ _id: 'categoryId'}, { $inc: {seq: 1} }, { new: true, upsert: true })
+      const result = await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { sortIndex: seq } }, { new: true } )
+      ctx.body = { code: 201, message: '修改成功', data: result }
+    } catch(e) {
+      logger.error('admin top bug category error', e)
+    }
   }
 
   //新建BUG
   static async createBug(ctx) {
-    let { title, category, content } = ctx.request.body
-    if( !title || !category || !content )
-      return ctx.body = { code: 400, message: '缺少必要的param: title, category, content', data: ''}
-
     try {
+      let { title, category, content } = ctx.request.body
+      if( !title || !category || !content )
+        return ctx.body = { code: 400, message: '缺少必要的param: title, category, content', data: ''}
+
       const result = await Bug.create({ title, category, content })
       ctx.body = { code: 201, message: '创建成功', data: result }
     }
     catch(e) {
-      ctx.body = { code: 503, message: '数据库出错', data: e }
+      logger.error('admin create bug error', e)
     }
   }
 
   static async updateBug(ctx) {
-    let id = ctx.bugId
-    let bodyData = ctx.request.body
+    try {
+      let id = ctx.bugId
+      let bodyData = ctx.request.body
 
-    const result = await Bug.findOneAndUpdate({ _id: id }, bodyData, { new: true })
-    ctx.body = { code: 201, message: '更新成功', data: result }
+      const result = await Bug.findOneAndUpdate({ _id: id }, bodyData, { new: true })
+      ctx.body = { code: 201, message: '更新成功', data: result }
+    } catch(e) {
+      logger.error('admin update bug error', e)
+    }
   }
 
   static async deleteBug(ctx) {
-    let id = ctx.bugId
     try {
+      let id = ctx.bugId
       const result = await Bug.remove({ _id: id })
       ctx.body = { code: 201, message: '删除成功', data: {} }
     }
     catch(e) {
-      ctx.body = { code: 500, message: '操作数据库出错', data: e }
+      logger.error('admin delete bug error', e)
     }
   }
 
@@ -324,78 +364,98 @@ class Admin {
       ctx.body = { code: 200, message: '获取成功', data: result }
     }
     catch(e) {
-      ctx.body = { code: 500, message: '操作数据库出错', data: e }
+      logger.error('admin get bugs error', e)
     }
   }
 
   static async uploadImgWithBug (ctx) {
-    const upload = await busboys (ctx)
-    if(upload.fieldname !== 'bugs')
-      return ctx.body = { code: 400, message: '参数值错误, key: news', data: '' }
-    if(!upload.success)
-      return ctx.body = { code: 501, message: '上传文件失败', data: upload }
-    ctx.body = { code: 201, message: '上传成功', data: { url: upload.file } }    
+    try {
+      const upload = await busboys (ctx)
+      if(upload.fieldname !== 'bugs')
+        return ctx.body = { code: 400, message: '参数值错误, key: news', data: '' }
+      if(!upload.success)
+        return ctx.body = { code: 501, message: '上传文件失败', data: upload }
+      ctx.body = { code: 201, message: '上传成功', data: { url: upload.file } }   
+    } catch(e) {
+      logger.error('admin upload image with bug error', e)
+    }
   }
 
   static async getBug(ctx) {
-    let id = ctx.bugId
     try {
+      let id = ctx.bugId
       const result = await Bug.findById({ _id: id }, '-isSolved')
                               .populate('category', 'text sortIndex')
       ctx.body = { code: 200, message: '获取成功', data: result }
     }
     catch(e) {
-      ctx.body = { code: 500, message: '操作数据库出错', data: e }
+      logger.error('admin get bug error', e)
     }
   }
 
   static async getOrders(ctx) {
-    const orders = await Order.find({}).sort('-createdAt')
-    ctx.body = { code: 200, message: '获取成功', data: orders }
+    try {
+      const orders = await Order.find({}).sort('-createdAt')
+      ctx.body = { code: 200, message: '获取成功', data: orders }
+    } catch(e) {
+      logger.error('admin get orders error', e)
+    }
   }
 
   static async getOrder(ctx) {
-    const id = ctx.orderId
-    const result = await Order.findById(id)
-    ctx.body = { code: 200, message: '获取成功', data: result }
+    try {
+      const id = ctx.orderId
+      const result = await Order.findById(id)
+      ctx.body = { code: 200, message: '获取成功', data: result }
+    } catch(e) {
+      logger.error('admin get order error', e)
+    }
   }
 
   static async deleteOrder(ctx) {
-    const id = ctx.orderId
-    const result = await Order.findByIdAndRemove({ _id: id })
-    ctx.body = { code: 201, message: 'ok', data: {} }
+    try {
+      const id = ctx.orderId
+      const result = await Order.findByIdAndRemove({ _id: id })
+      ctx.body = { code: 201, message: 'ok', data: {} }
+    } catch(e) {
+      logger.error('admin delete order error', e)
+    }
   }
 
   static async handleOrder(ctx) {
-    const id = ctx.orderId
-    const { advice } = ctx.request.body
-    if(!id || !advice)
-      return ctx.body = { code: 400, message: '缺少必要的参数：id, advice', data: '' }
-    const result = await Order.findOneAndUpdate({ _id: id}, { $set: { advice: advice, isHanlded: true } }, { new: true } )
+    try {
+      const id = ctx.orderId
+      const { advice } = ctx.request.body
+      if(!id || !advice)
+        return ctx.body = { code: 400, message: '缺少必要的参数：id, advice', data: '' }
+      const result = await Order.findOneAndUpdate({ _id: id}, { $set: { advice: advice, isHanlded: true } }, { new: true } )
     
-    const notice = new Notice({
-      types: 'order',
-      des: result.title,
-      status: result.isHanlded,
-      readed: false,
-      user: {
-        id: result.user.id,
-        name: result.user.name,
-        email: result.user.email,
-      },
-      order: {
-        id: result._id,
-        content: result.content,
-        feedback: result.advice,
-        time: new Date()
-      }
-    })
+      const notice = new Notice({
+        types: 'order',
+        des: result.title,
+        status: result.isHanlded,
+        readed: false,
+        user: {
+          id: result.user.id,
+          name: result.user.name,
+          email: result.user.email,
+        },
+        order: {
+          id: result._id,
+          content: result.content,
+          feedback: result.advice,
+          time: new Date()
+        }
+      })
 
-    const noticeResult = await notice.save()
+      const noticeResult = await notice.save()
 
-    if(!result)
-      return ctx.body = { code: 500, message: 'server error', data: '' }
-    ctx.body = { code: 201, message: '处理成功', data: result }
+      if(!result)
+        return ctx.body = { code: 500, message: 'server error', data: '' }
+      ctx.body = { code: 201, message: '处理成功', data: result }
+    } catch(e) {
+      logger.error('admin handleOrder error', e)
+    }
   }
 
   //devices
@@ -446,137 +506,166 @@ class Admin {
   }
 
   static async uploadImgWithDevice(ctx) {
-    const upload = await busboys (ctx)
-    if(upload.fieldname !== 'device')
-      return ctx.body = { code: 400, message: '参数值错误, key: device', data: '' }
-    if(!upload.success)
-      return ctx.body = { code: 501, message: '上传文件失败', data: upload }
-    ctx.body = { code: 201, message: '上传成功', data: { url: upload.file } }
+    try {
+      const upload = await busboys (ctx)
+      if(upload.fieldname !== 'device')
+        return ctx.body = { code: 400, message: '参数值错误, key: device', data: '' }
+      if(!upload.success)
+        return ctx.body = { code: 501, message: '上传文件失败', data: upload }
+      ctx.body = { code: 201, message: '上传成功', data: { url: upload.file } }
+    } catch(e) {
+      logger.error('admin uploadImgWithDevice error', e)
+    }
   }
 
   static async createDevice(ctx) {
-    const { name, number, images, cc, pressure, combustible, classify, description, address, timelines } = ctx.request.body
-    if(!name || !number || !cc || !pressure || !combustible || !description || !address ||!classify) {
-      return ctx.body = { code: 400, message: '缺少必要的参数：name, number, cc, pressure, combustible, description, address, classify', data: '' }
+    try {
+      const { name, number, images, cc, pressure, combustible, classify, description, address, timelines } = ctx.request.body
+      if(!name || !number || !cc || !pressure || !combustible || !description || !address ||!classify) {
+        return ctx.body = { code: 400, message: '缺少必要的参数：name, number, cc, pressure, combustible, description, address, classify', data: '' }
+      }
+
+      const location = []
+      location.push({
+        text: address,
+        time: new Date()
+      })
+
+      const device = new Device({
+        name,
+        number,
+        images,
+        cc,
+        pressure,
+        combustible,
+        description,
+        location,
+        timelines,
+        address,
+        classify
+      })
+      const result = await device.save()
+      ctx.body = { code: 201, message: '创建成功', data: result }
+    } catch(e) {
+      logger.error('admin create device error', e)
     }
-
-    const location = []
-    location.push({
-      text: address,
-      time: new Date()
-    })
-
-    const device = new Device({
-      name,
-      number,
-      images,
-      cc,
-      pressure,
-      combustible,
-      description,
-      location,
-      timelines,
-      address,
-      classify
-    })
-    const result = await device.save()
-    ctx.body = { code: 201, message: '创建成功', data: result }
   }
 
   static async getDevices(ctx) {
 
-    const { type } = ctx.query
+    try {
+      const { type } = ctx.query
 
-    //获取设备名称
-    if(type === 'name') {
-      const docs = await Device.find({}, 'name')
-      return ctx.body = { code: 200, message: '获取成功', data: docs }
-    }
+      //获取设备名称
+      if(type === 'name') {
+        const docs = await Device.find({}, 'name')
+        return ctx.body = { code: 200, message: '获取成功', data: docs }
+      }
 
-    var result = await Device.find({}).sort('-createdAt')
+      var result = await Device.find({}).sort('-createdAt')
 
-    const addIncharge = (result) => {
-      const promise = result.map(async (item, index) => {
-          var incharges = await Auth.find({ device: item._id }).populate('user', 'name')
-          var user = []
-          incharges.map((auth, i) => {
-            if(auth.user && auth.user.name) user.push(auth.user.name)
-          })
-          return Object.assign({}, item._doc, { incharges: user })
+      const addIncharge = (result) => {
+        const promise = result.map(async (item, index) => {
+            var incharges = await Auth.find({ device: item._id }).populate('user', 'name')
+            var user = []
+            incharges.map((auth, i) => {
+              if(auth.user && auth.user.name) user.push(auth.user.name)
+            })
+            return Object.assign({}, item._doc, { incharges: user })
+        })
+        return Promise.all(promise)
+      }
+
+      result = await addIncharge(result)
+      result = result.map((item, index) => {
+        item.location = item.location.sort((a, b) => {
+          return new Date(b.time).getTime() - new Date(a.time).getTime()
+        })
+        return item
       })
-      return Promise.all(promise)
+
+      ctx.body = { code: 200, message: '获取成功', data: result }
+    } catch (e) {
+      logger.error('admin get devices error', e)
     }
-
-    result = await addIncharge(result)
-    result = result.map((item, index) => {
-      item.location = item.location.sort((a, b) => {
-        return new Date(b.time).getTime() - new Date(a.time).getTime()
-      })
-      return item
-    })
-
-    ctx.body = { code: 200, message: '获取成功', data: result }
   }
 
   static async getDevice(ctx) {
-    const deviceId = ctx.deviceId
-    const doc = await Device.findById({_id: deviceId })
-    ctx.body = { code: 200, message: '获取成功', data: doc }
+    try {
+      const deviceId = ctx.deviceId
+      const doc = await Device.findById({_id: deviceId })
+      ctx.body = { code: 200, message: '获取成功', data: doc }
+    } catch (e) {
+      logger.error('admin get device error', e)
+    }
   }
 
   static async updateDevice(ctx) {
-    const deviceId = ctx.deviceId
-    const updateBody = ctx.request.body
-    const result = await Device.update({ _id: deviceId }, updateBody, { upsert: false })
-    ctx.body = { code: 201, message: '更新成功', data: result }
+    try {
+      const deviceId = ctx.deviceId
+      const updateBody = ctx.request.body
+      const result = await Device.update({ _id: deviceId }, updateBody, { upsert: false })
+      ctx.body = { code: 201, message: '更新成功', data: result }
+    } catch(e) {
+      logger.error('admin update device error', e)
+    }
   }
 
   static async deleteDevice(ctx) {
-    const deviceId = ctx.deviceId
-    const result = await Device.remove({ _id: id})
-    ctx.body = { code: 201, message: 'ok', data: result }
+    try {
+      const deviceId = ctx.deviceId
+      const result = await Device.remove({ _id: id})
+      ctx.body = { code: 201, message: 'ok', data: result }
+    } catch(e) {
+      logger.error('admin delete Device error', e)
+    }
   }
 
   static async updateDeviceLoaction(ctx) {
 
-    const deviceId = ctx.deviceId
-    const { address } = ctx.request.body
+    try {
+      const deviceId = ctx.deviceId
+      const { address } = ctx.request.body
 
-    const obj = {}
-    obj.text = address
-    obj.time = new Date()
+      const obj = {}
+      obj.text = address
+      obj.time = new Date()
 
-    const result = await Device.findByIdAndUpdate({ _id: deviceId }, { 
-      $push : { 'location' : obj },
-      $set : { 'address' : address }
-    }, 
-    { new: true , upsert: false })
-    ctx.body = { code: 201, message: '更新成功', data: result }
+      const result = await Device.findByIdAndUpdate({ _id: deviceId }, { 
+        $push : { 'location' : obj },
+        $set : { 'address' : address }
+      }, 
+      { new: true , upsert: false })
+      ctx.body = { code: 201, message: '更新成功', data: result }
+    } catch(e) {
+      logger.error('admin updateDeviceLoaction error', e)
+    }
   }
 
   static async deleteTimeLine(ctx) {
-    const deviceId = ctx.deviceId
-    const { lineId } = ctx.query
-    if(!lineId)
-      return ctx.body = { code: 400, message: '缺少必要的参数 lineId', data: '' }
     try {
+      const deviceId = ctx.deviceId
+      const { lineId } = ctx.query
+      if(!lineId)
+        return ctx.body = { code: 400, message: '缺少必要的参数 lineId', data: '' }
       const result = await Device.updateOne(
           { _id: deviceId },
           { $pull : { timelines: { _id : lineId } } }
         )
       ctx.body = { code: 201, message: '删除成功', data: result }
     } catch(e) {
-      console.error('删除时间线时发生错误', new Date())
+      logger.error('admin deleteTimeLine error', e)
     }
   }
 
   static async updateTimeLine(ctx) {
-    const deviceId = ctx.deviceId
-    const { lineId, line_type, line_des, line_time } = ctx.request.body
-    if( !lineId || !line_type || !line_des || !line_time) {
-      return ctx.body = { code: 200, message: '缺少必要的参数 lineId, lien_type, lien_des, line_time', data: '' }
-    }
     try {
+
+      const deviceId = ctx.deviceId
+      const { lineId, line_type, line_des, line_time } = ctx.request.body
+      if( !lineId || !line_type || !line_des || !line_time) {
+        return ctx.body = { code: 200, message: '缺少必要的参数 lineId, lien_type, lien_des, line_time', data: '' }
+      }
       const result = await Device.update(
           { _id: deviceId, "timelines._id" : lineId },
           { $set: { 
@@ -588,94 +677,116 @@ class Admin {
         )
       ctx.body = { code: 201, message: '更新成功', data: result }
     } catch(e) {
-      console.error('更新时间线失败', e, new Date())
+      logger.error('admin update timelines error')
     }
 
   }
 
   static async addAuth(ctx) {
     
-    const { userId, deviceId, canView, canMonitor } = ctx.request.body
+    try {
+      const { userId, deviceId, canView, canMonitor } = ctx.request.body
+      if( !userId || !deviceId || canView === undefined || canMonitor === undefined )
+        return ctx.body = { code: 400, message: '缺少必要的参数 userId, deviceId, canView, canMonitor', data: '' }
+      
+      const currentAuth = await Auth.find({})
 
+      const isReap = currentAuth.some((item, index) => {
+        return item.user == userId && item.device == deviceId
+      })
 
+      if(isReap) {
+        return ctx.body = { code: 403, message: '已创建该用户和该设备的权限', data: ''}
+      }
 
-    if( !userId || !deviceId || canView === undefined || canMonitor === undefined )
-      return ctx.body = { code: 400, message: '缺少必要的参数 userId, deviceId, canView, canMonitor', data: '' }
-    
-    const currentAuth = await Auth.find({})
-
-    const isReap = currentAuth.some((item, index) => {
-      return item.user == userId && item.device == deviceId
-    })
-
-    if(isReap) {
-      return ctx.body = { code: 403, message: '已创建该用户和该设备的权限', data: ''}
+      const result = await Auth.create({
+        user: userId,
+        device: deviceId,
+        canView: canView,
+        canMonitor: canMonitor
+      })
+      ctx.body = { code: 201, message: '创建成功', data: result }
+    } catch(e) {
+      logger.error('addAuth error', e)
     }
-
-    const result = await Auth.create({
-      user: userId,
-      device: deviceId,
-      canView: canView,
-      canMonitor: canMonitor
-    })
-    ctx.body = { code: 201, message: '创建成功', data: result }
   }
 
   static async getAuths(ctx) {
-    const result = await Auth.find({})
-                .populate('user', 'name')
-                .populate('device', 'name number')
-    ctx.body = { code: 200, message: '获取成功', data: result }
+    try {
+      const result = await Auth.find({})
+                  .populate('user', 'name')
+                  .populate('device', 'name number')
+      ctx.body = { code: 200, message: '获取成功', data: result }
+    } catch(e) {
+      logger.error('admin get Auths error')
+    }
   }
 
   static async getAuth(ctx) {
-    const { authId } = ctx.query
-    const result = await Auth.findOne({_id: authId})
-                .populate('user', 'name')
-                .populate('device', 'name number')
-    ctx.body = { code: 200, message: '获取成功', data: result }
+    try {
+      const { authId } = ctx.query
+      const result = await Auth.findOne({_id: authId})
+                  .populate('user', 'name')
+                  .populate('device', 'name number')
+      ctx.body = { code: 200, message: '获取成功', data: result }
+    } catch(e) {
+      logger.error('admin get Auth error')
+    }
   }
 
   static async deleteAuth(ctx) {
-    const { authId } = ctx.query
     try {
+    const { authId } = ctx.query
       const result = await Auth.remove({ _id: authId })
       ctx.body = { code: 201, message: '删除成功', data: {} }
     }
     catch(e) {
-      console.error('删除权限时出错', new Date())
+      logger.error('admin delete Auth error', e)
     }
   }
 
 
   static async updateAuth(ctx) {
-    const { authId } = ctx.query
-    const updateBody = ctx.request.body
+    try {
+      const { authId } = ctx.query
+      const updateBody = ctx.request.body
 
-    const result = await Auth.findByIdAndUpdate({ _id: authId }, updateBody, { new: true })
-    ctx.body = { code: 201, message: '更新成功', data: result }
+      const result = await Auth.findByIdAndUpdate({ _id: authId }, updateBody, { new: true })
+      ctx.body = { code: 201, message: '更新成功', data: result }
+    } catch(e) {
+      logger.error('admin update Auth error', e)
+    }
   }
 
   //parts
   static async getParts(ctx) {
+    try {
     const docs = await Part.find({})
-    ctx.body = { code: 200, message: 'ok', data: docs }
+      ctx.body = { code: 200, message: 'ok', data: docs }
+    } catch(e) {
+      logger.error('admin get parts error', e)
+    }
   }
 
   static async setPartRemark(ctx) {
 
-    const { deviceId, remark } = ctx.request.body
-    const { partId } = ctx.query
+    try {
 
-    const device = await Device.findOne({ _id: deviceId }, { name:1, number: 1})
-    const { name, number } = device
+      const { deviceId, remark } = ctx.request.body
+      const { partId } = ctx.query
 
-    const result = await Part.findByIdAndUpdate(
-          { _id: partId },
-          { $set: { deviceCode: number, deviceName: name, remark: remark } },
-          { new: true }
-        )
-    ctx.body = { code: 201, message: '修改成功', data: result }
+      const device = await Device.findOne({ _id: deviceId }, { name:1, number: 1})
+      const { name, number } = device
+
+      const result = await Part.findByIdAndUpdate(
+            { _id: partId },
+            { $set: { deviceCode: number, deviceName: name, remark: remark } },
+            { new: true }
+          )
+      ctx.body = { code: 201, message: '修改成功', data: result }
+    } catch(e) {
+      logger.error('admin setPartRemark error', e)
+    }
   }
 
 
