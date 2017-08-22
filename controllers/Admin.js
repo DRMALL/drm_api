@@ -17,86 +17,98 @@ const { cert, initAdmins } = require('../config')
 const transforExcel = require('../utils/transforExcel')
 const nodeExcel  = require('excel-export')
 const Validate = require('../utils/Validate')
+const logger = require('../utils/logger')
 
 class Admin {
 
   //管理员登录
   static async session(ctx) {
 
-    const { admin, password } = ctx.request.body
-    if(!admin || !password)
-      return ctx.body = { code: 400, message: '缺少必要的参数 admin, password', data: '' }
-    
-    const valid = initAdmins.some((item, index) => {
-      return item.admin === admin && item.password === password
-    })
+    try {
+      const { admin, password } = ctx.request.body
+      if(!admin || !password)
+        return ctx.body = { code: 400, message: '缺少必要的参数 admin, password', data: '' }
+      
+      const valid = initAdmins.some((item, index) => {
+        return item.admin === admin && item.password === password
+      })
 
-    if(!valid)
-      return ctx.body = { code: 403, message: '用户名或密码错误', data: '' }
+      if(!valid)
+        return ctx.body = { code: 403, message: '用户名或密码错误', data: '' }
 
-    const token = jwt.sign({ admin, password }, cert, { expiresIn: '7d' })
-    ctx.body = { code: 201, message: 'ok', data: token }
+      const token = jwt.sign({ admin, password }, cert, { expiresIn: '7d' })
+      ctx.body = { code: 201, message: 'ok', data: token }
+    } catch(e) {
+      logger.error('管理员登录失败:', e)
+    }
   }
 
   //新增用户
   static async newUser(ctx) {
+    try {
+      const { name, password, email, phone, company_name, address } = ctx.request.body
 
-    const { name, password, email, phone, company_name, address } = ctx.request.body
+      const val = Validate.ifLackPara({ name, password, email, phone, company_name, address })
 
-    const val = Validate.ifLackPara({ name, password, email, phone, company_name, address })
-
-    if(!val.result) {
-      return ctx.body = {
-        code: 400,
-        message: val.message,
-        data: ''
+      if(!val.result) {
+        return ctx.body = {
+          code: 400,
+          message: val.message,
+          data: ''
+        }
       }
-    }
 
-    if(!Validate.isEmail(email)) {
-      return ctx.body = {
-        code: 402,
-        message: '请输入正确的邮箱地址',
-        data: ''
+      if(!Validate.isEmail(email)) {
+        return ctx.body = {
+          code: 402,
+          message: '请输入正确的邮箱地址',
+          data: ''
+        }
       }
-    }
 
-    if(!Validate.isPhone(phone)) {
-      return ctx.body = {
-        code: 402,
-        message: '请输入正确的手机号码',
-        data: ''
+      if(!Validate.isPhone(phone)) {
+        return ctx.body = {
+          code: 402,
+          message: '请输入正确的手机号码',
+          data: ''
+        }
       }
+
+      const curUsers = await User.find({}, '-password')
+
+      const valida = curUsers.some((element, index) => {
+        return element.email === email
+      })
+
+      if(valida) return ctx.body = { code: 402, message: '该邮箱已被注册', data: ''}    
+      
+      const encryptPass = await hash(password)
+
+      let result = await User.create({ name, email, password: encryptPass, phone, company_name, address })
+      result.password = undefined
+      ctx.body = { code: 201, message: 'ok', data: result } 
+    } catch(e) {
+      logger.error('新增用户失败' , e)
     }
-
-    const curUsers = await User.find({}, '-password')
-
-    const valida = curUsers.some((element, index) => {
-      return element.email === email
-    })
-
-    if(valida) return ctx.body = { code: 402, message: '该邮箱已被注册', data: ''}    
-    
-    const encryptPass = await hash(password)
-
-    let result = await User.create({ name, email, password: encryptPass, phone, company_name, address })
-    result.password = undefined
-    ctx.body = { code: 201, message: 'ok', data: result } 
   }
 
   //获取所有用户
   static async getUsers (ctx) {
-    const { type } = ctx.query
-    if(type === 'name') {
-      let docs = await User.find({}, 'name').sort('-createdAt')
-      return ctx.body = { code: 200, message: 'ok', data: docs }
-    }
     try {
-      const result = await User.find({}, '-password').sort('-createdAt')
-      ctx.body = { code: 200, message: 'ok', data: result }
-    }
-    catch(e) {
-      ctx.body = { code: 500, message: '操作数据库时出错', data: e }
+      const { type } = ctx.query
+      if(type === 'name') {
+        let docs = await User.find({}, 'name').sort('-createdAt')
+        return ctx.body = { code: 200, message: 'ok', data: docs }
+      }
+      try {
+        const result = await User.find({}, '-password').sort('-createdAt')
+        ctx.body = { code: 200, message: 'ok', data: result }
+      }
+      catch(e) {
+        ctx.body = { code: 500, message: '操作数据库时出错', data: e }
+      }
+    } catch(e) {
+      logger.error('admin get all users failed')
     }
   }
 
@@ -162,14 +174,25 @@ class Admin {
   //创建消息
   static async createNew(ctx) {
     let { title, abstract, content, published, images } = ctx.request.body
-    if( !title || !abstract || !content || published === undefined || !images.length )
+    if( !title || !abstract || !content || published || !images.length )
       return ctx.body = {
         code: 400, 
         message: '缺少必要的参数: title, abstract, content, published, images',
         data: ''
       }
     const author = ctx.request.decoded.admin
-    const result = await News.create({ title, abstract, content, author, published, images })
+    const publish_time = published ? new Date() : null
+
+    const news = new News({
+      title,
+      abstract,
+      content,
+      images,
+      author,
+      publish_time,
+      published
+    })
+    const result = await news.save()
     ctx.body = { code: 201, message: '创建成功', data: result }
   }
 
@@ -187,7 +210,7 @@ class Admin {
     if(bodyData.published) {
       bodyData = Object.assign({}, bodyData, { publish_time: new Date() })
     }
-    const result = await News.findOneAndUpdate({ _id: id }, bodyData, { new: true, upsert: true })
+    const result = await News.findOneAndUpdate({ _id: id }, bodyData, { new: true })
 
     if(bodyData.publidshed === true) {
       return  ctx.body = { code: 201, message: '发布成功', data: result }
