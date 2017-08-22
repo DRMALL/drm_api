@@ -1,5 +1,6 @@
 
 const bcrypt = require('bcrypt');
+const fs = require('fs')
 
 
 function hash(password) {
@@ -14,6 +15,16 @@ function hash(password) {
   })
 }
 
+function unlink(path) {
+  return new Promise((resolve, reject) => {
+    fs.unlink(path, err => {
+      if(err) reject(err)
+      else resolve()
+    })
+  })
+}
+
 module.exports = {
   hash,
+  unlink
 }

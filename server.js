@@ -1,7 +1,7 @@
 
 const Koa = require('koa')
     , app = new Koa()
-    , koaBody = require('koa-body')
+    , bodyParse = require('koa-bodyparser')
     , path = require('path')
     , router = require('./routes')
     , db = require('./db')
@@ -17,13 +17,12 @@ app.use(cors())
 var server = require('http').Server(app.callback())
 var io = require('socket.io')(server)
 
-app.use(koaBody({ multipart: true }))
+app.use(bodyParse())
 app.use(router.routes())
 app.use(router.allowedMethods())
 
 
 new WebSocket(io)
-
 
 // for test case
 module.exports = app

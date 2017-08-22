@@ -90,6 +90,7 @@ app = https://api.wardenger.me/app
 
   * [获取配件](#获取配件)
   * [更新配件备注](#更新配件备注)
+  * [故障诊断](#故障诊断)
 
 
 
@@ -654,6 +655,18 @@ POST https://api.wardenger.me/admin/parts/remark?partId=${partId}&token=${token}
 {
   deviceId:'',
   remark: ''
+}
+```
+
+### 上传故障诊断图片
+
+```
+POST https://api.wardenger.me/admin/bugs/uploadimg?token=${token}
+```
+
+```
+{
+  key: 'bugs'
 }
 ```
 

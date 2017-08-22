@@ -305,6 +305,15 @@ class Admin {
     }
   }
 
+  static async uploadImgWithBug (ctx) {
+    const upload = await busboys (ctx)
+    if(upload.fieldname !== 'bugs')
+      return ctx.body = { code: 400, message: '参数值错误, key: news', data: '' }
+    if(!upload.success)
+      return ctx.body = { code: 501, message: '上传文件失败', data: upload }
+    ctx.body = { code: 201, message: '上传成功', data: { url: upload.file } }    
+  }
+
   static async getBug(ctx) {
     let id = ctx.bugId
     try {

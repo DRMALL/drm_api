@@ -9,7 +9,6 @@ const adminLogin = require('./adminLogin')
 const userLogin = require('./userLogin')
 
 const adminUser = require('./admin/adminUser')
-const adminNew = require('./admin/adminNew')
 
 const router = new Router()
 
@@ -20,8 +19,6 @@ router.post('/app/session', userLogin)
 router.use('*', verifyToken)
 
 router.use('/admin/users', adminUser.routes(), adminUser.allowedMethods())
-// router.use('/admin/news', adminNew.routes(), adminNew.allowedMethods())
-
 
 router.post('/admin/news/uploadimg', Admin.uploadImgWithNews)
 router.post('/admin/news/new', Admin.createNew)
@@ -44,6 +41,7 @@ router.param('categoryId', function(id, ctx, next) {
 //bugs
 router.get('/admin/bugs', Admin.getBugs)
 router.post('/admin/bugs', Admin.createBug)
+router.post('/admin/bugs/uploadimg', Admin.uploadImgWithBug)
 router.param('bugId', function(id, ctx, next) {
   ctx.bugId = id
   if(!ctx.bugId) return ctx.status = 404;
