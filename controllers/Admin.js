@@ -187,7 +187,7 @@ class Admin {
     if(bodyData.published) {
       bodyData = Object.assign({}, bodyData, { publish_time: new Date() })
     }
-    const result = await News.findOneAndUpdate({ _id: id }, bodyData, { new: true })
+    const result = await News.findOneAndUpdate({ _id: id }, bodyData, { new: true, upsert: true })
 
     if(bodyData.publidshed === true) {
       return  ctx.body = { code: 201, message: '发布成功', data: result }
