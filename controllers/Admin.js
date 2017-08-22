@@ -18,7 +18,7 @@ const transforExcel = require('../utils/transforExcel')
 const nodeExcel  = require('excel-export')
 const Validate = require('../utils/Validate')
 const logger = require('../utils/logger')
-
+// deleteDevice
 class Admin {
 
   //管理员登录
@@ -614,7 +614,7 @@ class Admin {
   static async deleteDevice(ctx) {
     try {
       const deviceId = ctx.deviceId
-      const result = await Device.remove({ _id: id})
+      const result = await Device.remove({ _id: deviceId })
       ctx.body = { code: 201, message: 'ok', data: result }
     } catch(e) {
       logger.error('admin delete Device error', e)
