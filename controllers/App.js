@@ -290,10 +290,19 @@ class App {
     
       const { createTime, type, value, cc, pressure, combustible, address } = ctx.request.query
       // var devices;
+      const { id } = ctx.request.decoded
+
+      const matchArr = await Auth.find({ user: id, canView: true })
+      var deviceArr = []
+
+      matchArr.map((item, index) => {
+        deviceArr.push(item.device)
+      })
+
 
       //按时间排序
       if(createTime == "desc" || createTime == "asc") {
-        const devices = await Device.find().sort({ createdAt: createTime })
+        const devices = await Device.find({ _id: { $in: deviceArr } }).sort({ createdAt: createTime })
         return ctx.body = { code: 200, message: 'ok', data: devices }
       }
 
@@ -301,7 +310,7 @@ class App {
       else if(type && value) {
         const find = {}
         find[type] = value
-        const devices = await Device.find( find )
+        const devices = await Device.find( Object.assign({}, find, { _id: { $in: deviceArr } }) )
         return ctx.body = { code: 200, message: 'ok', data: devices }
       }
 
@@ -313,12 +322,12 @@ class App {
             delete obj[key]
         }
 
-        const devices = await Device.find(obj)
+        const devices = await Device.find( Object.assign({}, obj, { _id: { $in: deviceArr } }) )
         return ctx.body = { code: 200, message: 'ok', data: devices }
       }
 
       else {
-        const devices = await Device.find({})
+        const devices = await Device.find({ _id: { $in: deviceArr } })
         ctx.body = { code: 200, message: 'ok', data: devices }
       }
     } catch(e) {
