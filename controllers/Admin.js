@@ -174,7 +174,7 @@ class Admin {
   //创建消息
   static async createNew(ctx) {
     let { title, abstract, content, published, images } = ctx.request.body
-    if( !title || !abstract || !content || published || !images.length )
+    if( !title || !abstract || !content || !images.length )
       return ctx.body = {
         code: 400, 
         message: '缺少必要的参数: title, abstract, content, published, images',
