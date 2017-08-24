@@ -577,19 +577,13 @@ class Admin {
       }
 
       result = await addIncharge(result)
-      
+
       result = result.map((item, index) => {
         item.location = item.location.sort((a, b) => {
           return new Date(b.time).getTime() - new Date(a.time).getTime()
         })
         return item
       })
-
-      // result = result.map((item, index) => {
-      //   item.timelines = item.timelines.sort((a, b) => {
-      //     return new Date(a.line_time).getTime() - new Date(b.line_time).getTime()
-      //   })
-      // })
 
       ctx.body = { code: 200, message: '获取成功', data: result }
     } catch (e) {
@@ -601,13 +595,11 @@ class Admin {
     try {
 
       var deviceId = ctx.deviceId
-      var doc = await Device.findById({_id: deviceId })
+      var doc = await Device.findById({ _id: deviceId })
 
-      // doc = doc.map((item, index) => {
-      //   item.timelines = item.timelines.sort((a, b) => {
-      //     return new Date(a.line_time).getTime() - new Date(b.line_time).getTime()
-      //   })
-      // })
+      doc.timelines = doc.timelines.sort((a, b) => {
+        return new Date(b.line_time).getTime() - new Date(a.line_time).getTime()
+      })
 
       ctx.body = { code: 200, message: '获取成功', data: doc }
     } catch (e) {
