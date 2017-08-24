@@ -598,9 +598,9 @@ class Admin {
 
   static async getDevice(ctx) {
     try {
-      
-      const deviceId = ctx.deviceId
-      const doc = await Device.findById({_id: deviceId })
+
+      var deviceId = ctx.deviceId
+      var doc = await Device.findById({_id: deviceId })
 
       doc = doc.map((item, index) => {
         item.timelines = item.timelines.sort((a, b) => {
