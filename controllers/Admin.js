@@ -583,6 +583,12 @@ class Admin {
         })
         return item
       })
+      
+      result = result.map((item, index) => {
+        item.timelines = item.timelines.sort((a, b) => {
+          return new Date(a.line_time).getTime() - new Date(b.line_time).getTime()
+        })
+      })
 
       ctx.body = { code: 200, message: '获取成功', data: result }
     } catch (e) {
