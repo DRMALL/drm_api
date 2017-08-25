@@ -97,7 +97,7 @@ class Admin {
     try {
       const { type } = ctx.query
       if(type === 'name') {
-        let docs = await User.find({}, 'name email').sort('-createdAt')
+        let docs = await User.find({}, { name: 1, email: 1 }).sort('-createdAt')
         return ctx.body = { code: 200, message: 'ok', data: docs }
       }
       const result = await User.find({}, '-password').sort('-createdAt')

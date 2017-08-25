@@ -10,7 +10,7 @@ adminUser.get('/', async (ctx) => {
   let { type } = ctx.query
   try {
     if(type === 'name') {
-      let docs = await User.find({}, 'name').sort('-createdAt')
+      let docs = await User.find({}, 'name email').sort('-createdAt')
       return ctx.body = { code: 200, message: 'ok', data: docs }
     }
     let result = await User.find({}, '-password').sort('-createdAt')
