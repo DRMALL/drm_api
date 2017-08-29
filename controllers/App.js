@@ -153,28 +153,30 @@ class App {
         // 有这个词就权重加1,没有这个词就创建。
         if(search) {
           const hot = await Hot.findOneAndUpdate({ type: 'bug', text: search }, { $inc: { weights: 1 }}, { new: true, upsert: true })
-          ctx.body = { code: 200, message: 'ok', data: hot }
+          return ctx.body = { code: 200, message: 'ok', data: hot }
         }
       }
 
       else if(type === 'onchange') {
         logger.info('search', search)
-        let result = await Bug.find({ $text: { $search: search } })
+        
+        let doc = await Bug.find({ $text: { $search : search } })
 
-        logger.info('before: ', result)
+        logger.info('before: ', doc)
+
         // result = result.map((item, index) => {
         //   item.content = stripTags(item.content)
         //   return item
         // })
-        logger.info('after: ', result)
 
-        ctx.body = { code: 200, message: 'ok', data: result }
+        return ctx.body = { code: 200, message: 'ok', data: doc }
       }
 
       else {
         let result = await Bug.find({}).populate('category', 'text sortIndex')
         ctx.body = { code: 200, message: 'ok', data: result }      
       }
+
     } catch(e) {
       logger.error('get bugs error', e)
     }
