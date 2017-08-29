@@ -10,6 +10,9 @@ const userLogin = require('./userLogin')
 const adminUser = require('./admin/adminUser')
 
 const timeline = require('./timeline')
+const ccsort = require('./ccsort')
+const presort = require('./presort')
+const fuelsort = require('./fuelsort')
 
 const router = new Router()
 
@@ -20,6 +23,9 @@ router.post('/app/session', userLogin)
 router.use('*', verifyToken)
 
 router.use('/admin/timelines', timeline.routes(), timeline.allowedMethods())
+router.use('/admin/ccsorts', ccsort.routes(), ccsort.allowedMethods())
+router.use('/admin/presorts', presort.routes(), presort.allowedMethods())
+router.use('/admin/fuelsorts', fuelsort.routes(), fuelsort.allowedMethods())
 
 router.use('/admin/users', adminUser.routes(), adminUser.allowedMethods())
 

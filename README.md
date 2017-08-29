@@ -92,6 +92,27 @@ app = https://api.wardenger.me/app
   * [更新配件备注](#更新配件备注)
   * [上传故障诊断图片](#上传故障诊断图片)
 
+  * [创建时间线分类](#创建时间线分类)
+  * [获取所有时间线分类](#获取所有时间线分类)
+  * [获取单个时间线分类](#获取单个时间线分类)
+  * [更新单个时间线分类](#更新单个时间线分类)
+  * [删除时间线分类](#删除时间线分类)
+  * [创建排量分类](#创建排量分类)
+  * [获取所有排量分类](#获取所有排量分类)
+  * [获取单个排量分类](#获取单个排量分类)
+  * [更新单个排量分类](#更新单个排量分类)
+  * [删除单个排量分类](#删除多个排量分类)
+  * [创建压力分类](#创建压力分类)
+  * [获取所有压力分类](#获取所有压力分类)
+  * [获取单个压力分类](#获取单个压力分类)
+  * [更新单个压力分类](#更新单个压力分类)
+  * [删除单个压力分类](#删除单个压力分类)
+  * [创建燃料分类](#创建燃料分类)
+  * [获取所有燃料分类](#获取所有燃料分类)
+  * [获取单个燃料分类](#获取单个燃料分类)
+  * [更新单个燃料分类](#更新单个燃料分类)
+  * [删除单个燃料分类](#删除单个燃料分类)
+
 
 
 # App
@@ -669,6 +690,116 @@ POST https://api.wardenger.me/admin/bugs/uploadimg?token=${token}
   key: 'bugs'
 }
 ```
+
+### 创建时间线分类
+
+```
+POST https://api.wardenger.me/admin/timelines?token=${token}
+```
+```
+{
+  text: ''
+}
+```
+
+### 获取所有时间线分类
+```
+GET https://api.wardenger.me/admin/timelines?token=${token}
+```
+
+### 获取单个时间线分类
+```
+GET https://api.wardenger.me/admin/timelines/:id?token=${token}
+```
+
+### 更新单个时间线分类
+```
+PUT https://api.wardenger.me/admin/timelines/:id?token=${token}
+```
+
+### 删除时间线分类
+```
+DELETE https://api.wardenger.me/admin/timelines/:id?token=${token}
+````
+
+### 创建排量分类
+```
+POST https://api.wardenger.me/admin/ccsorts?token=${token}
+```
+
+### 获取所有排量分类
+```
+GET https://api.wardenger.me/admin/ccsorts?token=${token}
+```
+
+### 获取单个排量分类
+```
+GET https://api.wardenger.me/admin/ccsorts/:id?token=${token}
+```
+
+### 更新单个排量分类
+```
+PUT https://api.wardenger.me/admin/ccsorts/:id?token=${token}
+```
+
+### 删除单个排量分类
+```
+DELETE https://api.wardenger.me/admin/ccsorts/:id?token=${token}
+```
+
+### 创建压力分类
+```
+POST https://api.wardenger.me/admin/presorts?token=${token}
+```
+
+### 获取所有压力分类
+```
+GET https://api.wardenger.me/admin/presorts?token=${token}
+```
+
+### 获取单个压力分类
+```
+GET https://api.wardenger.me/admin/presorts/:id?token=${token}
+```
+
+### 更新单个压力分类
+```
+PUT https://api.wardenger.me/admin/presorts/:id?token=${token}
+```
+
+### 删除单个压力分类
+```
+DELETE https://api.wardenger.me/admin/presorts/:id?token=${token}
+```
+
+### 创建燃料分类
+```
+POST https://api.wardenger.me/admin/fuelsorts?token=${token}
+```
+
+### 获取所有燃料分类
+```
+GET https://api.wardenger.me/admin/fuelsorts?token=${token}
+```
+
+### 获取单个燃料分类
+```
+GET https://api.wardenger.me/admin/fuelsorts/:id?token=${token}
+```
+
+### 更新单个燃料分类
+```
+PUT https://api.wardenger.me/admin/fuelsorts/:id?token=${token}
+```
+
+### 删除单个燃料分类
+```
+DELETE https://api.wardenger.me/admin/fuelsorts/:id?token=${token}
+```
+
+
+
+
 
 
 

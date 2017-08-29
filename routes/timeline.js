@@ -17,6 +17,14 @@ timeline.get('/', async (ctx) => {
   ctx.body = { code: 200, message: 'ok', data: docs }
 })
 
+
+timeline.get('/:id', async (ctx) => {
+  const id = ctx.params.id
+  const docs = await TimeLine.find({ _id: id })
+  ctx.body = { code: 200, message: 'ok', data: docs }
+})
+
+
 timeline.put('/:id', async (ctx) => {
   const body = ctx.request.body
   const id = ctx.params.id
@@ -29,9 +37,6 @@ timeline.delete('/:id', async (ctx) => {
   const result = await TimeLine.remove({ _id: id })
   ctx.body = { code: 201, message: 'ok', data: result }
 })
-
-
-
 
 
 module.exports = timeline

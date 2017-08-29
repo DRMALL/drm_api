@@ -1,42 +1,44 @@
-const Router = require('koa-router')
-const ccsort = new Router()
-const CCSort = require('../model/CCSort')
 
-ccsort.post('/', async (ctx) => {
+const Router = require('koa-router')
+const fuelsort = new Router()
+const FuelSort = require('../model/FuelSort')
+
+fuelsort.post('/', async (ctx) => {
   const { text } = ctx.request.body
   if(!text) {
     return ctx.body = { code: 400, message: '缺少必要的参数text', data: '' }
   }
-  const doc = await CCsort.create({ text })
+  const doc = await FuelSort.create({ text })
   ctx.body = { code: 201, message: 'ok', data: doc }
 })
 
 
-ccsort.get('/', async (ctx) => {
-  const docs = await CCsort.find({})
+fuelsort.get('/', async (ctx) => {
+  const docs = await FuelSort.find({})
   ctx.body = { code: 200, message: 'ok', data: docs }
 })
 
 
-ccsort.get('/:id', async (ctx) => {
+fuelsort.get('/:id', async (ctx) => {
   const id = ctx.params.id
-  const doc = await CCsort.find({ _id: id })
+  const doc = await FuelSort.find({ _id: id })
   ctx.body = { code: 200, message: 'ok', data: doc }
 })
 
 
-ccsort.put('/:id', async (ctx) => {
+fuelsort.put('/:id', async (ctx) => {
   const body = ctx.request.body
   const id = ctx.params.id
-  const result = await CCsort.findByIdAndUpdate({_id: id}, body, { new: true })
+  const result = await FuelSort.findByIdAndUpdate({_id: id}, body, { new: true })
   ctx.body = { code: 201, message: 'ok', data: result }
 })
 
-ccsort.delete('/:id', async (ctx) => {
+fuelsort.delete('/:id', async (ctx) => {
   const id = ctx.params.id
-  const result = await CCsort.remove({ _id: id })
+  const result = await FuelSort.remove({ _id: id })
   ctx.body = { code: 201, message: 'ok', data: result }
 })
 
 
-module.exports = ccsort
+module.exports = fuelsort
+

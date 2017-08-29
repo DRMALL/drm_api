@@ -1,42 +1,43 @@
-const Router = require('koa-router')
-const ccsort = new Router()
-const CCSort = require('../model/CCSort')
 
-ccsort.post('/', async (ctx) => {
+const Router = require('koa-router')
+const presort = new Router()
+const PreSort = require('../model/PreSort')
+
+presort.post('/', async (ctx) => {
   const { text } = ctx.request.body
   if(!text) {
     return ctx.body = { code: 400, message: '缺少必要的参数text', data: '' }
   }
-  const doc = await CCsort.create({ text })
+  const doc = await PreSort.create({ text })
   ctx.body = { code: 201, message: 'ok', data: doc }
 })
 
 
-ccsort.get('/', async (ctx) => {
-  const docs = await CCsort.find({})
+presort.get('/', async (ctx) => {
+  const docs = await PreSort.find({})
   ctx.body = { code: 200, message: 'ok', data: docs }
 })
 
 
-ccsort.get('/:id', async (ctx) => {
+presort.get('/:id', async (ctx) => {
   const id = ctx.params.id
-  const doc = await CCsort.find({ _id: id })
+  const doc = await PreSort.find({ _id: id })
   ctx.body = { code: 200, message: 'ok', data: doc }
 })
 
 
-ccsort.put('/:id', async (ctx) => {
+presort.put('/:id', async (ctx) => {
   const body = ctx.request.body
   const id = ctx.params.id
-  const result = await CCsort.findByIdAndUpdate({_id: id}, body, { new: true })
+  const result = await PreSort.findByIdAndUpdate({_id: id}, body, { new: true })
   ctx.body = { code: 201, message: 'ok', data: result }
 })
 
-ccsort.delete('/:id', async (ctx) => {
+presort.delete('/:id', async (ctx) => {
   const id = ctx.params.id
-  const result = await CCsort.remove({ _id: id })
+  const result = await PreSort.remove({ _id: id })
   ctx.body = { code: 201, message: 'ok', data: result }
 })
 
 
-module.exports = ccsort
+module.exports = presort
