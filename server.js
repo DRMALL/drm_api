@@ -9,6 +9,7 @@ const Koa = require('koa')
     , static = require('koa-static')
     , WebSocket = require('./websocket')
     , staticPath = './static'
+    , socketServer = require('./socket')
 
 
 app.use(static(path.join( __dirname, staticPath)))
@@ -20,6 +21,7 @@ var io = require('socket.io')(server)
 app.use(bodyParse())
 app.use(router.routes())
 app.use(router.allowedMethods())
+
 
 
 new WebSocket(io)

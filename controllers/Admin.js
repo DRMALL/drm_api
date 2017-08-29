@@ -19,6 +19,7 @@ const nodeExcel  = require('excel-export')
 const Validate = require('../utils/Validate')
 const logger = require('../utils/logger')
 // deleteDevice
+// Create
 class Admin {
 
   //管理员登录
@@ -795,7 +796,6 @@ class Admin {
       logger.error('admin setPartRemark error', e)
     }
   }
-
 
 }
 

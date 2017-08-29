@@ -7,8 +7,9 @@ const verifyToken = require('../utils/verifyToken')
 
 const adminLogin = require('./adminLogin')
 const userLogin = require('./userLogin')
-
 const adminUser = require('./admin/adminUser')
+
+const timeline = require('./timeline')
 
 const router = new Router()
 
@@ -17,6 +18,8 @@ router.post('/admin/session', adminLogin)
 router.post('/app/session', userLogin)
 
 router.use('*', verifyToken)
+
+router.use('/admin/timelines', timeline.routes(), timeline.allowedMethods())
 
 router.use('/admin/users', adminUser.routes(), adminUser.allowedMethods())
 
