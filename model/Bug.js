@@ -28,5 +28,7 @@ bugSchema.statics.searchByContent = function(search) {
   })
 }
 
+bugSchema.index({ title: "text", content: "text" })
+
 module.exports = mongoose.model('Bug', bugSchema)
 

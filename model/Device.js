@@ -27,5 +27,7 @@ const deviceSchema = Schema({
   remark: String,
 }, { timestamps: true })
 
+deviceSchema.index({ name: 'text', description: 'text' })
+
 
 module.exports = mongoose.model('Device', deviceSchema)

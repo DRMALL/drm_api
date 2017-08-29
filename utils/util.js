@@ -24,7 +24,13 @@ function unlink(path) {
   })
 }
 
+function stripTags (str) {
+  str += ''
+  return str.replace(/<[^>]*?>/g, '');
+}
+
 module.exports = {
   hash,
-  unlink
+  unlink,
+  stripTags
 }

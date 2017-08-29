@@ -8,6 +8,7 @@ const Device = require('../model/Device')
 const Auth = require('../model/Auth')
 const Notice = require('../model/Notice')
 const Category = require('../model/Category')
+const TimeLine = require('../model/TimeLine')
 const jwt = require('jsonwebtoken')
 const { cert } = require('../config')
 const { busboys } = require('../utils/upload')
@@ -16,6 +17,7 @@ const bcrypt = require('bcrypt')
 const transforExcel = require('../utils/transforExcel')
 const nodeExcel  = require('excel-export')
 const { isPhone } = require('../utils/Validate')
+const { stripTags } = require('../utils/util')
 const logger = require('../utils/logger')
 
 class App {
@@ -156,9 +158,14 @@ class App {
       }
 
       else if(type === 'onchange') {
-        const titleArr = await Bug.find({title: new RegExp(search, 'i')}).limit(5).exec()
-        const contentArr = await Bug.find({content: new RegExp(search, 'i')}).limit(5).exec()
-        ctx.body = { code: 200, message: 'ok', data: titleArr.concat(contentArr) }
+        var result = await Bug.find({ $text: { $search: search } })
+
+        result = result.map((item, index) => {
+          item.content = stripTags(item.content)
+          return item
+        })
+
+        ctx.body = { code: 200, message: 'ok', data: result }
       }
 
       else {
@@ -466,6 +473,11 @@ class App {
     } catch(e) {
       logger.error('error: setOrderSolved error', e)
     }
+  }
+
+  static async getTimelinesSort(ctx) {
+    const docs = await TimeLine.find({}, { _id : 0 })
+    ctx.body = { code: 200, message: 'ok', data: docs }
   }
 
 }

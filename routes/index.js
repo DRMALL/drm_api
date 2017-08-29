@@ -142,6 +142,9 @@ router.post('/app/notices/one/read', App.setOneRead)
 
 router.post('/app/order/solved', App.setOrderSolved)
 
+//timelines sort
+router.get('/app/timelines', App.getTimelinesSort)
+
 module.exports = router
 
 
