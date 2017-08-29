@@ -9,7 +9,7 @@ const Koa = require('koa')
     , static = require('koa-static')
     , WebSocket = require('./websocket')
     , staticPath = './static'
-    , socketServer = require('./socket')
+    , tcpSocket = require('./tcpSocket')
 
 
 app.use(static(path.join( __dirname, staticPath)))
