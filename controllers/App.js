@@ -162,10 +162,10 @@ class App {
         let result = await Bug.find({ $text: { $search: search } })
 
         logger.info('before: ', result)
-        result = result.map((item, index) => {
-          item.content = stripTags(item.content)
-          return item
-        })
+        // result = result.map((item, index) => {
+        //   item.content = stripTags(item.content)
+        //   return item
+        // })
         logger.info('after: ', result)
 
         ctx.body = { code: 200, message: 'ok', data: result }
