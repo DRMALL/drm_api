@@ -268,9 +268,8 @@ class App {
       const { type, search } = ctx.query
 
       if(type === 'onchange' && search ) {
-        const titleArr = await Device.find({name: new RegExp(search, 'i')}).limit(5).exec()
-        const contentArr = await Device.find({description: new RegExp(search, 'i')}).limit(5).exec()
-        ctx.body = { code: 200, message: 'ok', data: titleArr.concat(contentArr) }
+        const result = await Device.find({ "$or" : [{ name: new RegExp(search, 'i') }, { description: new RegExp(search, 'i') }] }).limit(10)
+        ctx.body = { code: 200, message: 'ok', data: result }
       } 
       else if (type === 'submit' && search) {
         const hot = await Hot.findOneAndUpdate({ type: 'device', text: search }, { $inc: { weights: 1 }}, { new: true, upsert: true })
