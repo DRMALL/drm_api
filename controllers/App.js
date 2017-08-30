@@ -253,11 +253,10 @@ class App {
     try {
       const locations = await Device.aggregate([
         { $unwind: "$location"},
-        { $project: { text: '$location.text', time: '$location.time'},  },
+        { $project: { _id: '$location.text', text: '$location.text', time: '$location.time'},  },
         { $limit: 5 },
         { $sort: { time: -1 } }
       ])
-      logger.info('locations:', locations)
       ctx.body = { code: 200, message: 'ok', data: locations }
     } catch(e) {
       logger.error('app getLastLocation error', e)
