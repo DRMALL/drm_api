@@ -21,7 +21,7 @@ fuelsort.get('/', async (ctx) => {
 
 fuelsort.get('/:id', async (ctx) => {
   const id = ctx.params.id
-  const doc = await FuelSort.find({ _id: id })
+  const doc = await FuelSort.findById({ _id: id })
   ctx.body = { code: 200, message: 'ok', data: doc }
 })
 

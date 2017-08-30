@@ -20,7 +20,7 @@ timeline.get('/', async (ctx) => {
 
 timeline.get('/:id', async (ctx) => {
   const id = ctx.params.id
-  const docs = await TimeLine.find({ _id: id })
+  const docs = await TimeLine.findById({ _id: id })
   ctx.body = { code: 200, message: 'ok', data: docs }
 })
 

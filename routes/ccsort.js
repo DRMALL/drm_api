@@ -20,7 +20,7 @@ ccsort.get('/', async (ctx) => {
 
 ccsort.get('/:id', async (ctx) => {
   const id = ctx.params.id
-  const doc = await CCSort.find({ _id: id })
+  const doc = await CCSort.findById({ _id: id })
   ctx.body = { code: 200, message: 'ok', data: doc }
 })
 
