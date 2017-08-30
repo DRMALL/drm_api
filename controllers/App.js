@@ -254,7 +254,8 @@ class App {
       const locations = await Device.aggregate([
         { $project: { "location" : "$location" , "_id" : 0 } },
         { $unwind: "$location"},
-        { $project: { _id: '$location.text', text: '$location.text', time: '$location.time'},  },
+        { $project: { _id: '$location._id', text: '$location.text', time: '$location.time'},  },
+        { $group: { _id: "$text" } },
         { $sort: { time: -1 } },
         { $limit: 5 }
       ])
