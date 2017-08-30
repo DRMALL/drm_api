@@ -255,7 +255,7 @@ class App {
         { $project: { "location" : "$location" , "_id" : 0 } },
         { $unwind: "$location"},
         { $project: { _id: '$location._id', text: '$location.text', time: '$location.time'},  },
-        { $group: { _id: "$text", text: '$text', time: "time" },
+        { $group: { _id: "$text", text: '$text', time: "time" } },
         { $sort: { time: -1 } },
         { $limit: 5 }
       ])
