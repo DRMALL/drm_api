@@ -8,7 +8,7 @@ const verify_socket_token = require('./utils/verify_socket_token')
 const server = net.createServer()
 server.on('connection', handleConnection);
 
-server.listen(9000, function() {  
+server.listen(13579, function() {  
   console.log('server listening to %j', server.address());
 })
 
@@ -27,7 +27,7 @@ function handleConnection(conn) {
     logger.info('connection data from %s: %j', remoteAddress, d)
     
     const result = verify_socket_token(d)
-    if(result.status) { 
+    if(result.status) {
       conn.write(d)
     }
     else {
