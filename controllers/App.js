@@ -159,8 +159,8 @@ class App {
 
       else if(type === 'onchange') {
         logger.info('search', search)
-        
-        let doc = await Bug.find({ $text: { $search : search } })
+
+        let doc = await Bug.find({ $text : { $search : search } })
 
         logger.info('before: ', doc)
 
