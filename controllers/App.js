@@ -159,18 +159,14 @@ class App {
 
       else if(type === 'onchange') {
 
-        logger.info('search', search)
-
-        let result = await Bug.find({ content: new RegExp(search, 'i') })
-
-        // logger.info('before: ', result)
+        let result = await Bug.find(
+          { "$or" : [{ content: new RegExp(search, 'i') }, { title:  new RegExp(search, 'i') }] }
+        )
 
         result = result.map((item, index) => {
           item.content = stripTags(item.content)
           return item
         })
-
-        // logger.info('after: ', result)
 
         return ctx.body = { code: 200, message: 'ok', data: result }
       }
