@@ -158,18 +158,21 @@ class App {
       }
 
       else if(type === 'onchange') {
+
         logger.info('search', search)
 
-        let doc = await Bug.find({ $text : { $search : `${search}` } })
+        let result = await Bug.find({ content: new RegExp(search, 'i') })
 
-        logger.info('before: ', doc)
+        // logger.info('before: ', result)
 
-        // result = result.map((item, index) => {
-        //   item.content = stripTags(item.content)
-        //   return item
-        // })
+        result = result.map((item, index) => {
+          item.content = stripTags(item.content)
+          return item
+        })
 
-        return ctx.body = { code: 200, message: 'ok', data: doc }
+        // logger.info('after: ', result)
+
+        return ctx.body = { code: 200, message: 'ok', data: result }
       }
 
       else {
