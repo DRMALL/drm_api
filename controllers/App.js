@@ -255,16 +255,18 @@ class App {
         { $project: { "location" : "$location" , "_id" : 0 } },
         { $unwind: "$location"},
         { $project: { _id: '$location._id', text: '$location.text', time: '$location.time'},  },
-        { $sort: { time: -1 } },
-        { $limit: 5 }
+        { $sort: { time: -1 } }
       ])
       
       var arr = []
+      
       for(let i = 0; i < locations.length; i++) {
         for(let j = i+1; j < locations.length; j++)
           if(locations[i].text == locations[j].text) ++i
         arr.push(locations[i])
       }
+
+      arr.length = 5
 
       ctx.body = { code: 200, message: 'ok', data: arr }
     } catch(e) {
