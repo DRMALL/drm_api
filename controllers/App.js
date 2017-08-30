@@ -255,8 +255,8 @@ class App {
         { $project: { "location" : "$location" , "_id" : 0 } },
         { $unwind: "$location"},
         { $project: { _id: '$location._id', text: '$location.text', time: '$location.time'},  },
-        { $limit: 5 },
-        { $sort: { time: -1 } }
+        { $sort: { time: -1 } },
+        { $limit: 5 }
       ])
       ctx.body = { code: 200, message: 'ok', data: locations }
     } catch(e) {
