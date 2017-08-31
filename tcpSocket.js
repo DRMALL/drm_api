@@ -8,7 +8,7 @@ const verify_socket_token = require('./utils/verify_socket_token')
 const server = net.createServer()
 server.on('connection', handleConnection);
 
-server.listen(8800, function() {  
+server.listen(8800, '127.0.0.1', function() {  
   console.log('server listening to %j', server.address());
 })
 
