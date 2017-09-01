@@ -25,7 +25,9 @@ function handleConnection(conn) {
 
   function onConnData(d) {
     logger.info('connection data from %s: %j', remoteAddress, d)
+    
     conn.write(d)
+    logger.info('DRM_DATA:' d)
     // const result = verify_socket_token(d)
     // if(result.status) {
     //   conn.write(d)
