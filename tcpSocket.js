@@ -25,14 +25,14 @@ function handleConnection(conn) {
 
   function onConnData(d) {
     logger.info('connection data from %s: %j', remoteAddress, d)
-    
-    const result = verify_socket_token(d)
-    if(result.status) {
-      conn.write(d)
-    }
-    else {
-      conn.write('BYE')
-    }
+    conn.write(d)
+    // const result = verify_socket_token(d)
+    // if(result.status) {
+    //   conn.write(d)
+    // }
+    // else {
+    //   conn.write('BYE')
+    // }
   }
 
   function onConnClose() {
