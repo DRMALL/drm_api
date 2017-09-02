@@ -3,6 +3,10 @@ const logger = require('./utils/logger')
 const net = require('net')
 const verify_socket_token = require('./utils/verify_socket_token')
 
+const transform_data = require('./tcp/transform_data')
+const verify_source = require('./tcp/verify_source')
+const save_to_db = require('./tcp/save_to_db')
+const myEmitter = require('./tcp/emitter')
 
 
 const server = net.createServer()
@@ -26,14 +30,23 @@ function handleConnection(conn) {
   function onConnData(d) {
     logger.info('connection data from %s: %j', remoteAddress, d)
     logger.info('DRM_DATA:', d)
-    conn.write(d)
-    // const result = verify_socket_token(d)
-    // if(result.status) {
-    //   conn.write(d)
-    // }
-    // else {
-    //   conn.write('BYE')
-    // }
+
+    const dataSource = verify_source(d)
+
+    if(dataSource === 'hardware') {
+      try {
+        const normal_data = transform_data(d)
+        // save_to_db(normal_data)
+        myEmitter.emit('coming', normal_data)
+      } catch(e) {
+        console.error(e)
+      }
+      conn.write('NOP')
+    }
+
+    if(dataSource === 'app') {
+
+    }
   }
 
   function onConnClose() {

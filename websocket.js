@@ -1,6 +1,7 @@
 
 const Bug = require('./model/Bug')
 const Order = require('./model/Order')
+const myEmitter = require('./tcp/emitter')
 
 class WebSocket {
 
@@ -12,7 +13,11 @@ class WebSocket {
   init() {
     this.io.of('/socket').on('connection', socket => {
 
-      socket.emit('news', { hello: 'world' });
+
+      myEmitter.on('coming', (normal_data) => {
+        socket.emit('news', normal_data);
+      })
+
 
       socket.on('orderIsHandled', (id, fn) => {
         console.log(id)
