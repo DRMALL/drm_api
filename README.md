@@ -803,6 +803,12 @@ DELETE https://api.wardenger.me/admin/fuelsorts/:id?token=${token}
 get https://api.wardenger.me/app/moniterdevs?token=${token}
 ```
 
+### 设备监控搜索
+```
+get https://api.wardenger.me/app/moniterdevs/search?search=${search}&token=${token}
+```
+
+
 
 
 

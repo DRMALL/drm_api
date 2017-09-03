@@ -511,7 +511,22 @@ class App {
 
     const docs = await Device.find({ _id: { $in: deviceArr } })
     ctx.body = { code: 200, message: 'ok', data: docs }
+
+  }
+
+  static async searchMoniterDevs (ctx) {
+    const { search } = ctx.request.query
+
+    const matchArr = await Auth.find({ user: id, canMonitor: true })
     
+    var deviceArr = []
+
+    matchArr.map((item, index) => {
+      deviceArr.push(item.device)
+    })
+
+    const docs = await Device.find({ _id: { $in: deviceArr }, number: new RegExp(search, 'i') })
+    ctx.body = { code: 200, message: 'ok', data: docs }
   }
 
 }
