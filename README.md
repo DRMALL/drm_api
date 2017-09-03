@@ -112,6 +112,7 @@ app = https://api.wardenger.me/app
   * [获取单个燃料分类](#获取单个燃料分类)
   * [更新单个燃料分类](#更新单个燃料分类)
   * [删除单个燃料分类](#删除单个燃料分类)
+  * [获取设备监控列表](#获取设备监控列表)
 
 
 
@@ -795,6 +796,11 @@ PUT https://api.wardenger.me/admin/fuelsorts/:id?token=${token}
 ### 删除单个燃料分类
 ```
 DELETE https://api.wardenger.me/admin/fuelsorts/:id?token=${token}
+```
+
+### 获取设备监控列表
+```
+get https://api.wardenger.me/app/moniterdevs?token=${token}
 ```
 
 

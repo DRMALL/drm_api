@@ -497,6 +497,23 @@ class App {
     ctx.body = { code: 200, message: 'ok', data: docs }
   }
 
+  static async getMoniterDevs(ctx) {
+
+    const { id } = ctx.request.decoded
+    
+    const matchArr = await Auth.find({ user: id, canMonitor: true })
+    
+    var deviceArr = []
+
+    matchArr.map((item, index) => {
+      deviceArr.push(item.device)
+    })
+
+    const docs = await Device.find({ _id: { $in: deviceArr } })
+    ctx.body = { code: 200, message: 'ok', data: docs }
+    
+  }
+
 }
 
 module.exports = App

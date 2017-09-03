@@ -144,6 +144,7 @@ router.post('/app/order/solved', App.setOrderSolved)
 
 //timelines sort
 router.get('/app/timelines', App.getTimelinesSort)
+router.get('/app/moniterdevs', App.getMoniterDevs)
 
 module.exports = router
 
