@@ -816,15 +816,12 @@ class Admin {
 
     let { number } = ctx.request.query
     
-    let device = await Device.findOne({ number: number })
     
-    let { name, address } = device
     
     let doc = await DevMoniter.findOne({ number: number })
 
-    // doc = Object.assign({}, doc, { name, address })
 
-    ctx.body = { code: 200, message: 'ok', data: { doc, name, address } }
+    ctx.body = { code: 200, message: 'ok', data: doc }
   }
 
 }
