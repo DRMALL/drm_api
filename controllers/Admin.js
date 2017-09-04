@@ -451,7 +451,7 @@ class Admin {
         }
       }
 
-      const noticeResult = await Notice.findOneAndUpdate({ 'order.id' : result._id }, notice, { new: true })
+      const noticeResult = await Notice.findOneAndUpdate({ 'order.id' : result._id }, notice, { new: true, upsert: true })
 
       // const noticeResult = await notice.save()
 
