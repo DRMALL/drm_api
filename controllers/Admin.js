@@ -640,7 +640,7 @@ class Admin {
       obj.time = new Date()
 
       const result = await Device.findByIdAndUpdate({ _id: deviceId }, { 
-        $addToSet : { 'location' : obj },
+        $push : { 'location' : obj },
         $set : { 'address' : address }
       }, 
       { new: true , upsert: false })

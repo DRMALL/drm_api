@@ -7,6 +7,6 @@ mongoose.connect('mongodb://localhost/drm')
 
 db.on('error', console.error.bind(console, 'connect error:'))
 
-db.once('open', ()=> {
+db.once('open', () => {
   console.log('mongoose opened!')
 })
