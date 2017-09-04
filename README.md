@@ -37,6 +37,8 @@ app = https://api.wardenger.me/app
   * [获取单个通知](#获取单个通知)
   * [设置所有已读](#设置所有已读)
   * [设置单个已读](#设置单个已读)
+  * [设置已解决工单](#设置已解决工单)
+  * [删除单个通知](#删除单个通知)
 
 
 
@@ -88,6 +90,7 @@ app = https://api.wardenger.me/app
   * [更新权限](#更新权限)
   * [删除权限](#删除权限)
 
+  * [创建配件](#创建配件)
   * [获取配件](#获取配件)
   * [更新配件备注](#更新配件备注)
   * [上传故障诊断图片](#上传故障诊断图片)
@@ -328,6 +331,11 @@ POST https://api.wardenger.me/app/order/solved?token=${token}
 {
   id: '' //此id为orderid
 }
+```
+
+### 删除单个通知
+```
+DELETE https://api.wardenger.me/notices/:id?token=${token}
 ```
 
 

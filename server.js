@@ -12,6 +12,7 @@ const Koa = require('koa')
     , tcpSocket = require('./tcpSocket')
 
 
+
 app.use(static(path.join( __dirname, staticPath)))
 app.use(cors())
 
@@ -26,7 +27,7 @@ app.use(router.allowedMethods())
 
 new WebSocket(io)
 
-// for test case
+//for test case
 module.exports = app
 
 server.listen(3000)

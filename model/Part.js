@@ -3,8 +3,8 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const partSchema = new Schema({
-  code: String,       //配件代号
-  name: String,       //配件名称
+  code: { type: String, required: [true, '请输入物料代码' ] },       //配件代号
+  name: { type: String, required: [true, '请输入物料名称'] },       //配件名称
   model: String,      //型号
   reserve: String,    //库存
   types: String,      //类型

@@ -445,6 +445,7 @@ class Admin {
         },
         order: {
           id: result._id,
+          images: result.images || '',
           content: result.content,
           feedback: result.advice,
           time: new Date()
@@ -770,6 +771,10 @@ class Admin {
     } catch(e) {
       logger.error('admin update Auth error', e)
     }
+  }
+
+  static async createParts(ctx) {
+
   }
 
   //parts

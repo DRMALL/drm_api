@@ -566,6 +566,16 @@ class App {
     }
   }
 
+  static async deleteOneNotice(ctx) {
+    try {
+      const id = ctx.query.id
+      const result = await Notice.remove({ _id: id })
+      ctx.body = { code: 201, message: 'ok', data: result }
+    } catch(e) {
+      logger.error('app delete one notice error', e)
+    }
+  }
+
 }
 
 module.exports = App

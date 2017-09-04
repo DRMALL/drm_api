@@ -130,7 +130,7 @@ router.get('/app/devices', App.getDevices)
 router.get('/app/devices/search', App.searchDevice)
 router.get('/app/devices/one', App.getDevice)
 router.get('/app/devices/hots', App.getDeviceHots)
-router.get('/app/devices/ccsorts', App.getccsort)
+router.get('/app/devices/ccsort', App.getccsort)
 router.get('/app/devices/presort', App.getpresort)
 router.get('/app/devices/fuelsort', App.getfuelsort)
 
@@ -144,6 +144,7 @@ router.get('/app/notices', App.getNotices)
 router.get('/app/notices/one', App.getOneNotice)
 router.post('/app/notices/all/read', App.setAllRead)
 router.post('/app/notices/one/read', App.setOneRead)
+router.delete('/app/notices/:id', App.deleteOneNotice)
 
 router.post('/app/order/solved', App.setOrderSolved)
 
