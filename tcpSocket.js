@@ -29,7 +29,7 @@ function handleConnection(conn) {
 
   function onConnData(d) {
     logger.info('connection data from %s: %j', remoteAddress, d)
-    logger.info('DRM_DATA:', d)
+    // logger.info('DRM_DATA:', d)
 
     const dataSource = verify_source(d)
 
