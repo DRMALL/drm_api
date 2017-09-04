@@ -503,6 +503,7 @@ class App {
 
   static async searchMoniterDevs (ctx) {
     const { search } = ctx.query
+    const { id } = ctx.request.decoded
 
     const matchArr = await Auth.find({ user: id, canMonitor: true })
     
