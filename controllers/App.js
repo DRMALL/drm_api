@@ -9,6 +9,9 @@ const Auth = require('../model/Auth')
 const Notice = require('../model/Notice')
 const Category = require('../model/Category')
 const TimeLine = require('../model/TimeLine')
+const CCSort = require('../model/CCSort')
+const PreSort = require('../model/PreSort')
+const FuelSort = require('../model/FuelSort')
 const jwt = require('jsonwebtoken')
 const { cert } = require('../config')
 const { busboys } = require('../utils/upload')
@@ -531,6 +534,21 @@ class App {
     })
 
     const docs = await Device.find({ _id: { $in: deviceArr }, number: new RegExp(search, 'i') })
+    ctx.body = { code: 200, message: 'ok', data: docs }
+  }
+
+  static async getccsort (ctx) {
+    const docs = await CCSort.find()
+    ctx.body = { code: 200, message: 'ok', data: docs }
+  }
+
+  static async getpresort (ctx) {
+    const docs = await PreSort.find()
+    ctx.body = { code: 200, message: 'ok', data: docs }
+  }
+
+  static async getfuelsort (ctx) {
+    const docs = await FuelSort.find()
     ctx.body = { code: 200, message: 'ok', data: docs }
   }
 

@@ -113,6 +113,10 @@ app = https://api.wardenger.me/app
   * [更新单个燃料分类](#更新单个燃料分类)
   * [删除单个燃料分类](#删除单个燃料分类)
   * [获取设备监控列表](#获取设备监控列表)
+  * [设备监控搜索](#设备监控搜索)
+  * [获取排量分类](#获取排量分类)
+  * [获取压力分类](#获取压力分类)
+  * [获取燃料分类](#获取燃料分类)
 
 
 
@@ -806,6 +810,21 @@ get https://api.wardenger.me/app/moniterdevs?token=${token}
 ### 设备监控搜索
 ```
 get https://api.wardenger.me/app/moniterdevs/search?search=${search}&token=${token}
+```
+
+### 获取排量分类
+```
+get https://api.wardenger.me/app/devices/ccsort?&token=${token}
+```
+
+### 获取压力分类
+```
+get https://api.wardenger.me/app/devices/presort?&token=${token}
+```
+
+### 获取燃料分类
+```
+get https://api.wardenger.me/app/devices/fuelsort?&token=${token}
 ```
 
 
