@@ -39,6 +39,7 @@ app = https://api.wardenger.me/app
   * [设置单个已读](#设置单个已读)
   * [设置已解决工单](#设置已解决工单)
   * [删除单个通知](#删除单个通知)
+  * [获取单个设备监控数据](#获取单个设备监控数据)
 
 
 
@@ -121,6 +122,7 @@ app = https://api.wardenger.me/app
   * [获取压力分类](#获取压力分类)
   * [获取燃料分类](#获取燃料分类)
   * [上传工单图片](#上传工单图片)
+  * [获取单个设备监控数据](#获取单个设备监控数据)
 
 
 
@@ -336,6 +338,14 @@ POST https://api.wardenger.me/app/order/solved?token=${token}
 ### 删除单个通知
 ```
 DELETE https://api.wardenger.me/notices/:id?token=${token}
+```
+
+### 获取单个设备监控数据
+
+number指的是设备编号
+
+```
+GET https://api.wardenger.me/app/moniterdevs/number?number=${number}&token=${token}
 ```
 
 
@@ -846,6 +856,16 @@ post https://api.wardenger.me/app/order/upload?&token=${token}
   key: 'order'
 }
 ```
+
+### 获取单个设备监控数据
+
+该number指的是设备编号
+
+```
+GET https://api.wardenger.me/admin/moniterdevs?number=${number}&token=${token}
+```
+
+
 
 
 

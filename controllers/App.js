@@ -576,6 +576,13 @@ class App {
     }
   }
 
+  static async getMoniterByNumber(ctx) {
+    const { number } = ctx.request.query
+    const doc = await DevMoniter.findOne({ number: number })
+    ctx.body = { code: 200, message: 'ok', data: doc }
+  }
+
+
 }
 
 module.exports = App

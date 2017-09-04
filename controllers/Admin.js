@@ -9,6 +9,7 @@ const Auth = require('../model/Auth')
 const Counter = require('../model/Counter')
 const Part = require('../model/Part')
 const Notice = require('../model/Notice')
+const DevMoniter = require('../model/DevMoniter')
 const jwt = require('jsonwebtoken')
 const deleteFile = require('../utils/deleteFile')
 const { busboys } = require('../utils/upload')
@@ -806,6 +807,13 @@ class Admin {
     } catch(e) {
       logger.error('admin setPartRemark error', e)
     }
+  }
+
+  static async getMoniterByNumber(ctx) {
+    const { number } = ctx.request.query
+    console.log(number)
+    const doc = await DevMoniter.findOne({ number: number })
+    ctx.body = { code: 200, message: 'ok', data: doc }
   }
 
 }

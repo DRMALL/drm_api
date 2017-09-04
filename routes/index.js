@@ -102,6 +102,8 @@ router.post('/admin/auth/del', Admin.deleteAuth)
 router.get('/admin/parts', Admin.getParts)
 router.post('/admin/parts/remark', Admin.setPartRemark)
 
+router.get('/admin/moniterdevs', Admin.getMoniterByNumber)
+
 router.get('/app', App.Index)
 router.get('/app/user', App.getUserInfo)
 router.post('/app/user/update', App.UpdateUser)
@@ -152,6 +154,8 @@ router.post('/app/order/solved', App.setOrderSolved)
 router.get('/app/timelines', App.getTimelinesSort)
 router.get('/app/moniterdevs', App.getMoniterDevs)
 router.get('/app/moniterdevs/search', App.searchMoniterDevs)
+
+router.get('/app/moniterdevs/number', App.getMoniterByNumber)
 
 module.exports = router
 

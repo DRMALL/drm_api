@@ -36,7 +36,10 @@ function handleConnection(conn) {
     if(dataSource === 'hardware') {
       try {
         const normal_data = transform_data(d)
-        // save_to_db(normal_data)
+        
+        setTimeout(() => {
+          save_to_db(normal_data)
+        }, 1000 * 60 * 1)
         myEmitter.emit('coming', normal_data)
       } catch(e) {
         console.error(e)
