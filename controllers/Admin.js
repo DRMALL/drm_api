@@ -427,11 +427,13 @@ class Admin {
     try {
       const id = ctx.orderId
       const { advice } = ctx.request.body
+
       if(!id || !advice)
         return ctx.body = { code: 400, message: '缺少必要的参数：id, advice', data: '' }
+      
       const result = await Order.findOneAndUpdate({ _id: id}, { $set: { advice: advice, isHanlded: true } }, { new: true } )
     
-      const notice = new Notice({
+      const notice = {
         types: 'order',
         des: result.title,
         status: result.isHanlded,
@@ -447,16 +449,20 @@ class Admin {
           feedback: result.advice,
           time: new Date()
         }
-      })
+      }
 
-      const noticeResult = await notice.save()
+      const noticeResult = await Notice.findOneAndUpdate({ 'order.id' : result._id }, notice, { new: true })
+
+      // const noticeResult = await notice.save()
 
       if(!result)
         return ctx.body = { code: 500, message: 'server error', data: '' }
+
       ctx.body = { code: 201, message: '处理成功', data: result }
     } catch(e) {
       logger.error('admin handleOrder error', e)
     }
+
   }
 
   //devices
