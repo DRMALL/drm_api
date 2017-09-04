@@ -253,24 +253,11 @@ class App {
     try {
       const locations = await Device.aggregate([
         { $project: { "location" : "$location" , "_id" : 0 } },
-        { $unwind: "$location"},
+        { $unwind: "$location" },
         { $project: { _id: '$location._id', text: '$location.text', time: '$location.time'},  },
         { $sort: { time: -1 } },
         { $limit: 5 }
       ])
-      
-      // var arr = []
-
-      // for(let i = 0; i < locations.length; i++) {
-      //   for(let j = i + 1; j < locations.length; j++) {
-      //     if(locations[i].text == locations[j].text)
-      //       ++i
-      //   }
-      //   arr.push(locations[i])
-      // }
-
-      // arr.length = 5
-
       ctx.body = { code: 200, message: 'ok', data: locations }
     } catch(e) {
       logger.error('app getLastLocation error', e)
@@ -515,7 +502,7 @@ class App {
   }
 
   static async searchMoniterDevs (ctx) {
-    const { search } = ctx.request.query
+    const { search } = ctx.query
 
     const matchArr = await Auth.find({ user: id, canMonitor: true })
     
