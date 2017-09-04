@@ -19,6 +19,9 @@ const transforExcel = require('../utils/transforExcel')
 const nodeExcel  = require('excel-export')
 const Validate = require('../utils/Validate')
 const logger = require('../utils/logger')
+const myEmitter = require('../tcp/emitter')
+
+
 // deleteDevice
 // Create
 class Admin {
@@ -455,7 +458,7 @@ class Admin {
 
       const noticeResult = await Notice.findOneAndUpdate({ 'order.id' : result._id }, notice, { new: true, upsert: true })
 
-      // const noticeResult = await notice.save()
+      myEmitter.emit('orderNotice', noticeResult)
 
       if(!result)
         return ctx.body = { code: 500, message: 'server error', data: '' }
@@ -810,9 +813,17 @@ class Admin {
   }
 
   static async getMoniterByNumber(ctx) {
-    const { number } = ctx.request.query
-    console.log(number)
-    const doc = await DevMoniter.findOne({ number: number })
+    
+    let { number } = ctx.request.query
+    
+    let device = await Device.findOne({ number: number })
+    
+    let { name, address } = device
+    
+    let doc = await DevMoniter.findOne({ number: number })
+
+    doc = Object.assign({}, doc, { name, address })
+
     ctx.body = { code: 200, message: 'ok', data: doc }
   }
 

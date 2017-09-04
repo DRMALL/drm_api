@@ -18,6 +18,10 @@ class WebSocket {
         socket.emit('news', normal_data);
       })
 
+      myEmitter.on('orderNotice', (noticeResult) => {
+        socket.emit('orderNotice', noticeResult)
+      })
+
 
       socket.on('orderIsHandled', (id, fn) => {
         console.log(id)
