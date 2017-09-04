@@ -813,7 +813,7 @@ class Admin {
   }
 
   static async getMoniterByNumber(ctx) {
-    
+
     let { number } = ctx.request.query
     
     let device = await Device.findOne({ number: number })
@@ -822,9 +822,9 @@ class Admin {
     
     let doc = await DevMoniter.findOne({ number: number })
 
-    doc = Object.assign({}, doc, { name, address })
+    // doc = Object.assign({}, doc, { name, address })
 
-    ctx.body = { code: 200, message: 'ok', data: doc }
+    ctx.body = { code: 200, message: 'ok', data: { doc, name, address } }
   }
 
 }
