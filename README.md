@@ -117,6 +117,7 @@ app = https://api.wardenger.me/app
   * [获取排量分类](#获取排量分类)
   * [获取压力分类](#获取压力分类)
   * [获取燃料分类](#获取燃料分类)
+  * [上传工单图片](#上传工单图片)
 
 
 
@@ -211,7 +212,8 @@ POST https://api.wardenger.me/app/order/new?token=${token}
 {
   title: '',
   category: '',
-  content: ''
+  content: '',
+  images: []
 }
 ```
 
@@ -825,6 +827,16 @@ get https://api.wardenger.me/app/devices/presort?&token=${token}
 ### 获取燃料分类
 ```
 get https://api.wardenger.me/app/devices/fuelsort?&token=${token}
+```
+
+### 上传工单图片
+```
+post https://api.wardenger.me/app/order/upload?&token=${token}
+```
+```
+{
+  key: 'order'
+}
 ```
 
 

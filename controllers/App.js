@@ -219,7 +219,7 @@ class App {
   //创建工单
   static async createOrder(ctx) {
     try {
-      let { category, title, content } = ctx.request.body
+      let { category, title, content, images } = ctx.request.body
       if(!category || !title || !content ) {
         return ctx.body = { code: 401, message: '缺少必要的参数params: title, category, content', data: '' }
       }
@@ -229,6 +229,7 @@ class App {
         title,
         content,
         category,
+        images,
         user: {
           id: user._id,
           name: user.name,
@@ -550,6 +551,19 @@ class App {
   static async getfuelsort (ctx) {
     const docs = await FuelSort.find()
     ctx.body = { code: 200, message: 'ok', data: docs }
+  }
+
+  static async uploadOrderImages(ctx) {
+    try {
+      const upload = await busboys (ctx)
+      if(upload.fieldname !== 'order')
+        return ctx.body = { code: 400, message: '参数值错误, key: order', data: '' }
+      if(!upload.success)
+        return ctx.body = { code: 501, message: '上传文件失败', data: upload }
+      ctx.body = { code: 201, message: '上传成功', data: { url: upload.file } }
+    } catch(e) {
+      logger.error('app upload orders image error', e)
+    }
   }
 
 }

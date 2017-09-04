@@ -122,6 +122,7 @@ router.get('/app/bugs/cate', App.getBugsCate)
 //orders
 router.post('/app/order/new', App.createOrder)
 router.get('/app/order/all', App.getOrders)
+router.post('/app/order/upload', App.uploadOrderImages)
 
 //devices
 router.get('/app/devices/address' , App.getLastLocation)
