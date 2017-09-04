@@ -256,18 +256,21 @@ class App {
         { $unwind: "$location" },
         { $project: { _id: '$location._id', text: '$location.text', time: '$location.time'},  },
         { $sort: { time: -1 } },
-        // { $limit: 5 }
       ])
 
-      var  new_locations = uniqeArr(locations)
-      function uniqeArr() {
+      var new_locations = uniqeArr(locations)
+
+      function uniqeArr(arr) {
         var hello = []
-        for(let i = 0; i < locations.length; i++) {
-          for(let j = i+1; j < locations.length; j++) {
-            if(locations[i].text == locations[j].text)
-              ++i
+        var isRepeated = false
+        for(let i = 0; i < arr.length; i++) {
+          isRepeated = false
+          for(let j = i+1; j < arr.length; j++) {
+            if(arr[i].text == arr[j].text)
+              isRepeated = true;
           }
-          hello.push(locations[i])
+          if(!isRepeated)
+            hello.push(arr[i])
         }
         return hello.slice(0,5)
       }
