@@ -15,6 +15,7 @@ const noticeSchema = new Schema({
     id: String,
     content: String,
     feedback: String,
+    images: [],
     time: String,
   }
 }, { timestamps: true })

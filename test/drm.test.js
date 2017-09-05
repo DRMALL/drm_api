@@ -168,6 +168,26 @@ describe('DRM测试', () => {
     expect(result.body.message).to.equal('ok')
   })
 
+  it('单个故障诊断', async() => {
+    const id = bugsid
+    const result = await request.get(`/admin/bugs/${id}`)
+      .query({ token: admin_token })
+
+    expect(result.body.message).to.equal('ok')
+  })
+
+  it('更新单个故障诊断', async() => {
+    const id = bugsid
+    const result = await request.put(`/admin/bugs/${id}`)
+      .query({ token: admin_token })
+      .send({
+        title: 'title2',
+        category: 'category2',
+        content: 'content2'       
+      })
+
+  })
+
   it('删除用户', async () => {
     const id = parse_id(app_token)
     const result = await request.delete(`/admin/users/${id}`)

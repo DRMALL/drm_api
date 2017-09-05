@@ -437,7 +437,7 @@ class Admin {
       if(!id || !advice)
         return ctx.body = { code: 400, message: '缺少必要的参数：id, advice', data: '' }
       
-      const result = await Order.findOneAndUpdate({ _id: id}, { $set: { advice: advice, isHanlded: true } }, { new: true } )
+      const result = await Order.findOneAndUpdate({ _id: id }, { $set: { advice: advice, isHanlded: true } }, { new: true } )
     
       const notice = {
         types: 'order',
