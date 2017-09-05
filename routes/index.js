@@ -159,6 +159,14 @@ router.get('/app/moniterdevs/search', App.searchMoniterDevs)
 
 router.get('/app/moniterdevs/number', App.getMoniterByNumber)
 
+//parts
+router.get('/app/parts/search', App.searchPart)
+router.get('/app/parts/hots', App.getPartHots)
+router.get('/app/parts/first', App.getFirstClassParts)
+router.get('/app/parts/second', App.getSecondClassParts)
+router.get('/app/parts/one', App.getSinglePart)
+
+
 module.exports = router
 
 

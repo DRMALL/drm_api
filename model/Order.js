@@ -6,7 +6,9 @@ const  Schema = mongoose.Schema
 const orderSchema = new Schema({
   title: { type: String },
   category: { type: String },
-  images: [],
+  images: [{
+    url: String,
+  }],
   content: { type: String },
   user: {
     id: String,

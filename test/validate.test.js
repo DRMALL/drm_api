@@ -7,7 +7,7 @@ const {
 } = require('../utils/Validate')
 const expect = chai.expect
 
-describe('validate isPhone tests', () => {
+describe.skip('validate isPhone tests', () => {
   it('the input is a string should no affcts', () => {
     expect(isPhone('13456784321')).to.be.true
   })
@@ -28,7 +28,7 @@ describe('validate isPhone tests', () => {
   })
 })
 
-describe('validate isEmail tests', () => {
+describe.skip('validate isEmail tests', () => {
   it('the normal format should be success', () => {
     expect(isEmail('hhss33@dd.com')).to.be.true
   })

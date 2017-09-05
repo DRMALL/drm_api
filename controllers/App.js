@@ -140,7 +140,7 @@ class App {
     try {
       let { id } = ctx.query
       const result = await News.findById({ _id: id })
-      ctx.body = { code: 201, message: '获取成功', data: result }
+      ctx.body = { code: 201, message: 'ok', data: result }
     }
     catch(e) {
       logger.error('getNewsById error', e)
@@ -601,14 +601,50 @@ class App {
   }
 
   static async getMoniterByNumber(ctx) {
-    const { number } = ctx.request.query
+    const { number } = ctx.query
     const doc = await DevMoniter.findOne({ number: number })
     ctx.body = { code: 200, message: 'ok', data: doc }
   }
 
-  //
-  static async Part(ctx) {
+  //Part
+  static async searchPart(ctx) {
+    const { type, search } = ctx.query
 
+    if(type === 'onchange' && search ) {
+      const result = await Part.find({ "$or" : [{ name: new RegExp(search, 'i') }, { model: new RegExp(search, 'i') }] }).limit(10).sort('-createdAt')
+      ctx.body = { code: 200, message: 'ok', data: result }
+    }
+
+    else if (type === 'submit' && search) {
+      const hot = await Hot.findOneAndUpdate({ type: 'part', text: search }, { $inc: { weights: 1 }}, { new: true, upsert: true })
+      ctx.body = { code: 200, message: 'ok', data: hot }
+    }
+    else {
+      let docs = await Part.find().sort('-createdAt')
+      ctx.body = { code: 200, message: 'ok', data: docs }
+    }
+  }
+
+  static async getPartHots(ctx) {
+    const docs = await Hot.find({ type: 'part' }).sort('-weights').limit(10)
+    ctx.body = { code: 200, message: 'ok', data: docs }
+  }
+
+  static async getFirstClassParts(ctx) {
+    const docs = await Part.find({}, { name: 1 })
+    ctx.body = { code: 200, message: 'ok', data: docs }
+  }
+
+  static async getSecondClassParts(ctx) {
+    const { name } = ctx.query
+    const docs = await Part.find({ name: name }, { model: 1 })
+    ctx.body = { code: 200, message: 'ok', data: docs }
+  }
+
+  static async getSinglePart(ctx) {
+    const { id } = ctx.query
+    const doc = await Part.findById({ _id: id })
+    ctx.body = { code: 200, message: 'ok', data: doc }
   }
 
 

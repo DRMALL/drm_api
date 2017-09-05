@@ -9,7 +9,6 @@ const partSchema = new Schema({
   unit:  { type: String },       //单位
   reserve: String,    //库存
   types: String,      //类型
-  images: [],
   deviceCode: String, //设备编号,使用设备
   deviceName: String,
   remark: String     //备注

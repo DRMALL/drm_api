@@ -332,7 +332,7 @@ class Admin {
         return ctx.body = { code: 400, message: '缺少必要的param: title, category, content', data: ''}
 
       const result = await Bug.create({ title, category, content })
-      ctx.body = { code: 201, message: '创建成功', data: result }
+      ctx.body = { code: 201, message: 'ok', data: result }
     }
     catch(e) {
       logger.error('admin create bug error', e)

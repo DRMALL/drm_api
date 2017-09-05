@@ -11,8 +11,6 @@ const Koa = require('koa')
     , staticPath = './static'
     , tcpSocket = require('./tcpSocket')
 
-
-
 app.use(static(path.join( __dirname, staticPath)))
 app.use(cors())
 

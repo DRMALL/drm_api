@@ -7,13 +7,18 @@
  - Auth(权限)
  - Bug(故障诊断)
  - Category(故障分类)
+ - CCSort(设备排量分类)
  - Counter(计数器)
  - Device(设备)
+ - DevMoniter(监控设备)
+ - FuelSort(设备燃料分类)
  - Hot(热门搜索词)
  - News(消息)
  - Notice(通知)
  - Order(工单)
  - Part(配件)
+ - PreSort(设备压力分类)
+ - TimeLine(设备时间线分类)
  - User(用户)
 ```
 
@@ -44,7 +49,7 @@
 
 ## Bug
 
-故障诊断模型，包括三个字段`title`(标题),`category`(分类),`content`(内容)，由于故障诊断都是已经解决的问题，因此不在数据库中存储已解决的信息，由前端自由展示。由于涉及到对故障诊断分类的增删改查，因此将其分类单独抽出为一个数据模型。
+故障诊断模型，包括四个字段`title`(标题),`category`(分类),`content`(内容)，`isSolved（是否已解决）`。由于涉及到对 `故障诊断分类` 的增删改查，因此将其分类单独抽出为一个数据模型。
 
 ```
 title: { 
@@ -58,6 +63,10 @@ category: {
 content: {
   type: String,
   required: true
+}，
+isSolved: {
+  type: Boolean,
+  default: true
 }
 ```
 
@@ -71,6 +80,17 @@ content: {
 }
 ```
 
+## CCSort
+
+设备排量分类
+
+```
+{
+  text: String,
+}
+```
+
+
 ## Counter
 
 计数器，用于故障诊断分类的排序。
@@ -80,6 +100,7 @@ content: {
   seq: { type: Number,  default: 0 }
 }
 ```
+
 
 ## Device
 
@@ -91,7 +112,7 @@ content: {
   cc: String,   //排量
   pressure: String,   //压力
   combustible: String,  //燃料
-  description: String,  //描述
+  description: String,  //简介
   online: Boolean,  //是否在线
   address: String,  //位置
   location: [{    //设备所在地，用于按设备所在地筛选
@@ -108,12 +129,37 @@ content: {
 }
 ```
 
-## Hot
+## DevMoniter
 
-热门搜索词
+设备的监控信息，number代表 设备编号，data代表 监控的数据。
 
 ```
 {
+  number: String,
+  data: []
+}
+```
+
+## FuelSort
+
+设备燃料分类
+
+```
+{
+  text: String
+}
+```
+
+## Hot
+
+热门搜索词模型，
+
+type 默认值为bug，代表故障诊断的热门搜索词，type还可以为：`part`,`device`，分别代表配件和设备的热门搜索词。
+text 代表搜索词的内容，weights代表搜索词的权重。
+
+```
+{
+  type: String,
   text: String,
   weights: { type: Number, default: 0 },
 }
@@ -185,6 +231,7 @@ content: {
   title: { type: String },     //标题
   category: { type: String },  //分类
   content: { type: String },   //内容
+  images: [],
   user: {  //工单发起人
     id: String,
     name: String,
@@ -203,19 +250,42 @@ content: {
 {
   code: String,       //配件代号
   name: String,       //配件名称
-  model: String,      //型号
+  model: String,      //型号规格
+  unit: String,       //单位
+  images: [],
   reserve: String,    //库存
   types: String,      //类型
-  remark: String,     //备注
-  unit: String,       //单位
   deviceCode: String, //设备编号,使用设备
-  deviceName: String
+  deviceName: String,
+  remark: String,     //备注
+}
+```
+
+## PreSort
+
+压力分类
+
+```
+{
+  text: String
+}
+```
+
+## TimeLine
+
+设备时间线模型
+
+```
+{
+  text: String,
 }
 ```
 
 ## User
 
-用户模型，已检测`phone`和`email`的格式有效性，且将`email`作为主键，即一个`email`只能对应一个用户。用户密码已通过`hash`加密保存。
+用户模型，已检测`phone`和`email`的格式有效性，且将`email`作为主键，即一个`email`只能对应一个用户。
+
+用户密码已通过`hash`加密保存。
 
 ```
 {
