@@ -13,6 +13,7 @@ const CCSort = require('../model/CCSort')
 const PreSort = require('../model/PreSort')
 const FuelSort = require('../model/FuelSort')
 const DevMoniter = require('../model/DevMoniter')
+const Part = require('../model/Part')
 const jwt = require('jsonwebtoken')
 const { cert } = require('../config')
 const { busboys } = require('../utils/upload')
@@ -255,36 +256,58 @@ class App {
   }
 
   static async getLastLocation(ctx) {
-    try {
-      const locations = await Device.aggregate([
-        { $project: { "location" : "$location" , "_id" : 0 } },
-        { $unwind: "$location" },
-        { $project: { _id: '$location._id', text: '$location.text', time: '$location.time'},  },
-        { $sort: { time: -1 } },
-      ])
 
-      var new_locations = uniqeArr(locations)
+    const { id } = ctx.request.decoded
 
-      function uniqeArr(arr) {
-        var hello = []
-        var isRepeated = false
-        for(let i = 0; i < arr.length; i++) {
-          isRepeated = false
-          for(let j = i+1; j < arr.length; j++) {
-            if(arr[i].text == arr[j].text)
-              isRepeated = true;
-          }
-          if(!isRepeated)
-            hello.push(arr[i])
-        }
-        return hello.slice(0,5)
-      }
+    const matchArr = await Auth.find({ user: id, canView: true })
+    var deviceArr = []
 
-      ctx.body = { code: 200, message: 'ok', data: new_locations }
-    } catch(e) {
-      logger.error('app getLastLocation error', e)
-    }
+    matchArr.map((item, index) => {
+      deviceArr.push(item.device)
+    })
+
+    const devices = await Device.find({ _id: { $in: deviceArr } })
+    var result = []
+
+    devices.map((item, index) => {
+      result.push({ text: item.address })
+    })
+
+    ctx.body = { code: 200, message: 'ok', data: result }
+
   }
+
+  // static async getLastLocation(ctx) {
+  //   try {
+  //     const locations = await Device.aggregate([
+  //       { $project: { "location" : "$location" , "_id" : 0 } },
+  //       { $unwind: "$location" },
+  //       { $project: { _id: '$location._id', text: '$location.text', time: '$location.time'},  },
+  //       { $sort: { time: -1 } },
+  //     ])
+
+  //     var new_locations = uniqeArr(locations)
+
+  //     function uniqeArr(arr) {
+  //       var hello = []
+  //       var isRepeated = false
+  //       for(let i = 0; i < arr.length; i++) {
+  //         isRepeated = false
+  //         for(let j = i+1; j < arr.length; j++) {
+  //           if(arr[i].text == arr[j].text)
+  //             isRepeated = true;
+  //         }
+  //         if(!isRepeated)
+  //           hello.push(arr[i])
+  //       }
+  //       return hello.slice(0,5)
+  //     }
+
+  //     ctx.body = { code: 200, message: 'ok', data: new_locations }
+  //   } catch(e) {
+  //     logger.error('app getLastLocation error', e)
+  //   }
+  // }
 
   static async searchDevice (ctx) {
     try {
@@ -581,6 +604,11 @@ class App {
     const { number } = ctx.request.query
     const doc = await DevMoniter.findOne({ number: number })
     ctx.body = { code: 200, message: 'ok', data: doc }
+  }
+
+  //
+  static async Part(ctx) {
+
   }
 
 

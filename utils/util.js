@@ -25,7 +25,8 @@ function unlink(path) {
 }
 
 function stripTags (str) {
-  str += ''
+  str += '';
+  str = str.replace(/&nbsp/g, '');
   return str.replace(/<[^>]*?>/g, '');
 }
 

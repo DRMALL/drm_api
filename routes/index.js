@@ -101,6 +101,8 @@ router.post('/admin/auth/del', Admin.deleteAuth)
 //part
 router.get('/admin/parts', Admin.getParts)
 router.post('/admin/parts/remark', Admin.setPartRemark)
+router.post('/admin/parts/uploadfile', Admin.uploadPartFile)
+
 
 router.get('/admin/moniterdevs', Admin.getMoniterByNumber)
 

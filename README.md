@@ -123,6 +123,7 @@ app = https://api.wardenger.me/app
   * [获取燃料分类](#获取燃料分类)
   * [上传工单图片](#上传工单图片)
   * [获取单个设备监控数据](#获取单个设备监控数据)
+  * [上传配件文件](#上传配件文件)
 
 
 
@@ -574,7 +575,8 @@ POST https://api.wardenger.me/admin/devices/new?token=${token}
     time: '',
     type: '',
     description: ''
-  }]
+  }],
+  remark: '' //备注
 ```
 
 ### 上传设备图片
@@ -863,6 +865,12 @@ post https://api.wardenger.me/app/order/upload?&token=${token}
 
 ```
 GET https://api.wardenger.me/admin/moniterdevs?number=${number}&token=${token}
+```
+
+### 上传配件文件
+
+```
+POST https://api.wardenger.me/admin/parts/uploadfile?token=${token}
 ```
 
 

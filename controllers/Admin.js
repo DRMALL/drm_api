@@ -13,6 +13,8 @@ const DevMoniter = require('../model/DevMoniter')
 const jwt = require('jsonwebtoken')
 const deleteFile = require('../utils/deleteFile')
 const { busboys } = require('../utils/upload')
+const uploadXLS = require('../utils/uploadXLS')
+const formatXLS = require('../utils/formatXLS')
 const { hash } = require('../utils/util')
 const { cert, initAdmins } = require('../config')
 const transforExcel = require('../utils/transforExcel')
@@ -532,7 +534,7 @@ class Admin {
 
   static async createDevice(ctx) {
     try {
-      const { name, number, images, cc, pressure, combustible, classify, description, address, timelines } = ctx.request.body
+      const { name, number, images, cc, pressure, combustible, classify, description, address, timelines, remark } = ctx.request.body
       if(!name || !number || !cc || !pressure || !combustible || !description || !address ||!classify) {
         return ctx.body = { code: 400, message: '缺少必要的参数：name, number, cc, pressure, combustible, description, address, classify', data: '' }
       }
@@ -554,6 +556,7 @@ class Admin {
         location,
         timelines,
         address,
+        remark,
         classify
       })
       const result = await device.save()
@@ -777,11 +780,31 @@ class Admin {
     }
   }
 
-  static async createParts(ctx) {
+  //parts
+
+  static async uploadPartFile(ctx) {
+
+    try {
+      const upload = await uploadXLS(ctx, { fileType: 'album' })
+      const data = formatXLS(upload.path)
+      const result = await Part.insertMany(data)
+      ctx.body = { code: 200, message: 'ok', data: result }
+    } catch(e) {
+      if(e.success === false)
+        ctx.body = { code: 503, message: e.message, data: '' }
+      console.log(e)
+    }
+
+    // if(upload.fieldname !== 'part')
+      // return ctx.body = { code: 400, message: '参数值错误, key: part', data: '' }
+
+    // if(!upload.success)
+      // return ctx.body = { code: 501, message: '上传文件失败', data: upload }
+
+    // ctx.body = { code: 201, message: '上传成功', data: { url: upload.file } }   
 
   }
 
-  //parts
   static async getParts(ctx) {
     try {
     const docs = await Part.find({})
@@ -816,10 +839,7 @@ class Admin {
 
     let { number } = ctx.request.query
     
-    
-    
     let doc = await DevMoniter.findOne({ number: number })
-
 
     ctx.body = { code: 200, message: 'ok', data: doc }
   }
