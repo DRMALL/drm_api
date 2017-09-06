@@ -11,7 +11,7 @@ const expect = chai.expect
 
 const request = supertest( app.listen() )
 
-var admin_token, app_token, newsid, bugsid;
+var admin_token, app_token, newsid, cateid, bugsid, ccid, deviceid, authid;
 
 describe('DRM测试', () => {
 
@@ -149,23 +149,57 @@ describe('DRM测试', () => {
     expect(result.body.message).to.equal('删除成功')
   })
 
-  it('创建故障诊断', async() => {
+  it('创建故障分类', async() => {
+    const result = await request.post('/admin/bugs/categorys/new')
+      .query({ token: admin_token })
+      .send({
+        text: 'shit'
+      })
+
+    cateid = result.body.data._id
+    expect(result.body.message).to.equal('创建成功')
+  })
+
+  it('置顶故障分类', async() => {
+    const result = await request.post('/admin/bugs/categorys/top')
+      .query({ token: admin_token })
+      .send({
+        categoryId: cateid
+      })
+    expect(result.body.message).to.equal('ok')
+  })
+
+  it('获取故障分类', async() => {
+    const result = await request.get('/admin/bugs/categorys')
+      .query({ token: admin_token })
+
+    expect(result.body.message).to.equal('获取成功')    
+  })
+
+  it('创建故障诊断', async () => {
     const result = await request.post('/admin/bugs')
       .query({ token: admin_token })
       .send({
         title: 'title',
-        category: 'category',
+        category: cateid,
         content: 'content'
       })
     bugsid = result.body.data._id
     expect(result.body.message).to.equal('ok')
   })
 
+  it('删除故障分类', async() => {
+    const id = cateid
+    const result = await request.delete(`/admin/bugs/categorys/${id}`)
+      .query({ token: admin_token })
+    expect(result.body.message).to.equal('删除成功')
+  })
+
   it('获取故障诊断', async () => {
     const result = await request.get('/admin/bugs')
       .query({ token: admin_token })
 
-    expect(result.body.message).to.equal('ok')
+    expect(result.body.message).to.equal('获取成功')
   })
 
   it('单个故障诊断', async() => {
@@ -173,20 +207,183 @@ describe('DRM测试', () => {
     const result = await request.get(`/admin/bugs/${id}`)
       .query({ token: admin_token })
 
-    expect(result.body.message).to.equal('ok')
+    expect(result.body.message).to.equal('获取成功')
   })
 
-  it('更新单个故障诊断', async() => {
+  it('更新单个故障诊断', async () => {
     const id = bugsid
     const result = await request.put(`/admin/bugs/${id}`)
       .query({ token: admin_token })
       .send({
         title: 'title2',
-        category: 'category2',
         content: 'content2'       
       })
 
+    expect(result.body.message).to.equal('更新成功')
   })
+
+  it('删除故障诊断', async () => {
+    const id = bugsid
+    const result = await request.delete(`/admin/bugs/${id}`)
+      .query({ token: admin_token })
+
+    expect(result.body.message).to.equal('删除成功')    
+  })
+
+  it('创建排量分类', async () => {
+    const result = await request.post('/admin/ccsorts')
+      .query({ token: admin_token })
+      .send({
+        text: 'hello'
+      })
+
+    ccid = result.body.data._id
+
+    expect(result.body.message).to.equal('ok')
+  })
+
+  it('获取排量分类', async () => {
+    const result = await request.get('/admin/ccsorts')
+      .query({ token: admin_token })
+
+    expect(result.body.message).to.equal('ok')
+  })
+
+  it('单个排量分类', async () => {
+    const result = await request.get(`/admin/ccsorts/${ccid}`)
+          .query({ token: admin_token })
+
+    expect(result.body.message).to.equal('ok')
+  })
+
+  it('更新排量分类', async () => {
+    const result = await request.put(`/admin/ccsorts/${ccid}`)
+        .query({ token: admin_token })
+
+    expect(result.body.message).to.equal('ok')    
+  })
+
+  it('删除排量分类', async () => {
+    const result = await request.delete(`/admin/ccsorts/${ccid}`)
+        .query({ token: admin_token })
+
+    expect(result.body.message).to.equal('ok')          
+  })
+
+  it('创建设备', async () => {
+    const result = await request.post(`/admin/devices/new`)
+        .query({ token: admin_token })
+        .send({
+          name: 'device101010',
+          number: 'SN9393',
+          images: [],
+          cc: '单发生器',
+          pressure: '25Mpa',
+          combustible: '柴油',
+          description: '简介信息在这里',
+          address: 'hello',
+          classify: 'ddd'
+        })
+    deviceid = result.body.data._id
+    expect(result.body.message).to.equal('ok')
+  })
+
+  it('获取设备', async () => {
+    const result = await request.get(`/admin/devices`)
+      .query({ token: admin_token })
+
+    expect(result.body.message).to.equal('ok')    
+  })
+
+  it('获取设备名称', async () => {
+    const result = await request.get(`/admin/devices`)
+      .query({ type: 'name', token: admin_token })
+
+    expect(result.body.message).to.equal('ok')        
+  })
+
+  it('单个设备', async () => {
+    const result = await request.get(`/admin/devices/${deviceid}`)
+      .query({ token: admin_token })
+
+    expect(result.body.message).to.equal('ok')    
+  })
+
+  it('更新设备', async () => {
+    const result = await request.put(`/admin/devices/${deviceid}`)
+      .query({ token: admin_token })
+      .send({
+        name: 'fixedname'
+      })
+    expect(result.body.message).to.equal('ok')
+  })
+
+  it('更新设备所在地', async () => {
+    const result = await request.put(`/admin/devices/${deviceid}/location`)
+      .query({ token: admin_token })
+      .send({
+        text: '河南'
+      })
+    expect(result.body.message).to.equal('ok')   
+  })
+
+  it('创建权限', async () => {
+    const userid = parse_id(app_token)
+    const result = await request.post('/admin/auths/new')
+      .query({ token: admin_token })
+      .send({
+        userId: userid,
+        deviceId: deviceid,
+        canView: true,
+        canMonitor: true,
+      })
+    authid = result.body.data._id
+    expect(result.body.message).to.equal('ok')
+  })
+
+  it('获取权限', async () => {
+    const result = await request.get('/admin/auths')
+      .query({ token: admin_token })
+
+    expect(result.body.message).to.equal('ok')
+  })
+
+  it('单个权限', async () => {
+    const result = await request.get('/admin/auths')
+      .query({ authId: authid, token: admin_token })
+
+    expect(result.body.message).to.equal('ok')    
+  })
+
+  it('更新权限', async () => {
+    const result = await request.post('/admin/auth/change')
+      .query({ authId: authid, token: admin_token })
+      .send({
+        canMoniter: false,        
+      })
+
+    expect(result.body.message).to.equal('ok')    
+  })
+
+  it('删除权限', async () => {
+    const result = await request.post('/admin/auth/del')
+      .query({ authId:  authid, token: admin_token })
+
+   expect(result.body.message).to.equal('ok')   
+  })
+
+
+
+  it('删除设备', async () => {
+    const result = await request.delete(`/admin/devices/${deviceid}`)
+      .query({ token: admin_token })
+
+    expect(result.body.message).to.equal('ok')             
+  })
+
+
+
+
 
   it('删除用户', async () => {
     const id = parse_id(app_token)
@@ -204,6 +401,7 @@ function parse_id(token) {
   return jwt.verify(token, cert).id
 }
 
+//console.log
 // describe('drm admin user test', () => {
 
 //   it('新增用户', (done) => {

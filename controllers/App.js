@@ -23,6 +23,8 @@ const transforExcel = require('../utils/transforExcel')
 const nodeExcel  = require('excel-export')
 const { isPhone } = require('../utils/Validate')
 const { stripTags } = require('../utils/util')
+const deleteFile = require('../utils/deleteFile')
+
 const logger = require('../utils/logger')
 
 class App {
@@ -645,6 +647,12 @@ class App {
     const { id } = ctx.query
     const doc = await Part.findById({ _id: id })
     ctx.body = { code: 200, message: 'ok', data: doc }
+  }
+
+  static async deleteOrderImage(ctx) {
+    const { url } = ctx.request.body
+    const result = await deleteFile(url)
+    ctx.body = { code: 201, message: 'ok', data: result }
   }
 
 

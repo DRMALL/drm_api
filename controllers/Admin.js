@@ -254,7 +254,11 @@ class Admin {
       const singleNew = await News.findOne({ _id: id })
 
       singleNew.images.map(async (item, index) => {
-        await deleteFile(item.url, 'static/upload/')
+        try {
+          await deleteFile(item.url, 'static/upload/')
+        } catch(e) {
+          logger.error(e)
+        }
       })
       
       const result = await News.remove({ _id: id })
@@ -318,7 +322,7 @@ class Admin {
       const { categoryId } = ctx.request.body
       const { seq } = await Counter.findByIdAndUpdate({ _id: 'categoryId'}, { $inc: {seq: 1} }, { new: true, upsert: true })
       const result = await Category.findByIdAndUpdate({ _id: categoryId }, { $set: { sortIndex: seq } }, { new: true } )
-      ctx.body = { code: 201, message: '修改成功', data: result }
+      ctx.body = { code: 201, message: 'ok', data: result }
     } catch(e) {
       logger.error('admin top bug category error', e)
     }
@@ -560,7 +564,7 @@ class Admin {
         classify
       })
       const result = await device.save()
-      ctx.body = { code: 201, message: '创建成功', data: result }
+      ctx.body = { code: 201, message: 'ok', data: result }
     } catch(e) {
       logger.error('admin create device error', e)
     }
@@ -574,7 +578,7 @@ class Admin {
       //获取设备名称
       if(type === 'name') {
         const docs = await Device.find({}, 'name')
-        return ctx.body = { code: 200, message: '获取成功', data: docs }
+        return ctx.body = { code: 200, message: 'ok', data: docs }
       }
 
       var result = await Device.find({}).sort('-createdAt')
@@ -600,7 +604,7 @@ class Admin {
         return item
       })
 
-      ctx.body = { code: 200, message: '获取成功', data: result }
+      ctx.body = { code: 200, message: 'ok', data: result }
     } catch (e) {
       logger.error('admin get devices error', e)
     }
@@ -616,7 +620,7 @@ class Admin {
         return new Date(b.line_time).getTime() - new Date(a.line_time).getTime()
       })
 
-      ctx.body = { code: 200, message: '获取成功', data: doc }
+      ctx.body = { code: 200, message: 'ok', data: doc }
     } catch (e) {
       logger.error('admin get device error', e)
     }
@@ -627,7 +631,7 @@ class Admin {
       const deviceId = ctx.deviceId
       const updateBody = ctx.request.body
       const result = await Device.update({ _id: deviceId }, updateBody, { upsert: false })
-      ctx.body = { code: 201, message: '更新成功', data: result }
+      ctx.body = { code: 201, message: 'ok', data: result }
     } catch(e) {
       logger.error('admin update device error', e)
     }
@@ -658,7 +662,7 @@ class Admin {
         $set : { 'address' : address }
       }, 
       { new: true , upsert: false })
-      ctx.body = { code: 201, message: '更新成功', data: result }
+      ctx.body = { code: 201, message: 'ok', data: result }
     } catch(e) {
       logger.error('admin updateDeviceLoaction error', e)
     }
@@ -727,7 +731,7 @@ class Admin {
         canView: canView,
         canMonitor: canMonitor
       })
-      ctx.body = { code: 201, message: '创建成功', data: result }
+      ctx.body = { code: 201, message: 'ok', data: result }
     } catch(e) {
       logger.error('addAuth error', e)
     }
@@ -738,7 +742,7 @@ class Admin {
       const result = await Auth.find({})
                   .populate('user', 'name')
                   .populate('device', 'name number')
-      ctx.body = { code: 200, message: '获取成功', data: result }
+      ctx.body = { code: 200, message: 'ok', data: result }
     } catch(e) {
       logger.error('admin get Auths error')
     }
@@ -750,7 +754,7 @@ class Admin {
       const result = await Auth.findOne({_id: authId})
                   .populate('user', 'name')
                   .populate('device', 'name number')
-      ctx.body = { code: 200, message: '获取成功', data: result }
+      ctx.body = { code: 200, message: 'ok', data: result }
     } catch(e) {
       logger.error('admin get Auth error')
     }
@@ -760,7 +764,7 @@ class Admin {
     try {
     const { authId } = ctx.query
       const result = await Auth.remove({ _id: authId })
-      ctx.body = { code: 201, message: '删除成功', data: {} }
+      ctx.body = { code: 201, message: 'ok', data: {} }
     }
     catch(e) {
       logger.error('admin delete Auth error', e)
@@ -774,7 +778,7 @@ class Admin {
       const updateBody = ctx.request.body
 
       const result = await Auth.findByIdAndUpdate({ _id: authId }, updateBody, { new: true })
-      ctx.body = { code: 201, message: '更新成功', data: result }
+      ctx.body = { code: 201, message: 'ok', data: result }
     } catch(e) {
       logger.error('admin update Auth error', e)
     }

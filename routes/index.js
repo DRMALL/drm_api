@@ -127,6 +127,7 @@ router.get('/app/bugs/cate', App.getBugsCate)
 router.post('/app/order/new', App.createOrder)
 router.get('/app/order/all', App.getOrders)
 router.post('/app/order/upload', App.uploadOrderImages)
+router.post('/app/order/delimg', App.deleteOrderImage)
 
 //devices
 router.get('/app/devices/address' , App.getLastLocation)
@@ -151,6 +152,7 @@ router.post('/app/notices/one/read', App.setOneRead)
 router.delete('/app/notices/:id', App.deleteOneNotice)
 
 router.post('/app/order/solved', App.setOrderSolved)
+
 
 //timelines sort
 router.get('/app/timelines', App.getTimelinesSort)

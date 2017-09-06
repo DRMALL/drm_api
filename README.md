@@ -52,6 +52,7 @@ app = https://api.wardenger.me/app
 * [获取压力分类](#获取压力分类)
 * [获取燃料分类](#获取燃料分类)
 * [上传工单图片](#上传工单图片)
+* [删除图片](#删除图片)
 
 ### admin
 
@@ -410,6 +411,17 @@ post https://api.wardenger.me/app/order/upload?&token=${token}
 ```
 {
   key: 'order'
+}
+```
+
+### 删除图片
+
+```
+POST https://api.wardenger.me/app/order/delimg?&token=${token}
+```
+```
+{
+  url: String,
 }
 ```
 
