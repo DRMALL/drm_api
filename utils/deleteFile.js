@@ -5,7 +5,7 @@ function deleteFile(url, path) {
   return new Promise((resolve, reject) => {
     fs.unlink(path + findFileName(url), (err) => {
       if (err) reject(err)
-      resolve()
+      resolve('success')
     })
   })
 }
