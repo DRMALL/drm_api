@@ -11,7 +11,7 @@ const expect = chai.expect
 
 const request = supertest( app.listen() )
 
-var admin_token, app_token, newsid, cateid, bugsid, ccid, deviceid, authid;
+var admin_token, app_token, newsid, cateid, bugsid, ccid, deviceid, authid, fuelid, orderid;
 
 describe('DRM测试', () => {
 
@@ -372,8 +372,6 @@ describe('DRM测试', () => {
    expect(result.body.message).to.equal('ok')   
   })
 
-
-
   it('删除设备', async () => {
     const result = await request.delete(`/admin/devices/${deviceid}`)
       .query({ token: admin_token })
@@ -381,6 +379,119 @@ describe('DRM测试', () => {
     expect(result.body.message).to.equal('ok')             
   })
 
+  it('创建燃料分类', async () => {
+    const result = await request.post(`/admin/fuelsorts`)
+      .query({ token: admin_token })
+      .send({
+        text: 'dddd'
+      })
+    fuelid = result.body.data._id
+
+    expect(result.body.message).to.equal('ok')
+  })
+
+  it('获取燃料分类', async () => {
+    const result = await request.get('/admin/fuelsorts')
+      .query({ token: admin_token })
+
+    expect(result.body.message).to.equal('ok')    
+  })
+
+  it('单个燃料分类', async () => {
+    const result = await request.get(`/admin/fuelsorts/${fuelid}`)
+      .query({ token: admin_token })
+
+    expect(result.body.message).to.equal('ok')      
+  })
+
+  it('更新燃料分类', async () => {
+    const result = await request.put(`/admin/fuelsorts/${fuelid}`)
+      .query({ token: admin_token })
+      .send({
+        text: 'dddd'
+      })
+
+    expect(result.body.message).to.equal('ok')          
+  })
+
+  it('删除燃料分类', async () => {
+    const result = await request.delete(`/admin/fuelsorts/${fuelid}`)
+      .query({ token: admin_token })
+
+    expect(result.body.message).to.equal('ok')    
+  })
+
+  it('设备热门搜索词', async () => {
+    const result = await request.get('/app/devices/hots')
+      .query({ token: app_token })
+
+    expect(result.body.message).to.equal('ok')  
+  })
+
+  it('配件热门搜索词', async () => {
+    const result = await request.get('/app/parts/hots')
+      .query({ token: app_token })
+
+    expect(result.body.message).to.equal('ok')      
+  })
+
+  it('故障热门搜索词', async () => {
+    const result = await request.get('/app/bugs/hots')
+      .query({ token: app_token })
+
+    expect(result.body.message).to.equal('ok')      
+  })
+
+  it('获取通知', async () => {
+    const result = await request.get('/app/notices')
+      .query({ token: app_token })
+
+    expect(result.body.message).to.equal('ok')    
+  })
+
+  it('设置所有通知已读', async () => {
+    const result = await request.post('/app/notices/all/read')
+      .query({ token: app_token })
+
+    expect(result.body.message).to.equal('ok')        
+  })
+
+  it('创建工单', async () => {
+    const result = await request.post('/app/order/new')
+      .query({ token: app_token })
+      .send({
+        title: 'aaaaaa',
+        category: 'ssssss',
+        content: 'cdddd',
+        images: [{
+          url: 'a',
+          url: 'b'
+        }]
+      })
+    const orderid = result.body.data._id
+    expect(result.body.message).to.equal('ok')    
+  })
+
+  it('获取工单', async() => {
+    const result = await request.get('/admin/orders')
+      .query({ token: admin_token })
+
+    expect(result.body.message).to.equal('ok')       
+  })
+
+  it('单个工单', async() => {
+    const result = await request.get(`/admin/orders/${orderid}`)
+      .query({ token: admin_token })
+
+    expect(result.body.message).to.equal('ok')      
+  })
+
+  it('处理工单', async () => {
+    const result = await request.post(`/admin/orders/${orderid}`)
+      .query({ token: admin_token })
+
+    expect(result.body.message).to.equal('ok')       
+  })
 
 
 

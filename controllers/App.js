@@ -651,9 +651,11 @@ class App {
 
   static async deleteOrderImage(ctx) {
     const { url } = ctx.request.body
-    const result = await deleteFile(url)
+    const result = await deleteFile(url, 'static/upload/')
     ctx.body = { code: 201, message: 'ok', data: result }
   }
+
+
 
 
 }
