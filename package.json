@@ -4,7 +4,7 @@
   "description": "DRM'S API",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test mocha /test"
+    "test": "NODE_ENV=test mocha"
   },
   "repository": {
     "type": "git",

@@ -11,7 +11,7 @@ const expect = chai.expect
 
 const request = supertest( app.listen() )
 
-var admin_token, app_token, newsid, cateid, bugsid, ccid, deviceid, authid, fuelid, orderid;
+var admin_token, app_token, newsid, cateid, bugsid, ccid, deviceid, authid, fuelid, orderid, preid;
 
 describe('DRM测试', () => {
 
@@ -468,7 +468,7 @@ describe('DRM测试', () => {
           url: 'b'
         }]
       })
-    const orderid = result.body.data._id
+    orderid = result.body.data._id
     expect(result.body.message).to.equal('ok')    
   })
 
@@ -487,14 +487,66 @@ describe('DRM测试', () => {
   })
 
   it('处理工单', async () => {
-    const result = await request.post(`/admin/orders/${orderid}`)
+    const result = await request.put(`/admin/orders/${orderid}`)
       .query({ token: admin_token })
-
+      .send({
+        advice: 'handle'
+      })
     expect(result.body.message).to.equal('ok')       
   })
 
+  it('工单已解决', async () => {
+    const result = await request.post(`/app/order/solved`)
+      .query({ token: app_token })
+      .send({
+        id: orderid
+      })
+    expect(result.body.message).to.equal('ok')      
+  })
 
+  it('删除工单', async () => {
+    const result = await request.delete(`/admin/orders/${orderid}`)
+      .query({ token: admin_token })
 
+     expect(result.body.message).to.equal('ok')   
+  })
+
+  it('创建压力分类', async () => {
+    const result = await request.post('/admin/presorts')
+      .query({ token: admin_token })
+      .send({
+        text: 'aaasss'
+      })
+    preid = result.body.data._id
+    expect(result.body.message).to.equal('ok')
+  })
+
+  it('获取压力分类', async () => {
+    const result = await request.get('/admin/presorts')
+      .query({ token: admin_token })
+    expect(result.body.message).to.equal('ok')    
+  })
+
+  it('单个压力分类', async () => {
+    const result = await request.get(`/admin/presorts/${preid}`)
+      .query({ token: admin_token })
+    expect(result.body.message).to.equal('ok')  
+  })
+
+  it('更新压力分类', async () => {
+    const result = await request.put(`/admin/presorts/${preid}`)
+      .query({ token: admin_token })
+      .send({
+        text: 'bbbbbb'
+      })
+    expect(result.body.message).to.equal('ok')  
+  })
+
+  it('删除压力分类', async () => {
+    const result = await request.delete(`/admin/presorts/${preid}`)
+      .query({ token: admin_token })
+    expect(result.body.message).to.equal('ok')  
+  })
 
   it('删除用户', async () => {
     const id = parse_id(app_token)
@@ -511,40 +563,4 @@ function parse_id(token) {
   const { cert } = require('../config')
   return jwt.verify(token, cert).id
 }
-
-//console.log
-// describe('drm admin user test', () => {
-
-//   it('新增用户', (done) => {
-//     request.post('/admin/users/new')
-//     .query({
-//       token: adminToken
-//     })
-//     .send({
-//       name: 'testUser',
-//       password: 'test',
-//       email: 'test@gmail.com',
-//       phone: '13545892345',
-//       company_name: 'test_company',
-//       address: 'test_address'
-//     })
-//     .end((err, res) => {
-//       expect(res.body.message).to.equal('ok')
-//       done()
-//     })
-//   })
-
-//   it('获取所有用户', (done) => {
-//     request.get('/admin/users')
-//     .query({
-//       token: adminToken
-//     })
-//     .end((err, res) => {
-//       expect(res.body.code).to.equal(200)
-//       done()
-//     })
-//   })
-  
-// })
-
 

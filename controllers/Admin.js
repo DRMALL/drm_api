@@ -26,6 +26,7 @@ const myEmitter = require('../tcp/emitter')
 
 // deleteDevice
 // Create
+// console
 class Admin {
 
   //管理员登录
@@ -257,7 +258,7 @@ class Admin {
         try {
           await deleteFile(item.url, 'static/upload/')
         } catch(e) {
-          logger.error(e)
+          // logger.error(e)
         }
       })
       
@@ -309,7 +310,6 @@ class Admin {
   static async deleteBugCate(ctx) {
     try {
       const id = ctx.categoryId
-      console.log(id)
       const result = await Category.remove({ _id: id })
       ctx.body = { code: 201, message: '删除成功', data: {} }
     } catch(e) {
@@ -407,7 +407,7 @@ class Admin {
   static async getOrders(ctx) {
     try {
       const orders = await Order.find({}).sort('-createdAt')
-      ctx.body = { code: 200, message: '获取成功', data: orders }
+      ctx.body = { code: 200, message: 'ok', data: orders }
     } catch(e) {
       logger.error('admin get orders error', e)
     }
@@ -417,7 +417,7 @@ class Admin {
     try {
       const id = ctx.orderId
       const result = await Order.findById(id)
-      ctx.body = { code: 200, message: '获取成功', data: result }
+      ctx.body = { code: 200, message: 'ok', data: result }
     } catch(e) {
       logger.error('admin get order error', e)
     }
@@ -469,7 +469,7 @@ class Admin {
       if(!result)
         return ctx.body = { code: 500, message: 'server error', data: '' }
 
-      ctx.body = { code: 201, message: '处理成功', data: result }
+      ctx.body = { code: 201, message: 'ok', data: result }
     } catch(e) {
       logger.error('admin handleOrder error', e)
     }
@@ -617,7 +617,7 @@ class Admin {
       var doc = await Device.findById({ _id: deviceId })
 
       doc.timelines = doc.timelines.sort((a, b) => {
-        return new Date(b.line_time).getTime() - new Date(a.line_time).getTime()
+        return new Date(a.line_time).getTime() - new Date(b.line_time).getTime()
       })
 
       ctx.body = { code: 200, message: 'ok', data: doc }

@@ -1,7 +1,7 @@
 
 # 数据库模型文档
 
-该DRM项目主要分为以下几个数据模型
+该DRM项目主要有以下数据模型
 
 ```
  - Auth(权限)
@@ -218,6 +218,7 @@ text 代表搜索词的内容，weights代表搜索词的权重。
     id: String,
     content: String,
     feedback: String,
+    images: [],
     time: String,
   }
 }
