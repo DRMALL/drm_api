@@ -793,10 +793,11 @@ class Admin {
       const data = formatXLS(upload.path)
       const result = await Part.insertMany(data)
       ctx.body = { code: 200, message: 'ok', data: result }
+
     } catch(e) {
       if(e.success === false)
         ctx.body = { code: 503, message: e.message, data: '' }
-      console.log(e)
+      logger.error(e)
     }
 
     // if(upload.fieldname !== 'part')
