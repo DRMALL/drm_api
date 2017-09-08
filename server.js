@@ -10,6 +10,7 @@ const Koa = require('koa')
     , WebSocket = require('./websocket')
     , staticPath = './static'
     , tcpSocket = require('./tcpSocket')
+    , redis = require('./redis')
 
 app.use(static(path.join( __dirname, staticPath)))
 app.use(cors())

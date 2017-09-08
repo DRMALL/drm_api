@@ -5,10 +5,6 @@ const chai = require('chai')
 const supertest = require('supertest')
 const expect = chai.expect
 
-// const adminToken = require('../config').adminToken
-// const appToken = require('../config').appToken
-// var admin_token, app_token;
-
 const request = supertest( app.listen() )
 
 var admin_token, app_token, newsid, cateid, bugsid, ccid, deviceid, authid, fuelid, orderid, preid;

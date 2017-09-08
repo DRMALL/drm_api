@@ -14,6 +14,9 @@ const ccsort = require('./ccsort')
 const presort = require('./presort')
 const fuelsort = require('./fuelsort')
 
+const findpass = require('../reset/findpass')
+const resetpass = require('../reset/resetpass')
+
 const router = new Router()
 
 router.get('/', home)
@@ -167,6 +170,9 @@ router.get('/app/parts/hots', App.getPartHots)
 router.get('/app/parts/first', App.getFirstClassParts)
 router.get('/app/parts/second', App.getSecondClassParts)
 router.get('/app/parts/one', App.getSinglePart)
+
+router.get('/app/findpass', findpass)
+router.post('/app/resetpass', resetpass)
 
 
 module.exports = router

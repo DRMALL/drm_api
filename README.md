@@ -53,6 +53,8 @@ app = https://api.wardenger.me/app
 * [获取燃料分类](#获取燃料分类)
 * [上传工单图片](#上传工单图片)
 * [删除图片](#删除图片)
+* [找回密码](#找回密码)
+* [重置密码](#重置密码)
 
 ### admin
 
@@ -422,6 +424,26 @@ POST https://api.wardenger.me/app/order/delimg?&token=${token}
 ```
 {
   url: String,
+}
+```
+
+### 找回密码
+
+调用该接口，会给用户邮箱发送验证码
+
+```
+GET https://api.wardenger.me/app/findpass?token=${token}
+```
+
+### 重置密码
+
+```
+POST https://api.wardenger.me/app/resetpass?token=${token}
+```
+```
+{
+  code: '',  // 用户邮箱收到的验证码
+  pass: ''   // 密码
 }
 ```
 
