@@ -26,7 +26,7 @@ module.exports = (email, nonstr) => {
         to: `${email}`, // list of receivers
         subject: '重置密码', // Subject line
         text: '有效期5分钟', // plain text body
-        html: `<b>你的验证码是：</b><b>${nonstr}</b>` // html body
+        html: `<b>你的验证码是：</b><b>${nonstr}</b><p>有效期5分钟</p>` // html body
         // attachments: [{
         //     filename: 'img.png',
         //     path: ''

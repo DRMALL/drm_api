@@ -54,6 +54,7 @@ app = https://api.wardenger.me/app
 * [上传工单图片](#上传工单图片)
 * [删除图片](#删除图片)
 * [找回密码](#找回密码)
+* [检查邮箱验证码](#检查邮箱验证码)
 * [重置密码](#重置密码)
 
 ### admin
@@ -435,6 +436,34 @@ POST https://api.wardenger.me/app/order/delimg?&token=${token}
 GET https://api.wardenger.me/app/findpass?token=${token}
 ```
 
+### 检查邮箱验证码
+```
+POST https://api.wardenger.me/app/checkcode?token=${token}
+```
+```
+{
+  code: ''
+}
+```
+
+成功返回
+```
+{
+  code: 201,
+  message: 'ok',
+  data: true
+}
+```
+失败返回
+```
+{
+  code: 422,
+  message: '验证码无效',
+  data: false
+}
+```
+
+
 ### 重置密码
 
 ```
@@ -442,7 +471,6 @@ POST https://api.wardenger.me/app/resetpass?token=${token}
 ```
 ```
 {
-  code: '',  // 用户邮箱收到的验证码
   pass: ''   // 密码
 }
 ```

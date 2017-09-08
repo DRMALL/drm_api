@@ -16,6 +16,7 @@ const fuelsort = require('./fuelsort')
 
 const findpass = require('../reset/findpass')
 const resetpass = require('../reset/resetpass')
+const checkcode = require('../reset/checkcode') 
 
 const router = new Router()
 
@@ -172,6 +173,7 @@ router.get('/app/parts/second', App.getSecondClassParts)
 router.get('/app/parts/one', App.getSinglePart)
 
 router.get('/app/findpass', findpass)
+router.post('/app/checkcode', checkcode)
 router.post('/app/resetpass', resetpass)
 
 
