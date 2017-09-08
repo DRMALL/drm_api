@@ -15,7 +15,7 @@ module.exports = async (ctx) => {
   const nonstr = generate_nonstr(4)
 
   // 存入redis, 和用户信息捆绑，设置有效期5分钟，done
-  redis.set(email, nonstr, 'EX', 60 * 5)
+  redis.set(email, nonstr, 'EX', 60 * 60)
 
   //发送邮件，promise
   //should return promise
