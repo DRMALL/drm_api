@@ -3,13 +3,26 @@ const User = require('../model/User')
 const generate_nonstr = require('./generate_nonstr')
 const redis = require('../redis')
 const send_email = require('./send_email')
+const { cert } = require('../config')
+const { isEmail } = require('../utils/Validate')
 
 module.exports = async (ctx) => {
 
+  const { email, salt } = ctx.request.body
 
-  const { id } = ctx.request.decoded
+  if(salt !== cert) {
+    return ctx.body = { code: 443, message: 'bad request', data: ''}
+  }
 
-  const { email } = await User.findById({ _id: id })
+  if(!isEmail(email)) {
+    return ctx.body = { code: 477, message: 'bad email type' , data: ''}
+  }
+
+  const isThere = await User.findOne({ email: email })
+
+  if(!isThere) {
+    return ctx.body = { code: 478, message: 'the email is not registered', data: ''}
+  }
 
   //生成随机字符串
   const nonstr = generate_nonstr(4)

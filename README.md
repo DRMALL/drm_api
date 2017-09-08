@@ -433,7 +433,13 @@ POST https://api.wardenger.me/app/order/delimg?&token=${token}
 调用该接口，会给用户邮箱发送验证码
 
 ```
-GET https://api.wardenger.me/app/findpass?token=${token}
+POST https://api.wardenger.me/app/findpass?
+```
+```
+{
+  salt: '',
+  email: '',
+}
 ```
 
 ### 检查邮箱验证码

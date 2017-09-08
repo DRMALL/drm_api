@@ -23,6 +23,7 @@ const router = new Router()
 router.get('/', home)
 router.post('/admin/session', adminLogin)
 router.post('/app/session', userLogin)
+router.post('/app/findpass', findpass)
 
 router.use('*', verifyToken)
 
@@ -172,7 +173,6 @@ router.get('/app/parts/first', App.getFirstClassParts)
 router.get('/app/parts/second', App.getSecondClassParts)
 router.get('/app/parts/one', App.getSinglePart)
 
-router.get('/app/findpass', findpass)
 router.post('/app/checkcode', checkcode)
 router.post('/app/resetpass', resetpass)
 
