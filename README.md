@@ -444,10 +444,12 @@ POST https://api.wardenger.me/app/findpass?
 
 ### 检查邮箱验证码
 ```
-POST https://api.wardenger.me/app/checkcode?token=${token}
+POST https://api.wardenger.me/app/checkcode
 ```
 ```
 {
+  slat: '',
+  email: '',
   code: ''
 }
 ```
@@ -473,10 +475,11 @@ POST https://api.wardenger.me/app/checkcode?token=${token}
 ### 重置密码
 
 ```
-POST https://api.wardenger.me/app/resetpass?token=${token}
+POST https://api.wardenger.me/app/resetpass?
 ```
 ```
 {
+  email: '',
   pass: ''   // 密码
 }
 ```
