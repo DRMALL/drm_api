@@ -1,30 +1,23 @@
+const crypto = require('crypto')
+    , salt = 'sparklog+=newteo'
+
+const logger = require('../utils/logger')
 
 module.exports = (data) => {
 
-    var arr = data.split('&')
+  data = new Buffer(data, 'base64')
+  const decipher = crypto.createDecipher('aes-128-ecb', salt)
+  decipher.setAutoPadding(false)
+  let decrypted = decipher.update(data, 'binary', 'utf8')
+  decrypted += decipher.final('utf8')
 
-    arr = arr.map((item, index) => {
-      item = item.replace(/\w+=/i, '')
-      return item
-    })
-
-    var deviceId = arr[0]
-    var keys = arr[1].split(',')
-    var values = arr[2].split(',')
-    var timestamps = arr[3].split(',')
-
-    var moniterData = []
-
-    for(let i = 0; i < keys.length -1 ; i++) {
-      moniterData.push({
-        key: keys[i],
-        value: values[i],
-        timestamp: timestamps[i]
-      })
-    }
-
-    return obj = {
-      number: deviceId,
-      data: moniterData
-    }
+  decrypted = decrypted.replace(/\0/g, '')
+  console.log(decrypted)
+  const obj = JSON.parse(decrypted)
+  console.log(obj)
+  return {
+    number: obj.deviceId,
+    data: obj.indexes,
+    ts: obj.ts
+  }
 }

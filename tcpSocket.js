@@ -30,16 +30,17 @@ function handleConnection(conn) {
   function onConnData(d) {
     logger.info('connection data from %s: %j', remoteAddress, d)
     // logger.info('DRM_DATA:', d)
+    // logger.info('DRM_DATA:', transform_data(d))
 
     const dataSource = verify_source(d)
 
     if(dataSource === 'hardware') {
       try {
         const normal_data = transform_data(d)
-        
+        console.log(normal_data)
         setTimeout(() => {
           save_to_db(normal_data)
-        }, 1000 * 60 * 5)
+        }, 1000 * 60 )
         myEmitter.emit('coming', normal_data)
       } catch(e) {
         console.error(e)
