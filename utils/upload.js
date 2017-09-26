@@ -27,7 +27,10 @@ exports.busboys = (ctx, options = {}) => {
 
     return new Promise((resolve, reject) => {
         const busboy = new Busboy({ 
-            headers: ctx.req.headers
+            headers: ctx.req.headers,
+            limits: {
+                fieldSize: 1028 * 1028 * 10
+            }
         });
         let name = '';
         let fieldname = ''
