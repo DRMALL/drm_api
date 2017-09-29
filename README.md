@@ -56,6 +56,7 @@ app = https://api.wardenger.me/app
 * [找回密码](#找回密码)
 * [检查邮箱验证码](#检查邮箱验证码)
 * [重置密码](#重置密码)
+* [获取单个设备单项监控数据](#获取单个设备单项监控数据)
 
 ### admin
 
@@ -482,6 +483,15 @@ POST https://api.wardenger.me/app/resetpass?
   email: '',
   pass: ''   // 密码
 }
+```
+
+### 获取单个设备单项监控数据
+
+number指的是设备编号
+field指的是指标名
+
+```
+GET https://api.wardenger.me/app/moniterdevs/number/field?number=${number}&field={field}&token=${token}
 ```
 
 

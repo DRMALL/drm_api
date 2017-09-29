@@ -1,5 +1,6 @@
 const crypto = require('crypto')
     , salt = 'sparklog+=newteo'
+    , quotaDic = require('../utils/quotaDic')
 
 const logger = require('../utils/logger')
 
@@ -15,9 +16,17 @@ module.exports = (data) => {
   console.log(decrypted)
   const obj = JSON.parse(decrypted)
   console.log(obj)
+
+  let new_indexes = []
+  obj.indexes.forEach((item)=> {
+    if(quotaDic(Object.keys(item)[0]).quotaName != '未知') {
+      new_indexes.push(item)
+    }
+  })
+
   return {
     number: obj.deviceId,
-    data: obj.indexes,
+    data: new_indexes, //obj.indexes,
     ts: obj.ts
   }
 }

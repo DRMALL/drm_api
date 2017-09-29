@@ -5,6 +5,7 @@ const verify_socket_token = require('./utils/verify_socket_token')
 
 const transform_data = require('./tcp/transform_data')
 const verify_source = require('./tcp/verify_source')
+const deviceId_find_db = require('./tcp/deviceId_find_db')
 const save_to_db = require('./tcp/save_to_db')
 const myEmitter = require('./tcp/emitter')
 
@@ -38,10 +39,17 @@ function handleConnection(conn) {
       try {
         const normal_data = transform_data(d)
         console.log(normal_data)
-        setTimeout(() => {
-          save_to_db(normal_data)
-        }, 1000 * 60 )
-        myEmitter.emit('coming', normal_data)
+        deviceId_find_db(normal_data).then((device_data)=> {
+          if(device_data) {
+            setTimeout(() => {
+              save_to_db(normal_data)
+            }, 1000 * 5 )
+            myEmitter.emit('coming', normal_data)
+          } else {
+            logger.info(`save failed: Didn't found this deviceId`)
+            console.log(`Didn't found this deviceId`)
+          }
+        })
       } catch(e) {
         console.error(e)
       }

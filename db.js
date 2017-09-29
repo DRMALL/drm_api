@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
   
 mongoose.Promise = global.Promise
 
-mongoose.connect('mongodb://localhost/drm')
+mongoose.connect('mongodb://localhost/drm', {useMongoClient: true})
 
 db.on('error', console.error.bind(console, 'connect error:'))
 

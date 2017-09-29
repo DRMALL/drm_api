@@ -25,6 +25,8 @@ const deviceSchema = Schema({
   }],
   incharges: [],
   remark: String,
+  ts: Number,
+  data: [],
 }, { timestamps: true })
 
 deviceSchema.index({ name: "text", description: "text" })

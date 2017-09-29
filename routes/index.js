@@ -13,6 +13,7 @@ const timeline = require('./timeline')
 const ccsort = require('./ccsort')
 const presort = require('./presort')
 const fuelsort = require('./fuelsort')
+const trying = require('./trying')
 
 const findpass = require('../reset/findpass')
 const resetpass = require('../reset/resetpass')
@@ -27,7 +28,7 @@ router.post('/app/session', userLogin)
 router.post('/app/findpass', findpass)
 router.post('/app/checkcode', checkcode)
 router.post('/app/resetpass', resetpass)
-
+// router.post('/admin/trying', trying)
 
 router.use('*', verifyToken)
 
@@ -35,6 +36,7 @@ router.use('/admin/timelines', timeline.routes(), timeline.allowedMethods())
 router.use('/admin/ccsorts', ccsort.routes(), ccsort.allowedMethods())
 router.use('/admin/presorts', presort.routes(), presort.allowedMethods())
 router.use('/admin/fuelsorts', fuelsort.routes(), fuelsort.allowedMethods())
+
 
 router.use('/admin/users', adminUser.routes(), adminUser.allowedMethods())
 
@@ -169,6 +171,7 @@ router.get('/app/moniterdevs', App.getMoniterDevs)
 router.get('/app/moniterdevs/search', App.searchMoniterDevs)
 
 router.get('/app/moniterdevs/number', App.getMoniterByNumber)
+router.get('/app/moniterdevs/number/field', App.getMoniterByNumberField)
 
 //parts
 router.get('/app/parts/search', App.searchPart)

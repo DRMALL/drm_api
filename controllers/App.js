@@ -14,6 +14,7 @@ const PreSort = require('../model/PreSort')
 const FuelSort = require('../model/FuelSort')
 const DevMoniter = require('../model/DevMoniter')
 const Part = require('../model/Part')
+const DataGraph = require('../model/DataGraph')
 const jwt = require('jsonwebtoken')
 const { cert } = require('../config')
 const { busboys } = require('../utils/upload')
@@ -24,6 +25,7 @@ const nodeExcel  = require('excel-export')
 const { isPhone } = require('../utils/Validate')
 const { stripTags } = require('../utils/util')
 const deleteFile = require('../utils/deleteFile')
+const quotaDic = require('../utils/quotaDic')
 
 const logger = require('../utils/logger')
 
@@ -604,7 +606,22 @@ class App {
 
   static async getMoniterByNumber(ctx) {
     const { number } = ctx.query
-    const doc = await DevMoniter.findOne({ number: number })
+    const doc = await Device.findOne({ number: number })
+    if(doc) {
+      let quota_data = []
+      doc.data.forEach((item)=> {
+        let obj_data = quotaDic(Object.keys(item)[0])
+        obj_data['value'] = item[`${Object.keys(item)[0]}`]
+        quota_data.push(obj_data)
+      })
+      doc.data = quota_data
+    }
+    ctx.body = { code: 200, message: 'ok', data: doc }
+  }
+
+  static async getMoniterByNumberField(ctx) {
+    const { number, field } = ctx.query
+    const doc = await DataGraph.findOne({ number: number, field: field })
     ctx.body = { code: 200, message: 'ok', data: doc }
   }
 
