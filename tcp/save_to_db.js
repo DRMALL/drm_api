@@ -7,7 +7,7 @@ const create_alarm_notice = require('./create_alarm_notice')
 
 module.exports = async (obj) => {
   const dev_moniter_data = await DevMoniter.create(obj)
-  if(dev_moniter_data.data) {
+  if(dev_moniter_data.data && dev_moniter_data.data[0] != undefined) {
     const device_data = await Device.findOneAndUpdate({number: obj.number}, { $set: { data: obj.data, ts: Number(obj.ts) || 0 }}, { new: true, upsert: true })
     if(device_data) {
       device_data.data.forEach((item, index)=> {

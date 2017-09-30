@@ -610,8 +610,10 @@ class App {
     if(doc) {
       let quota_data = []
       doc.data.forEach((item)=> {
-        let obj_data = quotaDic(Object.keys(item)[0])
-        obj_data['value'] = item[`${Object.keys(item)[0]}`]
+        let key = Object.keys(item)[0]
+        let obj_data = quotaDic(key)
+        obj_data['orgName'] = key
+        obj_data['value'] = item[`${key}`]
         quota_data.push(obj_data)
       })
       doc.data = quota_data

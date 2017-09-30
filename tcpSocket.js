@@ -7,6 +7,7 @@ const transform_data = require('./tcp/transform_data')
 const verify_source = require('./tcp/verify_source')
 const deviceId_find_db = require('./tcp/deviceId_find_db')
 const save_to_db = require('./tcp/save_to_db')
+const to_app_data = require('./tcp/to_app_data')
 const myEmitter = require('./tcp/emitter')
 
 
@@ -44,7 +45,7 @@ function handleConnection(conn) {
             setTimeout(() => {
               save_to_db(normal_data)
             }, 1000 * 5 )
-            myEmitter.emit('coming', normal_data)
+            myEmitter.emit('coming', to_app_data(normal_data))
           } else {
             logger.info(`save failed: Didn't found this deviceId`)
             console.log(`Didn't found this deviceId`)
