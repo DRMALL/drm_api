@@ -43,9 +43,10 @@ function handleConnection(conn) {
         deviceId_find_db(normal_data).then((device_data)=> {
           if(device_data) {
             setTimeout(() => {
-              save_to_db(normal_data)
-            }, 1000 * 5 )
-            myEmitter.emit('coming', to_app_data(normal_data))
+              const now_data = normal_data
+              save_to_db(now_data)
+              myEmitter.emit('coming', to_app_data(now_data))
+            }, 1000 * 60 )
           } else {
             logger.info(`save failed: Didn't found this deviceId`)
             console.log(`Didn't found this deviceId`)
