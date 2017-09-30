@@ -24,7 +24,7 @@ class WebSocket {
         socket.emit('news', app_data)
         sendEndNews = setTimeout(() => {
           socket.emit('news', {number: '', ts: new Date().getTime(), data: []} )
-        }, 1000 * 60 )
+        }, 1000*60*5 )
       })
 
       myEmitter.on('orderNotice', (noticeResult) => {
