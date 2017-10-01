@@ -1,7 +1,7 @@
 
 'use strict';
 
-const nodemailer = require('nodemailer');
+const nodemailer = require('nodemailer')
   , userEmail = process.env.USEREMAIL
   , passEmail = process.env.PASSEMAIL
   , emailHost = process.env.EMAILHOST
