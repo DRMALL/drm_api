@@ -2,17 +2,20 @@
 'use strict';
 
 const nodemailer = require('nodemailer');
+  , userEmail = process.env.USEREMAIL
+  , passEmail = process.env.PASSEMAIL
+  , emailHost = process.env.EMAILHOST
 
 
 module.exports = (email, nonstr) => {
 
   let account = {
-    user: 'pengjie2957@126.com',
-    pass: 'wardenger163'
+    user: userEmail,
+    pass: passEmail
   }
 
   let transporter = nodemailer.createTransport({
-        host: 'smtp.126.com',
+        host: emailHost,
         port: 465,
         secure: true, // true for 465, false for other ports
         auth: {
@@ -22,7 +25,7 @@ module.exports = (email, nonstr) => {
   });
 
   let mailOptions = {
-        from: 'pengjie2957@126.com', // sender address
+        from: userEmail, // sender address
         to: `${email}`, // list of receivers
         subject: '重置密码', // Subject line
         text: '有效期5分钟', // plain text body
