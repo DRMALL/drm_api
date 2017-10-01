@@ -26,6 +26,8 @@ const { isPhone } = require('../utils/Validate')
 const { stripTags } = require('../utils/util')
 const deleteFile = require('../utils/deleteFile')
 const quotaDic = require('../utils/quotaDic')
+const OSS = require('../utils/OSS')
+const oss = new OSS()
 
 const logger = require('../utils/logger')
 
@@ -465,15 +467,16 @@ class App {
   static async addDeviceImages(ctx) {
     try {
       const { deviceId } = ctx.query
-      const upload = await busboys (ctx)
-      if(upload.fieldname !== 'devices') {
-        return ctx.body = { code: 400, message: '参数值错误, key: devices', data: '' }
-      }
-      const result = await Device.findByIdAndUpdate({ _id: deviceId },
-                                   { $push: { images: { url: upload.file }}},
+      const ossResult = await oss.uploadMulter('devices', ctx)
+      if(ossResult.key)
+        return ctx.body = { code: 400, message: `参数值错误, key: ${ossResult.key}`, data: '' }
+      else if(ossResult.pubUrl) {
+        const result = await Device.findByIdAndUpdate({ _id: deviceId },
+                                   { $push: { images: { url: ossResult.signUrl }}},
                                    { new: true }
                                   )
-      ctx.body = { code: 201, message: 'ok', data: result }
+        return ctx.body = { code: 201, message: '上传成功', data: result } 
+      } else ctx.body = { code: 501, message: '上传文件失败', data: ossResult }
     } catch(e) {
       logger.error('app addDeviceImages error', e)
     }
@@ -583,12 +586,12 @@ class App {
 
   static async uploadOrderImages(ctx) {
     try {
-      const upload = await busboys (ctx)
-      if(upload.fieldname !== 'order')
-        return ctx.body = { code: 400, message: '参数值错误, key: order', data: '' }
-      if(!upload.success)
-        return ctx.body = { code: 501, message: '上传文件失败', data: upload }
-      ctx.body = { code: 201, message: '上传成功', data: { url: upload.file } }
+      const result = await oss.uploadMulter('order', ctx)
+      if(result.key)
+        return ctx.body = { code: 400, message: `参数值错误, key: ${result.key}`, data: '' }
+      else if(result.pubUrl)
+        return ctx.body = { code: 201, message: '上传成功', data: { url: result.signUrl } }   
+      else ctx.body = { code: 501, message: '上传文件失败', data: result }
     } catch(e) {
       logger.error('app upload orders image error', e)
     }
@@ -670,8 +673,11 @@ class App {
 
   static async deleteOrderImage(ctx) {
     const { url } = ctx.request.body
-    const result = await deleteFile(url, 'static/upload/')
-    ctx.body = { code: 201, message: 'ok', data: result }
+    const ossResult = await oss.delete(item.url)
+    if(!ossResult.del) {
+      const result = await deleteFile(url, 'static/upload/')
+    }
+    ctx.body = { code: 201, message: 'ok', data: result || ossResult }
   }
 
 

@@ -22,6 +22,8 @@ const nodeExcel  = require('excel-export')
 const Validate = require('../utils/Validate')
 const logger = require('../utils/logger')
 const myEmitter = require('../tcp/emitter')
+const OSS = require('../utils/OSS')
+const oss = new OSS()
 
 
 // deleteDevice
@@ -176,12 +178,12 @@ class Admin {
   //news images
   static async uploadImgWithNews(ctx) {
     try {
-      const upload = await busboys (ctx)
-      if(upload.fieldname !== 'news')
-        return ctx.body = { code: 400, message: '参数值错误, key: news', data: '' }
-      if(!upload.success)
-        return ctx.body = { code: 501, message: '上传文件失败', data: upload }
-      ctx.body = { code: 201, message: '上传成功', data: { url: upload.file } }
+      const result = await oss.uploadMulter('news', ctx)
+      if(result.key)
+        return ctx.body = { code: 400, message: `参数值错误, key: ${result.key}`, data: '' }
+      else if(result.pubUrl)
+        return ctx.body = { code: 201, message: '上传成功', data: { url: result.signUrl } }   
+      else ctx.body = { code: 501, message: '上传文件失败', data: result }
     } catch(e) {
       logger.error('admin upload news image error', e)
     }
@@ -255,10 +257,13 @@ class Admin {
       const singleNew = await News.findOne({ _id: id })
 
       singleNew.images.map(async (item, index) => {
-        try {
-          await deleteFile(item.url, 'static/upload/')
-        } catch(e) {
-          // logger.error(e)
+        const ossResult = await oss.delete(item.url)
+        if(!ossResult.del) {
+          try {
+            await deleteFile(item.url, 'static/upload/')
+          } catch(e) {
+            // logger.error(e)
+          }
         }
       })
       
@@ -381,12 +386,12 @@ class Admin {
 
   static async uploadImgWithBug (ctx) {
     try {
-      const upload = await busboys (ctx)
-      if(upload.fieldname !== 'bugs')
-        return ctx.body = { code: 400, message: '参数值错误, key: news', data: '' }
-      if(!upload.success)
-        return ctx.body = { code: 501, message: '上传文件失败', data: upload }
-      ctx.body = { code: 201, message: '上传成功', data: { url: upload.file } }   
+      const result = await oss.uploadMulter('bugs', ctx)
+      if(result.key)
+        return ctx.body = { code: 400, message: `参数值错误, key: ${result.key}`, data: '' }
+      else if(result.pubUrl)
+        return ctx.body = { code: 201, message: '上传成功', data: { url: result.signUrl } }   
+      else ctx.body = { code: 501, message: '上传文件失败', data: result }
     } catch(e) {
       logger.error('admin upload image with bug error', e)
     }
@@ -525,15 +530,25 @@ class Admin {
 
   static async uploadImgWithDevice(ctx) {
     try {
-      const upload = await busboys (ctx)
-      if(upload.fieldname !== 'device')
-        return ctx.body = { code: 400, message: '参数值错误, key: device', data: '' }
-      if(!upload.success)
-        return ctx.body = { code: 501, message: '上传文件失败', data: upload }
-      ctx.body = { code: 201, message: '上传成功', data: { url: upload.file } }
+      const result = await oss.uploadMulter('device', ctx)
+      if(result.key)
+        return ctx.body = { code: 400, message: `参数值错误, key: ${result.key}`, data: '' }
+      else if(result.pubUrl)
+        return ctx.body = { code: 201, message: '上传成功', data: { url: result.signUrl } }   
+      else ctx.body = { code: 501, message: '上传文件失败', data: result }
     } catch(e) {
       logger.error('admin uploadImgWithDevice error', e)
     }
+    // try {
+    //   const upload = await busboys (ctx)
+    //   if(upload.fieldname !== 'device')
+    //     return ctx.body = { code: 400, message: '参数值错误, key: device', data: '' }
+    //   if(!upload.success)
+    //     return ctx.body = { code: 501, message: '上传文件失败', data: upload }
+    //   ctx.body = { code: 201, message: '上传成功', data: { url: upload.file } }
+    // } catch(e) {
+    //   logger.error('admin uploadImgWithDevice error', e)
+    // }
   }
 
   static async createDevice(ctx) {

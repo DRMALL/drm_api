@@ -21,7 +21,7 @@ server.listen(9000, function() {
 function handleConnection(conn) {
 
   const remoteAddress = conn.remoteAddress + ':' + conn.remotePort
-  logger.info('new client connection from %s', remoteAddress)
+  // logger.info('new client connection from %s', remoteAddress)
 
   conn.on('data', onConnData)
   conn.once('close', onConnClose)
@@ -30,7 +30,7 @@ function handleConnection(conn) {
   conn.setEncoding('utf8')
 
   function onConnData(d) {
-    logger.info('connection data from %s: %j', remoteAddress, d)
+    // logger.info('connection data from %s: %j', remoteAddress, d)
     // logger.info('DRM_DATA:', d)
     // logger.info('DRM_DATA:', transform_data(d))
 
@@ -42,11 +42,11 @@ function handleConnection(conn) {
         console.log(normal_data)
         deviceId_find_db(normal_data).then((device_data)=> {
           if(device_data) {
-            // setTimeout(() => {
+            setTimeout(() => {
               const now_data = normal_data
               save_to_db(now_data)
               myEmitter.emit('coming', to_app_data(now_data))
-            // }, 1000 * 60 )
+            }, 1000*3 )
           } else {
             logger.info(`save failed: Didn't found this deviceId`)
             console.log(`Didn't found this deviceId`)

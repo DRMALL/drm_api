@@ -1,16 +1,12 @@
 
 const DevMoniter = require('../model/DevMoniter')
 const DataGraph = require('../model/DataGraph')
+const OSS = require('../utils/OSS')
+  , oss = new OSS()
 
 module.exports = async (ctx) => {
-  // const { number, data, ts } = ctx.request.body
-  // if(!data) {
-  //   return ctx.body = { code: 400, message: '缺少必要的参数data', data: '' }
-  // }
-  // const doc = await DevMoniter.create({
-  //   number: number,
-  //   data: data,
-  //   ts: ts,
-  // })
-  // ctx.body = { code: 201, message: 'ok', data: doc }
+  const result = await oss.delete('')
+  if(result.del) {
+    ctx.body = { code: 204, message: '删除成功', data: { result: result.del } }
+  }
 }
