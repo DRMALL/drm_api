@@ -465,7 +465,7 @@ class App {
   }
 
   static async addDeviceImages(ctx) {
-    try {
+    // try {
       const { deviceId } = ctx.query
       const ossResult = await oss.uploadMulter('devices', ctx)
       if(ossResult.key)
@@ -477,9 +477,9 @@ class App {
                                   )
         return ctx.body = { code: 201, message: '上传成功', data: result } 
       } else ctx.body = { code: 501, message: '上传文件失败', data: ossResult }
-    } catch(e) {
-      logger.error('app addDeviceImages error', e)
-    }
+    // } catch(e) {
+    //   logger.error('app addDeviceImages error', e)
+    // }
   }
 
   static async getNotices(ctx) {
