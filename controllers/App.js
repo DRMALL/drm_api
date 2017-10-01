@@ -677,7 +677,7 @@ class App {
     if(!ossResult.del) {
       const result = await deleteFile(url, 'static/upload/')
     }
-    ctx.body = { code: 201, message: 'ok', data: result || ossResult }
+    ctx.body = { code: 201, message: 'ok', data: ossResult.del ? ossResult : result }
   }
 
 
