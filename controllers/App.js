@@ -673,7 +673,7 @@ class App {
 
   static async deleteOrderImage(ctx) {
     const { url } = ctx.request.body
-    const ossResult = await oss.delete(item.url)
+    const ossResult = await oss.delete(url)
     if(!ossResult.del) {
       const result = await deleteFile(url, 'static/upload/')
     }
