@@ -465,21 +465,23 @@ class App {
   }
 
   static async addDeviceImages(ctx) {
-    // try {
+    try {
       const { deviceId } = ctx.query
-      const ossResult = await oss.uploadMulter('devices', ctx)
-      if(ossResult.key)
-        return ctx.body = { code: 400, message: `参数值错误, key: ${ossResult.key}`, data: '' }
-      else if(ossResult.pubUrl) {
-        const result = await Device.findByIdAndUpdate({ _id: deviceId },
-                                   { $push: { images: { url: ossResult.signUrl }}},
-                                   { new: true }
-                                  )
+      const ossResult = await oss.uploadMulters('devices', ctx)
+      if(ossResult) {
+        var result
+        ossResult.map( async (item, index)=> {
+          const resultOne = await Device.findByIdAndUpdate({ _id: deviceId },
+                                     { $push: { images: { url: item }}},
+                                     { new: true }
+                                    )
+          if(index == (ossResult.length - 1)) result = resultOne
+        })
         return ctx.body = { code: 201, message: '上传成功', data: result } 
       } else ctx.body = { code: 501, message: '上传文件失败', data: ossResult }
-    // } catch(e) {
-    //   logger.error('app addDeviceImages error', e)
-    // }
+    } catch(e) {
+      logger.error('app addDeviceImages error', e)
+    }
   }
 
   static async getNotices(ctx) {
