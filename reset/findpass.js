@@ -11,17 +11,17 @@ module.exports = async (ctx) => {
   const { email, salt } = ctx.request.body
 
   if(salt !== cert) {
-    return ctx.body = { code: 443, message: 'bad request', data: ''}
+    return ctx.body = { code: 443, message: '请求有误', data: 'bad request'}
   }
 
   if(!isEmail(email)) {
-    return ctx.body = { code: 477, message: 'bad email type' , data: ''}
+    return ctx.body = { code: 477, message: '邮箱格式输入有误' , data: 'bad email type'}
   }
 
   const isThere = await User.findOne({ email: email })
 
   if(!isThere) {
-    return ctx.body = { code: 478, message: 'the email is not registered', data: ''}
+    return ctx.body = { code: 478, message: '该邮箱未注册', data: 'the email is not registered'}
   }
 
   //生成随机字符串

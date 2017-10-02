@@ -31,7 +31,7 @@ const oss = new OSS()
 
 const logger = require('../utils/logger')
 
-class App {
+class App {searchDevice
 
   static async Index (ctx) {
 
@@ -319,7 +319,8 @@ class App {
     try {
       const { type, search } = ctx.query
 
-      if(type === 'onchange' && search ) {
+      if(type === 'onchange' && (search == '' || search == undefined) ) return ctx.body = { code: 200, message: 'ok', data: [] }
+      else if(type === 'onchange' && search ) {
         const result = await Device.find({ "$or" : [{ name: new RegExp(search, 'i') }, { description: new RegExp(search, 'i') }] }).limit(10)
         ctx.body = { code: 200, message: 'ok', data: result }
       } 
