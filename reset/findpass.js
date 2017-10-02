@@ -21,7 +21,7 @@ module.exports = async (ctx) => {
   const isThere = await User.findOne({ email: email })
 
   if(!isThere) {
-    return ctx.body = { code: 478, message: '该邮箱未注册', data: 'the email is not registered'}
+    return ctx.body = { code: 478, message: '此邮箱未注册，请使用正确的邮箱', data: 'the email is not registered'}
   }
 
   //生成随机字符串
