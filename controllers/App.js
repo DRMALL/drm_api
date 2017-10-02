@@ -245,6 +245,28 @@ class App {
         }
       })
       let result = await order.save()
+
+      const notice = {
+        types: 'order',
+        des: result.title,
+        status: false,
+        readed: false,
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+        },
+        order: {
+          id: result._id,
+          images: result.images || '',
+          content: result.content,
+          feedback: null,
+          time: new Date()
+        }
+      }
+
+      const noticeResult = await Notice.create(notice)
+
       ctx.body = { code: 201, message: 'ok', data: result }
     } catch(e) {
       logger.error('app createOrder error', e)
