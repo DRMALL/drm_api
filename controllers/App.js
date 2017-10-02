@@ -31,7 +31,7 @@ const oss = new OSS()
 
 const logger = require('../utils/logger')
 
-class App {searchDevice
+class App {
 
   static async Index (ctx) {
 
