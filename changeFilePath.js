@@ -54,14 +54,13 @@ const filePath = 'static/upload/'
 
 // isChange()
 
-
 async function isChange() {
-  const news = await News.find()
-  news.map((newsone, devIndex)=> {
+  const orders = await Order.find()
+  orders.map((order, devIndex)=> {
     var arr = []
       , sums = 0
     setTimeout(async ()=> {
-      await newsone.images.forEach((pic, index)=> {
+      await order.images.forEach((pic, index)=> {
         setTimeout(async ()=> {
           if(pic.url.split('https://api.wardenger.me/upload/').length > 1) {
             var path = filePath + pic.url.split('https://api.wardenger.me/upload/')[1]
@@ -74,13 +73,12 @@ async function isChange() {
             }
           } else {
             arr.push({
-              uid: `-${index}`,
+              _id: pic._id,
               url: pic.url,
-              status: 'done',
             })
           }
-          if(sums == (newsone.images.length - 1)) {
-            changeDataToDB(newsone._id, arr)
+          if(sums == (order.images.length - 1)) {
+            changeDataToDB(order._id, arr)
           }
           sums += 1
         }, 300*index)
@@ -90,11 +88,52 @@ async function isChange() {
 }
 
 async function changeDataToDB(id, arr) {
-  const newnews = await News.findOneAndUpdate({ _id: id }, {$set: { images: arr }}, { new: true })
-  if(newnews) console.log('true')
+  const neworders = await Order.findOneAndUpdate({ _id: id }, {$set: { images: arr }}, { new: true })
+  if(neworders) console.log('true')
   else console.log('false')
 }
 
 isChange()
+
+// async function isChange() {
+//   const news = await News.find()
+//   news.map((newsone, devIndex)=> {
+//     var arr = []
+//       , sums = 0
+//     setTimeout(async ()=> {
+//       await newsone.images.forEach((pic, index)=> {
+//         setTimeout(async ()=> {
+//           if(pic.url.split('https://api.wardenger.me/upload/').length > 1) {
+//             var path = filePath + pic.url.split('https://api.wardenger.me/upload/')[1]
+//             const result = await oss.uploadLocal('upload', path)
+//             if(result.pubUrl) {
+//               arr.push({
+//                 _id: pic._id,
+//                 url: pic.url.replace(/https:\/\/api\.wardenger\.me\/upload\//g, `http://${bucket}.${region}.aliyuncs.com/upload/`),
+//               })
+//             }
+//           } else {
+            // arr.push({
+            //   _id: pic._id,
+            //   url: pic.url,
+            // })
+//           }
+//           if(sums == (newsone.images.length - 1)) {
+//             changeDataToDB(newsone._id, arr)
+//           }
+//           sums += 1
+//         }, 300*index)
+//       })
+//     }, 1500*devIndex)
+//   })
+// }
+
+// async function changeDataToDB(id, arr) {
+//   const newnews = await News.findOneAndUpdate({ _id: id }, {$set: { images: arr }}, { new: true })
+//   if(newnews) console.log('true')
+//   else console.log('false')
+// }
+
+// isChange()
 
 
