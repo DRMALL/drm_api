@@ -19,6 +19,32 @@ class OSS {
     this.bucket = bucket
   }
 
+  uploadLocal(single, path) {
+    const client = this.client
+    var uploadloc = new Promise((resolve, reject)=> {
+      var pathArr = path.split('/')
+      // if(ctx.req.file.fieldname !== single) return resolve({key: ctx.req.file.fieldname})
+      var fileName = pathArr[pathArr.length - 1]  //Date.now() + '_' + 
+      co(function* () {
+        var result = yield client.put(`${single}/${fileName}`, path)
+        if(result.res && result.res.statusCode === 200) {
+          var signUrl = client.signatureUrl(`${single}/${fileName}`, {expires: 28800, process: 'image/resize,p_80/quality,Q_80'})
+          var pubResult = yield client.get(`${single}/${fileName}`, `./static/example-cascade.jpg`, 
+                              {process: 'image/resize,p_80/quality,Q_80'})
+          if(pubResult.res  && pubResult.res.statusCode === 200) {
+            resolve ({
+              signUrl: signUrl,
+              pubUrl: pubResult.res.requestUrls[0],
+            })
+          }
+        } else resolve(result)
+      }).catch( (err)=> {
+        console.log(err)
+      })
+    })
+    return uploadloc
+  }
+
   uploadMulter(single, ctx) {
     const client = this.client
     var upload = multer({ storage: multer.diskStorage({}) }).single(single)
