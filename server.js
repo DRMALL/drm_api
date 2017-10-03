@@ -23,7 +23,7 @@ app.use(bodyParse())
 app.use(router.routes())
 app.use(router.allowedMethods())
 
-require('./changeFilePath')
+// require('./changeFilePath')
 
 new WebSocket(io)
 
