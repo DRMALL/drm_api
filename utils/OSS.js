@@ -33,8 +33,8 @@ class OSS {
                               {process: 'image/resize,p_80/quality,Q_80'})
           if(pubResult.res  && pubResult.res.statusCode === 200) {
             resolve ({
-              signUrl: signUrl,
-              pubUrl: pubResult.res.requestUrls[0],
+              signUrl: signUrl.replace(/http:\/\//g, 'https://'),
+              pubUrl: pubResult.res.requestUrls[0].replace(/http:\/\//g, 'https://'),
             })
           }
         } else resolve(result)
@@ -61,8 +61,8 @@ class OSS {
                                 {process: 'image/resize,p_80/quality,Q_80'})
             if(pubResult.res  && pubResult.res.statusCode === 200) {
               resolve ({
-                signUrl: signUrl,
-                pubUrl: pubResult.res.requestUrls[0],
+                signUrl: signUrl.replace(/http:\/\//g, 'https://'),
+                pubUrl: pubResult.res.requestUrls[0].replace(/http:\/\//g, 'https://'),
               })
             }
           } else resolve(result)
@@ -90,7 +90,7 @@ class OSS {
                 if(result.res && result.res.statusCode === 200) {
                   var pubResult = yield client.get(`${single}/${fileName}`, `./static/example-cascade.jpg`, 
                                   {process: 'image/resize,p_80/quality,Q_80'})
-                  if(pubResult.res && pubResult.res.statusCode === 200) urlArr.push(pubResult.res.requestUrls[0])
+                  if(pubResult.res && pubResult.res.statusCode === 200) urlArr.push(pubResult.res.requestUrls[0].replace(/http:\/\//g, 'https://'))
                   if(index == (ctx.req.files.length - 1) ) resolve(urlArr)
                 }
               }).catch( (err)=> {
@@ -117,8 +117,8 @@ class OSS {
           if(result.res && result.res.statusCode === 200) {
             var signUrl = client.signatureUrl(`${single}/${fileName}`, {expires: 28800, process: 'image/resize,p_80/quality,Q_80'})
             resolve ({
-              signUrl: signUrl,
-              pubUrl: result.url,
+              signUrl: signUrl.replace(/http:\/\//g, 'https://'),
+              pubUrl: result.url.replace(/http:\/\//g, 'https://'),
             })
           } else resolve(result)
         }).catch( (err)=> {
@@ -145,7 +145,7 @@ class OSS {
               if(result.res && result.res.statusCode === 200) {
                 var signUrl = client.signatureUrl(`${single}/${fileName}`, {expires: 28800, process: 'image/resize,p_80/quality,Q_80'})
                 // console.log ({ signUrl: signUrl, pubUrl: result.url, })
-                urlArr.push(signUrl)
+                urlArr.push(signUrl.replace(/http:\/\//g, 'https://'))
                 if(index == (ctx.req.files.length - 1) ) resolve(urlArr)
               }
             }).catch( (err)=> {
@@ -160,7 +160,7 @@ class OSS {
 
   delete(url) {
     const client = this.client
-      , urlDoma = `http://${this.bucket}.${this.region}.aliyuncs.com/`
+      , urlDoma = `https://${this.bucket}.${this.region}.aliyuncs.com/`
       , urlDomaLength = urlDoma.split('').length
     var objKey = decodeURIComponent(url.split('?')[0].substring(urlDomaLength))
     var delone = new Promise((resolve, reject)=> {

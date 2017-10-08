@@ -25,7 +25,7 @@ const filePath = 'static/upload/'
 //             if(result.pubUrl) {
 //               arr.push({
 //                 uid: `-${index}`,
-//                 url: pic.url.replace(/https:\/\/api\.wardenger\.me\/upload\//g, `http://${bucket}.${region}.aliyuncs.com/upload/`),
+//                 url: pic.url.replace(/https:\/\/api\.wardenger\.me\/upload\//g, `https://${bucket}.${region}.aliyuncs.com/upload/`),
 //                 status: 'done',
 //               })
 //             }
@@ -68,7 +68,7 @@ const filePath = 'static/upload/'
 //             if(result.pubUrl) {
 //               arr.push({
 //                 _id: pic._id,
-//                 url: pic.url.replace(/https:\/\/api\.wardenger\.me\/upload\//g, `http://${bucket}.${region}.aliyuncs.com/upload/`),
+//                 url: pic.url.replace(/https:\/\/api\.wardenger\.me\/upload\//g, `https://${bucket}.${region}.aliyuncs.com/upload/`),
 //               })
 //             }
 //           } else {
@@ -109,7 +109,7 @@ const filePath = 'static/upload/'
 //             if(result.pubUrl) {
 //               arr.push({
 //                 _id: pic._id,
-//                 url: pic.url.replace(/https:\/\/api\.wardenger\.me\/upload\//g, `http://${bucket}.${region}.aliyuncs.com/upload/`),
+//                 url: pic.url.replace(/https:\/\/api\.wardenger\.me\/upload\//g, `https://${bucket}.${region}.aliyuncs.com/upload/`),
 //               })
 //             }
 //           } else {
