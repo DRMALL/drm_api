@@ -615,7 +615,7 @@ class App {
       if(result.key)
         return ctx.body = { code: 400, message: `参数值错误, key: ${result.key}`, data: '' }
       else if(result.pubUrl)
-        return ctx.body = { code: 201, message: '上传成功', data: { url: result.signUrl } }   
+        return ctx.body = { code: 201, message: '上传成功', data: { url: result.pubUrl } }   
       else ctx.body = { code: 501, message: '上传文件失败', data: result }
     } catch(e) {
       logger.error('app upload orders image error', e)
