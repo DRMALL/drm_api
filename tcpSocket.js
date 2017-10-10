@@ -35,24 +35,20 @@ function handleConnection(conn) {
     // logger.info('DRM_DATA:', d)
     // logger.info('DRM_DATA:', transform_data(d))
 
-    const nowtime_stamp = new Date().getTime().toString()
     const dataSource = verify_source(d)
 
     if(dataSource === 'hardware') {
       try {
         const normal_data = transform_data(d, conn)
         console.log(normal_data)
-
-        redis.set(`drm_${nowtime_stamp}`, JSON.stringify(normal_data))
-        myEmitter.emit('coming', to_app_data(normal_data))
         const device_data = await deviceId_find_db(normal_data)
         if(device_data) {
-          setTimeout(() => {
-            redis.get(`drm_${nowtime_stamp}`, (err, replie)=> {
-              if(err) return console.log('redisErr:' + err)
-              save_to_db(JSON.parse(replie))
-            })
-          }, 1000*3 )
+
+          // setTimeout(() => {
+          const now_data = normal_data
+          save_to_db(now_data)
+          myEmitter.emit('coming', to_app_data(now_data))
+          // }, 1000*1 )
         } else {
           logger.info(`save failed: Didn't found this deviceId`)
           console.log(`Didn't found this deviceId`)
