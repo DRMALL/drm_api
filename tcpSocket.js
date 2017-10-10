@@ -34,7 +34,7 @@ function handleConnection(conn) {
     // logger.info('connection data from %s: %j', remoteAddress, d)
     // logger.info('DRM_DATA:', d)
     // logger.info('DRM_DATA:', transform_data(d))
-
+    console.log(d)
     const dataSource = verify_source(d)
 
     if(dataSource === 'hardware') {
