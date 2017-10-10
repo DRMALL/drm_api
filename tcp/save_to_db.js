@@ -24,7 +24,7 @@ module.exports = async (obj) => {
               const data_graph = await DataGraph.create({number: obj.number, field: key, values: [valObj] })
             }
           }
-        }, 200*index)
+        }, 120*index)
       })
       if(device_data) {
         return dev_moniter_data

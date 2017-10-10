@@ -42,7 +42,7 @@ function handleConnection(conn) {
         console.log(normal_data)
         const device_data = await deviceId_find_db(normal_data)
         if(device_data) {
-          conn.write('NOP')
+
           // setTimeout(() => {
           const now_data = normal_data
           save_to_db(now_data)
@@ -51,11 +51,12 @@ function handleConnection(conn) {
         } else {
           logger.info(`save failed: Didn't found this deviceId`)
           console.log(`Didn't found this deviceId`)
-          conn.write('NONOP')
+          // conn.write('NONOP')
         }
       } catch(e) {
         console.error(e)
       }
+      conn.write('NOP')
     }
 
     if(dataSource === 'app') {
