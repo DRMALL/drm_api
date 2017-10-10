@@ -5,7 +5,7 @@ const crypto = require('crypto')
 const logger = require('../utils/logger')
 
 module.exports = (data, conn) => {
-
+  console.log(data)
   try {
     data = new Buffer(data, 'base64')
     const decipher = crypto.createDecipher('aes-128-ecb', salt)
