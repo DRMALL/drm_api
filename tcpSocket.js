@@ -12,6 +12,8 @@ const myEmitter = require('./tcp/emitter')
 const redis = require('./redis_tcp')
 
 
+let huancun = ''
+
 const server = net.createServer()
 server.on('connection', handleConnection);
 
@@ -34,7 +36,14 @@ function handleConnection(conn) {
     // logger.info('connection data from %s: %j', remoteAddress, d)
     // logger.info('DRM_DATA:', d)
     // logger.info('DRM_DATA:', transform_data(d))
-    console.log(d)
+    if(d.replace(/\$\$/g, '') !== d) {
+      console.log(true)
+      d = huancun + d.replace(/\$\$/g, '')
+      huancun = ''
+    } else {
+      huancun += d
+      return 
+    }
     const dataSource = verify_source(d)
 
     if(dataSource === 'hardware') {
