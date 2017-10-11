@@ -54,8 +54,7 @@ function handleConnection(conn) {
         const device_data = await deviceId_find_db(normal_data)
         if(device_data) {
           setTimeout(() => {
-            const now_data = normal_data
-            save_to_db(now_data)
+            save_to_db(normal_data)
           }, 1000*1 )
         } else {
           logger.info(`save failed: Didn't found this deviceId`)
