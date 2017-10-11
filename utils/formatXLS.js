@@ -3,6 +3,7 @@
  * 输出 数组JSON格式
  * 
  */
+const uniqueObjArr = require('./uniqueObjArr')
 
 function formatXLS(path) {
   const xlsx = require('node-xlsx')
@@ -24,7 +25,7 @@ function formatXLS(path) {
     })
   })
 
-  return result
+  return uniqueObjArr(result)
 }
 
 module.exports = formatXLS

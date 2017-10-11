@@ -26,6 +26,7 @@ const { isPhone } = require('../utils/Validate')
 const { stripTags } = require('../utils/util')
 const deleteFile = require('../utils/deleteFile')
 const quotaDic = require('../utils/quotaDic')
+const uniqueObjArr = require('../utils/uniqueObjArr')
 const OSS = require('../utils/OSS')
 const oss = new OSS()
 
@@ -680,14 +681,14 @@ class App {
   }
 
   static async getFirstClassParts(ctx) {
-    const docs = await Part.find({}, { name: 1 })
-    ctx.body = { code: 200, message: 'ok', data: docs }
+    const docs = await Part.find({}, { _id: 0, name: 1 })
+    ctx.body = { code: 200, message: 'ok', data: uniqueObjArr(docs) }
   }
 
   static async getSecondClassParts(ctx) {
     const { name } = ctx.query
-    const docs = await Part.find({ name: name }, { model: 1 })
-    ctx.body = { code: 200, message: 'ok', data: docs }
+    const docs = await Part.find({ name: name }, { _id: 0, model: 1 })
+    ctx.body = { code: 200, message: 'ok', data: uniqueObjArr(docs) }
   }
 
   static async getSinglePart(ctx) {
