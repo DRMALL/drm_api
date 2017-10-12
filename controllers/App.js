@@ -29,6 +29,8 @@ const quotaDic = require('../utils/quotaDic')
 const uniqueObjArr = require('../utils/uniqueObjArr')
 const OSS = require('../utils/OSS')
 const oss = new OSS()
+const OTStable = require('../utils/OTStable')
+const tableStore = new OTStable()
 
 const logger = require('../utils/logger')
 
@@ -652,7 +654,27 @@ class App {
 
   static async getMoniterByNumberField(ctx) {
     const { number, field } = ctx.query
-    const doc = await DataGraph.findOne({ number: number, field: field })
+    // const doc = await DataGraph.findOne({ number: number, field: field })
+    const result = await tableStore.getRow({
+      tableName: 'DataGraph',
+      primaryKey: [
+        { 'number' : number },
+        { 'field' : field },
+      ],
+      maxVersions: 1
+    })
+    let doc = null
+    if(result.attributes) {
+      let valArr = []
+      result.attributes.forEach((item)=> {
+        valArr.push({num: item.columnValue, timeStamp: item.timestamp})
+      })
+      doc = {
+        number: result.primaryKey[0].value,
+        field: result.primaryKey[1].value,
+        values: valArr,
+      }
+    }
     ctx.body = { code: 200, message: 'ok', data: doc }
   }
 
