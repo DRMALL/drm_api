@@ -12,7 +12,7 @@ function to_app_data(normal_data) {
   })
   obj['number'] = normal_data.number
   obj['ts'] = normal_data.ts
-  obj['data'] = data_arr
+  obj['data'] = []
   return obj
 }
 
