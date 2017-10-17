@@ -666,8 +666,14 @@ class App {
     let doc = null
     if(result.attributes) {
       let valArr = []
-      result.attributes.forEach((item)=> {
-        valArr.push({num: item.columnValue, timeStamp: item.timestamp})
+      result.attributes.forEach((item, index)=> {
+        if(result.attributes.length > 2000) {
+          if(index >= (result.attributes.length - 2000)) {
+            valArr.push({num: item.columnValue, timeStamp: item.timestamp})
+          }
+        } else {
+          valArr.push({num: item.columnValue, timeStamp: item.timestamp})
+        }
       })
       doc = {
         number: result.primaryKey[0].value,
