@@ -667,8 +667,8 @@ class App {
     if(result.attributes) {
       let valArr = []
       result.attributes.forEach((item, index)=> {
-        if(result.attributes.length > 2000) {
-          if(index >= (result.attributes.length - 2000)) {
+        if(result.attributes.length > 200) {
+          if(index >= (result.attributes.length - 200)) {
             valArr.push({num: item.columnValue, timeStamp: item.timestamp})
           }
         } else {
