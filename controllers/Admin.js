@@ -23,7 +23,7 @@ const Validate = require('../utils/Validate')
 const logger = require('../utils/logger')
 const myEmitter = require('../tcp/emitter')
 const OSS = require('../utils/OSS')
-const oss = new OSS()
+const oss = new OSS()getMoniterByNumber
 
 
 // deleteDevice
@@ -868,7 +868,7 @@ class Admin {
 
     let { number } = ctx.request.query
     
-    let doc = await DevMoniter.findOne({ number: number })
+    let doc = await Device.findOne({ number: number }, {name: 1, number: 1, data: 1, ts: 1, createdAt: 1, updatedAt: 1})
 
     ctx.body = { code: 200, message: 'ok', data: doc }
   }
