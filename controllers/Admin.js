@@ -23,7 +23,7 @@ const Validate = require('../utils/Validate')
 const logger = require('../utils/logger')
 const myEmitter = require('../tcp/emitter')
 const OSS = require('../utils/OSS')
-const oss = new OSS()getMoniterByNumber
+const oss = new OSS()
 
 
 // deleteDevice
