@@ -116,6 +116,7 @@ router.post('/admin/parts/uploadfile', Admin.uploadPartFile)
 
 
 router.get('/admin/moniterdevs', Admin.getMoniterByNumber)
+router.get('/admin/moniterdevs/excel', Admin.getMoniterExcelByNumber)
 
 router.get('/app', App.Index)
 router.get('/app/user', App.getUserInfo)

@@ -11,6 +11,7 @@ const Part = require('../model/Part')
 const Notice = require('../model/Notice')
 const DevMoniter = require('../model/DevMoniter')
 const jwt = require('jsonwebtoken')
+const fs = require('fs')
 const deleteFile = require('../utils/deleteFile')
 const { busboys } = require('../utils/upload')
 const uploadXLS = require('../utils/uploadXLS')
@@ -23,6 +24,7 @@ const Validate = require('../utils/Validate')
 const logger = require('../utils/logger')
 const myEmitter = require('../tcp/emitter')
 const quotaDic = require('../utils/quotaDic')
+const moniterExcel = require('../utils/moniterExcel')
 const OSS = require('../utils/OSS')
 const oss = new OSS()
 
@@ -887,7 +889,13 @@ class Admin {
   }
 
   static async getMoniterExcelByNumber(ctx) {
-    
+    let { number } = ctx.request.query
+    const filePath = await moniterExcel(number)
+    const result = await oss.uploadLocalNo('excel', filePath)
+    if(result.pubUrl) {
+      fs.unlinkSync(filePath)
+      ctx.body = { code: 200, message: 'ok', data: result.pubUrl }
+    } else ctx.body = { code: 503, message: 'failed', data: null }
   }
 
 }

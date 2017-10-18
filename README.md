@@ -123,6 +123,7 @@ app = https://api.wardenger.me/app
 * [更新单个燃料分类](#更新单个燃料分类)
 * [删除单个燃料分类](#删除单个燃料分类)
 * [获取单个设备监控数据](#获取单个设备监控数据)
+* [获取单个设备全部监控数据文件链接](#获取单个设备全部监控数据文件链接)
 * [上传配件文件](#上传配件文件)
 
 
@@ -976,6 +977,14 @@ DELETE https://api.wardenger.me/admin/fuelsorts/:id?token=${token}
 
 ```
 GET https://api.wardenger.me/admin/moniterdevs?number=${number}&token=${token}
+```
+
+### 获取单个设备全部监控数据文件链接    
+
+该number指的是设备编号    
+
+```
+GET https://api.wardenger.me/admin/moniterdevs/excel?number=${number}&token=${token}
 ```
 
 ### 上传配件文件

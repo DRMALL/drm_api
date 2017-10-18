@@ -19,6 +19,28 @@ class OSS {
     this.bucket = bucket
   }
 
+  uploadLocalNo(single, path) {
+    const client = this.client
+    var uploadloc = new Promise((resolve, reject)=> {
+      var pathArr = path.split('/')
+      // if(ctx.req.file.fieldname !== single) return resolve({key: ctx.req.file.fieldname})
+      var fileName = pathArr[pathArr.length - 1]  //Date.now() + '_' + 
+      co(function* () {
+        var result = yield client.put(`${single}/${fileName}`, path)
+        if(result.res && result.res.statusCode === 200) {
+          var signUrl = client.signatureUrl(`${single}/${fileName}`)
+          resolve ({
+            signUrl: signUrl.replace(/http:\/\//g, 'https://'),
+            pubUrl: result.url.replace(/http:\/\//g, 'https://'),
+          })
+        } else resolve(result)
+      }).catch( (err)=> {
+        console.log(err)
+      })
+    })
+    return uploadloc
+  }
+
   uploadLocal(single, path) {
     const client = this.client
     var uploadloc = new Promise((resolve, reject)=> {
