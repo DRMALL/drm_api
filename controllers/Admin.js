@@ -870,7 +870,23 @@ class Admin {
     
     let doc = await Device.findOne({ number: number }, {name: 1, number: 1, data: 1, ts: 1, createdAt: 1, updatedAt: 1})
 
+    if(doc) {
+      let quota_data = []
+      doc.data.forEach((item)=> {
+        let key = Object.keys(item)[0]
+        let obj_data = quotaDic(key)
+        obj_data['orgName'] = key
+        obj_data['value'] = item[`${key}`]
+        quota_data.push(obj_data)
+      })
+      doc.data = quota_data
+    }
+
     ctx.body = { code: 200, message: 'ok', data: doc }
+  }
+
+  static async getMoniterExcelByNumber(ctx) {
+    
   }
 
 }
