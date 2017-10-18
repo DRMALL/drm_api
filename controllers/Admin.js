@@ -896,7 +896,7 @@ class Admin {
     const result = await oss.uploadLocalNo('excel', filePath)
     if(result.pubUrl) {
       fs.unlinkSync(filePath)
-      ctx.body = result.pubUrl 
+      ctx.body = { code: 200, message: 'ok', data: result.pubUrl }
     } else ctx.body = { code: 503, message: 'failed', data: null }
   }
 
