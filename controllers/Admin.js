@@ -889,12 +889,14 @@ class Admin {
   }
 
   static async getMoniterExcelByNumber(ctx) {
-    let { number } = ctx.request.query
-    const filePath = await moniterExcel(number)
+    let { number, startTime, endTime } = ctx.request.query
+    if(!startTime) startTime = 0
+    if(!endTime) endTime = 9999999999999
+    const filePath = await moniterExcel(number, startTime, endTime)
     const result = await oss.uploadLocalNo('excel', filePath)
     if(result.pubUrl) {
       fs.unlinkSync(filePath)
-      ctx.body = { code: 200, message: 'ok', data: result.pubUrl }
+      ctx.body = result.pubUrl 
     } else ctx.body = { code: 503, message: 'failed', data: null }
   }
 
