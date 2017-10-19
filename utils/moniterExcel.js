@@ -1,4 +1,5 @@
 const excelPort = require('excel-export')
+const moment = require('moment')
 const fs = require('fs')
 const Device = require('../model/Device')
 const allQuotas = require('./allQuotas')
@@ -167,7 +168,7 @@ function moniterExcel(number, startTime, endTime) {
     for(var i = 0; i < newObjArr.length; i++) {
       excel_data.push([
         newObjArr[i].number,
-        `${newObjArr[i].ts}`,
+        `${moment(new Date(newObjArr[i].ts)).format('YYYY-MM-DD HH:mm:ss')}`,
         `${newObjArr[i].data.ent_air_pressure_pv !== undefined ? newObjArr[i].data.ent_air_pressure_pv : '暂无'}`,
         `${newObjArr[i].data.ent_air_pressure_sv !== undefined ? newObjArr[i].data.ent_air_pressure_sv : '暂无'}`,
         `${newObjArr[i].data.air_flow_rate !== undefined ? newObjArr[i].data.air_flow_rate : '暂无'}`,
