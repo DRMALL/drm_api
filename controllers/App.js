@@ -33,6 +33,7 @@ const OTStable = require('../utils/OTStable')
 const tableStore = new OTStable()
 
 const logger = require('../utils/logger')
+let count = 0
 
 class App {
 
@@ -653,7 +654,6 @@ class App {
   }
 
   static async getMoniterByNumberField(ctx) {
-    let count = 0
     const { number, field } = ctx.query
     // const doc = await DataGraph.findOne({ number: number, field: field })
     const result = await tableStore.getRow({
@@ -682,7 +682,7 @@ class App {
         values: valArr,
       }
     }
-    logger.info('app got tableStore counted', count++)
+    logger.error('app got tableStore counted %s times!', count++)
     ctx.body = { code: 200, message: 'ok', data: doc }
   }
 
