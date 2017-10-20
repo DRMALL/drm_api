@@ -74,7 +74,7 @@ function handleConnection(conn) {
   }
 
   function onConnClose() {
-    logger.info('connection from %s closed %s times!', remoteAddress, count++);
+    //logger.info('connection from %s closed %s times!', remoteAddress, count++);
   }
 
   function onConnError(err) {
