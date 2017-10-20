@@ -2,7 +2,11 @@ require('dotenv').config()
 
 const Koa = require('koa')
     , app = new Koa()
-    , bodyParse = require('koa-bodyparser')
+    , koaBody = require('koa-body')({
+        "formLimit":"5mb",
+        "jsonLimit":"5mb",
+        "textLimit":"5mb"
+    })
     , path = require('path')
     , router = require('./routes')
     , db = require('./db')
@@ -12,14 +16,14 @@ const Koa = require('koa')
     , staticPath = './static'
     , tcpSocket = require('./tcpSocket')
     , redis = require('./redis')
+    
 
 app.use(static(path.join( __dirname, staticPath)))
 app.use(cors())
 
 var server = require('http').Server(app.callback())
 var io = require('socket.io')(server)
-
-app.use(bodyParse())
+app.use(koaBody)
 app.use(router.routes())
 app.use(router.allowedMethods())
 
