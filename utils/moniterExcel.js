@@ -5,9 +5,11 @@ const Device = require('../model/Device')
 const allQuotas = require('./allQuotas')
 const OTStable = require('./OTStable')
 const tableStore = new OTStable()
+const logger = require('./logger')
 
 async function getTableOne(number, field) {
   var result = null
+  var count = 0
   result = await tableStore.getRow({
     tableName: 'DataGraph',
     primaryKey: [
@@ -16,6 +18,7 @@ async function getTableOne(number, field) {
     ],
     maxVersions: 1
   })
+  logger.info('excel got tableStore counted', count++)
   return result
 }
 

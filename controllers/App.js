@@ -653,6 +653,7 @@ class App {
   }
 
   static async getMoniterByNumberField(ctx) {
+    let count = 0
     const { number, field } = ctx.query
     // const doc = await DataGraph.findOne({ number: number, field: field })
     const result = await tableStore.getRow({
@@ -681,6 +682,7 @@ class App {
         values: valArr,
       }
     }
+    logger.info('app got tableStore counted', count++)
     ctx.body = { code: 200, message: 'ok', data: doc }
   }
 
