@@ -20,15 +20,15 @@ module.exports = async (obj) => {
         if(quotaDic(key).quotaClass === 3 && Number(item[key]) == 1 ) {
           create_alarm_notice(obj, device_data._id, item, quotaDic(key).quotaName)
         } else if(quotaDic(key).quotaClass !== 3) {
-          tableStore.getRow({
-            tableName: 'DataGraph',
-            primaryKey: [
-              { 'number' : obj.number },
-              { 'field' : key },
-            ],
-            maxVersions: 1
-          }).then((data_graph)=> {
-            if(data_graph.attributes) {
+          // tableStore.getRow({
+          //   tableName: 'DataGraph',
+          //   primaryKey: [
+          //     { 'number' : obj.number },
+          //     { 'field' : key },
+          //   ],
+          //   maxVersions: 1
+          // }).then((data_graph)=> {
+          //   if(data_graph.attributes) {
               tableStore.updateRow({
                 tableName: 'DataGraph',
                 primaryKey: [
@@ -37,17 +37,17 @@ module.exports = async (obj) => {
                 ],
                 updateColumns: [ valObjUpdate ]
               })
-            } else {
-              tableStore.putRow({
-                tableName: 'DataGraph',
-                primaryKey: [
-                  { 'number' : obj.number },
-                  { 'field' : key },
-                ],
-                attributeColumns: [ valObjPut ]
-              })
-            }
-          })
+          //   } else {
+          //     tableStore.putRow({
+          //       tableName: 'DataGraph',
+          //       primaryKey: [
+          //         { 'number' : obj.number },
+          //         { 'field' : key },
+          //       ],
+          //       attributeColumns: [ valObjPut ]
+          //     })
+          //   }
+          // })
         }
       })
       if(device_data) {
