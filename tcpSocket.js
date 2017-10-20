@@ -13,6 +13,7 @@ const redis = require('./redis_tcp')
 
 
 let huancun = ''
+let count = 0
 
 const server = net.createServer()
 server.on('connection', handleConnection);
@@ -22,7 +23,6 @@ server.listen(9000, function() {
 })
 
 function handleConnection(conn) {
-  let count = 0
 
   const remoteAddress = conn.remoteAddress + ':' + conn.remotePort
   // logger.info('new client connection from %s', remoteAddress)
@@ -74,7 +74,7 @@ function handleConnection(conn) {
   }
 
   function onConnClose() {
-    logger.info('connection from %s closed', remoteAddress, count++);
+    logger.info('connection from %s closed %s time!', remoteAddress, count++);
   }
 
   function onConnError(err) {
