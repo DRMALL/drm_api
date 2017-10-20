@@ -682,7 +682,7 @@ class App {
         values: valArr,
       }
     }
-    logger.error('app got tableStore counted %s times!', count++)
+    logger.info('app got tableStore counted %s times!', count++)
     ctx.body = { code: 200, message: 'ok', data: doc }
   }
 
