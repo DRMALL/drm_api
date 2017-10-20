@@ -22,6 +22,7 @@ server.listen(9000, function() {
 })
 
 function handleConnection(conn) {
+  let count = 0
 
   const remoteAddress = conn.remoteAddress + ':' + conn.remotePort
   // logger.info('new client connection from %s', remoteAddress)
@@ -73,7 +74,7 @@ function handleConnection(conn) {
   }
 
   function onConnClose() {
-    logger.info('connection from %s closed', remoteAddress);
+    logger.info('connection from %s closed', remoteAddress, count++);
   }
 
   function onConnError(err) {
