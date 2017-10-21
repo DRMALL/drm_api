@@ -52,6 +52,76 @@ function quotaDic(quotaEn) {
     case 'tank_temp_svh': { quotaName = '加热水箱温度SVH', unitName = '度', quotaClass = 1 };break
     case 'stop_bit_store': { quotaName = '相序正确开关', unitName = '', quotaClass = 1 };break
 
+    //新增监控状态
+    case 'no1_airentrypress1': { quotaName = '1号系统空气入口压力PV', unitName = 'MPa', quotaClass = 1 };break
+    case 'no1_airentrypress1alarmvalue': { quotaName = '1号系统空气入口压力SV', unitName = 'MPa', quotaClass = 1 };break
+    case 'no1_airflue1': { quotaName = '1号系统空气瞬时流量', unitName = 'Kg/h', quotaClass = 1 };break
+    case 'no1_airflue1total': { quotaName = '1号系统空气累计流量', unitName = 'Kg', quotaClass = 1 };break 
+    case 'no1_gasentrypress1': { quotaName = '1号系统燃气入口压力PV', unitName = 'MPa', quotaClass = 1 };break
+    case 'no1_gasentrypress1alarmvalue': { quotaName = '1号系统燃气入口压力SV', unitName = 'MPa', quotaClass = 1 };break
+    case 'no1_gasexportpress': { quotaName = '1号系统燃气出口压力PV', unitName = 'MPa', quotaClass = 1 };break
+    case 'no1_gasflue1': { quotaName = '1号系统燃气瞬时流量', unitName = 'Kg/h', quotaClass = 1 };break 
+    case 'no1_gasflue1total': { quotaName = '1号系统燃气累计流量', unitName = 'Kg', quotaClass = 1 };break
+    case 'no1_waterentrypress1': { quotaName = '1号系统入口水压力PV', unitName = 'MPa', quotaClass = 1 };break
+    case 'no1_waterentrypress1alarmvalue': { quotaName = '1号系统入口水压力SV', unitName = 'MPa', quotaClass = 1 };break
+    case 'no1_waterpumpexportpress1': { quotaName = '1号系统出口水压力PV', unitName = 'MPa', quotaClass = 1 };break 
+    case 'no1_watrepumpexportpress1alarmvalue': { quotaName = '1号系统出口水压力SV', unitName = 'MPa', quotaClass = 1 };break
+    case 'no1_waterflux1': { quotaName = '1号系统水瞬时流量', unitName = 'T/h', quotaClass = 1 };break
+    case 'no1_waterflux1total': { quotaName = '1号系统水累计流量', unitName = 'T', quotaClass = 1 };break
+    case 'no1_No1_valve_Status': { quotaName = '1号系统调节阀PV', unitName = '%', quotaClass = 1 };break
+    case 'no1_gasrange1_sv': { quotaName = '1号系统调节阀SV', unitName = '%', quotaClass = 1 };break
+    case 'no1_gasrange1_in': { quotaName = '1号系统调节阀IN', unitName = '%', quotaClass = 1 };break 
+    case 'no1_uninstallvalve1JS': { quotaName = '1号系统排空阀开度', unitName = '', quotaClass = 1 };break
+    case 'no1_heattemperature1': { quotaName = '1号系统热载体温度PV', unitName = '℃', quotaClass = 1 };break
+    case 'no1_heattemperature1alarmvalue': { quotaName = '1号系统热载体温度SV', unitName = '℃', quotaClass = 1 };break
+    case 'no1_heatpress1': { quotaName = '1号系统热载体压力PV', unitName = 'MPa', quotaClass = 1 };break 
+    case 'no1_heatpress1alarmvalue': { quotaName = '1号系统热载体压力SV', unitName = 'MPa', quotaClass = 1 };break
+    case 'no1_cooltemperature1': { quotaName = '1号系统冷却水温度PV', unitName = '℃', quotaClass = 1 };break
+    case 'no1_cooltemperature1alarmvalue': { quotaName = '1号系统冷却水温度SV', unitName = '℃', quotaClass = 1 };break
+    case 'no1_krb1': { quotaName = '1号系统空燃比PV', unitName = '', quotaClass = 1 };break
+    case 'no1_KRBset1': { quotaName = '1号系统空燃比SV', unitName = '', quotaClass = 1 };break    
+    case 'no1_dangerousgas1': { quotaName = '1号系统危险气体含量1', unitName = '%', quotaClass = 1 };break
+    case 'no1_dangerousgas2': { quotaName = '1号系统危险气体含量2', unitName = '%', quotaClass = 1 };break
+    case 'no1_dangerousgas3': { quotaName = '1号系统危险气体含量3', unitName = '%', quotaClass = 1 };break
+    case 'no1_powerairpress': { quotaName = '1号系统动力气源压力', unitName = 'MPa', quotaClass = 1 };break
+    case 'no1_waterboxtemperature': { quotaName = '1号系统加热水箱温度PV', unitName = '℃', quotaClass = 1 };break
+    case 'no1_waterboxtempsvH': { quotaName = '1号系统加热水箱温度SVH', unitName = '℃', quotaClass = 1 };break
+    case 'no1_waterboxtempsvL': { quotaName = '1号系统加热水箱温度SVL', unitName = '℃', quotaClass = 1 };break
+    case 'no2_airentrypress1': { quotaName = '2号系统空气入口压力PV', unitName = 'MPa', quotaClass = 1 };break
+    case 'no2_airentrypress1alarmvalue': { quotaName = '2号系统空气入口压力SV', unitName = 'MPa', quotaClass = 1 };break
+    case 'no2_airflue1': { quotaName = '2号系统空气瞬时流量', unitName = 'Kg/h', quotaClass = 1 };break
+    case 'no2_airflue1total': { quotaName = '2号系统空气累计流量', unitName = 'Kg', quotaClass = 1 };break
+    case 'no2_gasentrypress1': { quotaName = '2号系统燃气入口压力PV', unitName = 'MPa', quotaClass = 1 };break
+    case 'no2_gasentrypress1alarmvalue': { quotaName = '2号系统燃气入口压力SV', unitName = 'MPa', quotaClass = 1 };break
+    case 'no2_gasexportpress': { quotaName = '2号系统燃气出口压力PV', unitName = 'MPa', quotaClass = 1 };break
+    case 'no2_gasflue1': { quotaName = '2号系统燃气瞬时流量', unitName = 'Kg/h', quotaClass = 1 };break
+    case 'no2_gasflue1total': { quotaName = '2号系统燃气累计流量', unitName = 'Kg', quotaClass = 1 };break
+    case 'no2_waterentrypress1': { quotaName = '2号系统入口水压力PV', unitName = 'MPa', quotaClass = 1 };break
+    case 'no2_waterentrypress1alarmvalue': { quotaName = '2号系统入口水压力SV', unitName = 'MPa', quotaClass = 1 };break
+    case 'no2_waterpumpexportpress1': { quotaName = '2号系统出口水压力PV', unitName = 'MPa', quotaClass = 1 };break
+    case 'no2_watrepumpexportpress1alarmvalue': { quotaName = '2号系统出口水压力SV', unitName = 'MPa', quotaClass = 1 };break
+    case 'no2_waterflux1': { quotaName = '2号系统水瞬时流量', unitName = 'T/h', quotaClass = 1 };break
+    case 'no2_waterflux1total': { quotaName = '2号系统水累计流量', unitName = 'T', quotaClass = 1 };break
+    case 'no2_no2_valve_Status': { quotaName = '2号系统调节阀PV', unitName = '%', quotaClass = 1 };break
+    case 'no2_gasrange1_sv': { quotaName = '2号系统调节阀SV', unitName = '%', quotaClass = 1 };break
+    case 'no2_gasrange1_in': { quotaName = '2号系统调节阀IN', unitName = '%', quotaClass = 1 };break
+    case 'no2_uninstallvalve1JS': { quotaName = '2号系统排空阀开度', unitName = '', quotaClass = 1 };break
+    case 'no2_heattemperature1': { quotaName = '2号系统热载体温度PV', unitName = '℃', quotaClass = 1 };break
+    case 'no2_heattemperature1alarmvalue': { quotaName = '2号系统热载体温度SV', unitName = '℃', quotaClass = 1 };break
+    case 'no2_heatpress1': { quotaName = '2号系统热载体压力PV', unitName = 'MPa', quotaClass = 1 };break
+    case 'no2_heatpress1alarmvalue': { quotaName = '2号系统热载体压力SV', unitName = 'MPa', quotaClass = 1 };break
+    case 'no2_cooltemperature1': { quotaName = '2号系统冷却水温度PV', unitName = '℃', quotaClass = 1 };break
+    case 'no2_cooltemperature1alarmvalue': { quotaName = '2号系统冷却水温度SV', unitName = '℃', quotaClass = 1 };break
+    case 'no2_krb1': { quotaName = '2号系统空燃比PV', unitName = '', quotaClass = 1 };break
+    case 'no2_KRBset1': { quotaName = '2号系统空燃比SV', unitName = '', quotaClass = 1 };break  
+    case 'no2_dangerousgas1': { quotaName = '2号系统危险气体含量1', unitName = '%', quotaClass = 1 };break
+    case 'no2_dangerousgas2': { quotaName = '2号系统危险气体含量2', unitName = '%', quotaClass = 1 };break
+    case 'no2_dangerousgas3': { quotaName = '2号系统危险气体含量3', unitName = '%', quotaClass = 1 };break
+    case 'no2_powerairpress': { quotaName = '2号系统动力气源压力', unitName = 'MPa', quotaClass = 1 };break
+    case 'no2_waterboxtemperature': { quotaName = '2号系统加热水箱温度PV', unitName = '℃', quotaClass = 1 };break
+    case 'no2_waterboxtempsvH': { quotaName = '2号系统加热水箱温度SVH', unitName = '℃', quotaClass = 1 };break
+    case 'no2_waterboxtempsvL': { quotaName = '2号系统加热水箱温度SVL', unitName = '℃', quotaClass = 1 };break
+
   //电机状态
     case 'ent_oil_value_start': { quotaName = '关闭阀', unitName = '', quotaClass = 2 };break
     case 'ent_oil_valve': { quotaName = '进原油，进柴油', unitName = '', quotaClass = 2 };break
@@ -78,6 +148,24 @@ function quotaDic(quotaEn) {
     case 'heat2_status': { quotaName = '加热器2状态', unitName = '', quotaClass = 2 };break
     case 'heat3_status': { quotaName = '加热器3状态', unitName = '', quotaClass = 2 };break
 
+  //新增电机状态
+    case 'no1_s1valveAopenbit': { quotaName = '1号系统气动球阀A状态', unitName = '', quotaClass = 2 };break 
+    case 'no1_s1valveBopenbit': { quotaName = '1号系统气动球阀B状态', unitName = '', quotaClass = 2 };break
+    case 'no1_fire1work': { quotaName = '1号系统点火器状态', unitName = '', quotaClass = 2 };break
+    case 'no1_ph1': { quotaName = '1号系统相序状态1', unitName = '', quotaClass = 2 };break
+    case 'no1_forntwaterpump1work': { quotaName = '1号系统前置水泵状态', unitName = '', quotaClass = 2 };break
+    case 'no1_waterpump1work': { quotaName = '1号系统水泵状态', unitName = '', quotaClass = 2 };break
+    case 'no1_uninstallvalve1openbit': { quotaName = '1号系统排空阀开位', unitName = '', quotaClass = 2 };break
+    case 'no1_uninstallvalve1closebit': { quotaName = '1号系统排空阀关位', unitName = '', quotaClass = 2 };break
+    case 'no2_s1valveAopenbit': { quotaName = '2号系统气动球阀A状态', unitName = '', quotaClass = 2 };break
+    case 'no2_s1valveBopenbit': { quotaName = '2号系统气动球阀B状态', unitName = '', quotaClass = 2 };break
+    case 'no2_fire1work': { quotaName = '2号系统点火器状态', unitName = '', quotaClass = 2 };break
+    case 'no2_ph1': { quotaName = '2号系统相序状态2', unitName = '', quotaClass = 2 };break
+    case 'no2_forntwaterpump1work': { quotaName = '2号系统前置水泵状态', unitName = '', quotaClass = 2 };break
+    case 'no2_waterpump1work': { quotaName = '2号系统水泵状态', unitName = '', quotaClass = 2 };break
+    case 'no2_uninstallvalve1openbit': { quotaName = '2号系统排空阀开位', unitName = '', quotaClass = 2 };break
+    case 'no2_uninstallvalve1closebit': { quotaName = '2号系统排空阀关位', unitName = '', quotaClass = 2 };break
+
   //告警
     case 'alarm_bit_store_0': { quotaName = '入口水压力高报警', unitName = '', quotaClass = 3 };break
     case 'alarm_bit_store_1': { quotaName = '入口油压力高报警', unitName = '', quotaClass = 3 };break
@@ -98,9 +186,64 @@ function quotaDic(quotaEn) {
     case 'stop_bit_store_8': { quotaName = '紧急停车', unitName = '', quotaClass = 3 };break
     case 'stop_bit_store_9': { quotaName = '相序错误', unitName = '', quotaClass = 3 };break
     case 'tank_level_alarm': { quotaName = '水箱液位低告警', unitName = '', quotaClass = 3 };break
-
     case 'system_time_stop': { quotaName = '设备维保时间到,请联系', unitName = '', quotaClass = 0 };break
 
+  // 新增告警  
+    case 'dangerousgas1_alarm': { quotaName = '危险气体报警1', unitName = '', quotaClass = 3 };break
+    case 'airentrypress1_alarm': { quotaName = '空气入口压力1报警', unitName = '', quotaClass = 3 };break
+    case 'airentrypress1_stop': { quotaName = '空气入口压力1停车', unitName = '', quotaClass = 3 };break
+    case 'airentrypress2_alarm': { quotaName = '空气入口压力2报警', unitName = '', quotaClass = 3 };break
+    case 'airentrypress2_stop': { quotaName = '空气入口压力2停车', unitName = '', quotaClass = 3 };break
+    case 'cooltemprature1_alarm': { quotaName = '冷却水温度1报警', unitName = '', quotaClass = 3 };break
+    case 'cooltemprature2_stop': { quotaName = '冷却水温度1停车', unitName = '', quotaClass = 3 };break
+    case 'cooltemprature2_alarm': { quotaName = '冷却水温度2报警', unitName = '', quotaClass = 3 };break
+    case 'dangerousgas2_alarm': { quotaName = '危险气体报警2', unitName = '', quotaClass = 3 };break
+    case 'dangerousgas3_alarm': { quotaName = '危险气体报警3', unitName = '', quotaClass = 3 };break
+    case 'heattemprature1_alarm': { quotaName = '热载体温度1报警', unitName = '', quotaClass = 3 };break
+    case 'heattemprature1_stop': { quotaName = '热载体温度1停车', unitName = '', quotaClass = 3 };break
+    case 'heattemprature2_alarm': { quotaName = '热载体温度2报警', unitName = '', quotaClass = 3 };break
+    case 'heattemprature2_stop': { quotaName = '热载体温度2停车', unitName = '', quotaClass = 3 };break
+    case 'waterentrypress1_alarm': { quotaName = '水入口压力1报警', unitName = '', quotaClass = 3 };break
+    case 'waterentrypress1_stop': { quotaName = '水入口压力1停车', unitName = '', quotaClass = 3 };break
+    case 'waterentrypress2_alarm': { quotaName = '水入口压力2报警', unitName = '', quotaClass = 3 };break
+    case 'waterentrypress2_stop': { quotaName = '水入口压力2停车', unitName = '', quotaClass = 3 };break
+    case 'waterpumpexportpress1': { quotaName = '水泵出口压力1报警', unitName = '', quotaClass = 3 };break
+
+    case 'waterpumpexportpress1_stop': { quotaName = '水泵出口压力1停车', unitName = '', quotaClass = 3 };break
+    case 'waterpumpexportpress2_alarm': { quotaName = '水泵出口压力2报警', unitName = '', quotaClass = 3 };break
+    case 'waterpumpexportpress2_stop': { quotaName = '水泵出口压力2停车', unitName = '', quotaClass = 3 };break
+    case 'emergency1_stop': { quotaName = '系统1急停已按下', unitName = '', quotaClass = 3 };break
+    case 'emergency2_stop': { quotaName = '系统2急停已按下', unitName = '', quotaClass = 3 };break
+    case 'heatpress1_alarm': { quotaName = '热载体压力1报警', unitName = '', quotaClass = 3 };break
+    case 'heatpress1_stop': { quotaName = '热载体压力1停车', unitName = '', quotaClass = 3 };break
+    case 'heatpress2_alarm': { quotaName = '热载体压力2报警', unitName = '', quotaClass = 3 };break
+    case 'heatpress2_stop': { quotaName = '热载体压力2停车', unitName = '', quotaClass = 3 };break
+    case 'krb1L_alarm': { quotaName = '一系统空燃比低报警', unitName = '', quotaClass = 3 };break
+    case 'krb1H_alarm': { quotaName = '一系统空燃比高报警', unitName = '', quotaClass = 3 };break
+    case 'krb2H_alarm': { quotaName = '二系统空燃比高报警', unitName = '', quotaClass = 3 };break
+    case 'krb2L_alarm': { quotaName = '二系统空燃比低报警', unitName = '', quotaClass = 3 };break
+    case 'gasentrypress1_alarm': { quotaName = '天然气入口压力1报警', unitName = '', quotaClass = 3 };break
+    case 'gasentrypress1_stop': { quotaName = '天然气入口压力1停车', unitName = '', quotaClass = 3 };break
+    case 'gasentrypress2_alarm': { quotaName = '天然气入口压力2报警', unitName = '', quotaClass = 3 };break
+    case 'gasentrypress2_stop': { quotaName = '天然气入口压力2停车', unitName = '', quotaClass = 3 };break
+    case 'gasentrypress1_error': { quotaName = '天然气入口1超量程', unitName = '', quotaClass = 3 };break
+    case 'gasentrypress2_error': { quotaName = '天然气入口2超量程', unitName = '', quotaClass = 3 };break
+    case 'airentrypress1_error': { quotaName = '空气入口1超量程', unitName = '', quotaClass = 3 };break
+    case 'airentrypress2_error': { quotaName = '空气入口2超量程', unitName = '', quotaClass = 3 };break
+    case 'cooltemperature1_error': { quotaName = '冷却水温度1超量程', unitName = '', quotaClass = 3 };break
+    case 'cooltemperature2_error': { quotaName = '冷却水温度2超量程', unitName = '', quotaClass = 3 };break
+    case 'dangerousgas1_error': { quotaName = '危险气体超量程', unitName = '', quotaClass = 3 };break
+    case 'heatpress1_error': { quotaName = '热载体压力1超量程', unitName = '', quotaClass = 3 };break
+    case 'heatpress2_error': { quotaName = '热载体压力2超量程', unitName = '', quotaClass = 3 };break
+    case 'heattemperature1_error': { quotaName = '热载体温度1超量程', unitName = '', quotaClass = 3 };break
+    case 'heattemperature2_error': { quotaName = '热载体温度2超量程', unitName = '', quotaClass = 3 };break
+
+    case 'waterpumpexportpress1': { quotaName = '水泵出口压力1超量程', unitName = '', quotaClass = 3 };break
+    case 'waterpumpexportpress2': { quotaName = '水泵出口压力2超量程', unitName = '', quotaClass = 3 };break
+    case 'heaterstop': { quotaName = '加热水箱液位超低限', unitName = '', quotaClass = 3 };break
+    case 'temp1_alarm_h': { quotaName = '1号系统热载体温度低于温度设定', unitName = '', quotaClass = 3 };break
+    case 'temp2_alarm_h': { quotaName = '2号系统热载体温度低于温度设定', unitName = '', quotaClass = 3 };break
+    
     default: null
   }
   return {
