@@ -18,7 +18,7 @@ module.exports = async (obj) => {
         const valObjPut = { [`${obj.ts}`] : item[key], 'timestamp' : new Date(Number(obj.ts)) }
         const valObjUpdate = { [`${obj.ts}`] : item[key], 'timestamp' : Number(obj.ts) }
         if(quotaDic(key).quotaClass === 3 && Number(item[key]) == 1 ) {
-          create_alarm_notice(obj, device_data._id, item, quotaDic(key).quotaName)
+          // create_alarm_notice(obj, device_data._id, item, quotaDic(key).quotaName)
         } else if(quotaDic(key).quotaClass !== 3) {
           // tableStore.getRow({
           //   tableName: 'DataGraph',
