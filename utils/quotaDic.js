@@ -1,4 +1,4 @@
-
+// stop_bit_store
 function quotaDic(quotaEn) {
   var quotaName = '未知'
     , quotaClass = 0    // [ 未知: 0, 监控状态: 1, 电机状态: 2, 告警: 3 ]
@@ -50,7 +50,6 @@ function quotaDic(quotaEn) {
     case 'tank_temp_pv': { quotaName = '加热水箱温度PV', unitName = '度', quotaClass = 1 };break
     case 'tank_temp_svl': { quotaName = '加热水箱温度SVL', unitName = '度', quotaClass = 1 };break
     case 'tank_temp_svh': { quotaName = '加热水箱温度SVH', unitName = '度', quotaClass = 1 };break
-    case 'stop_bit_store': { quotaName = '相序正确开关', unitName = '', quotaClass = 1 };break
 
     //新增监控状态
     case 'no1_airentrypress1': { quotaName = '1号系统空气入口压力PV', unitName = 'MPa', quotaClass = 1 };break
@@ -148,6 +147,7 @@ function quotaDic(quotaEn) {
     case 'no2_ext_waterpump_feedback': { quotaName = '2号系统水变频频率2-2', unitName = 'HZ', quotaClass = 1 };break
 
   //电机状态
+    case 'stop_bit_store': { quotaName = '相序正确开关', unitName = '', quotaClass = 2 };break
     case 'ent_oil_value_start': { quotaName = '关闭阀', unitName = '', quotaClass = 2 };break
     case 'ent_oil_valve': { quotaName = '进原油，进柴油', unitName = '', quotaClass = 2 };break
     case 'waterpump_auto_manual': { quotaName = '水泵手自动', unitName = '', quotaClass = 2 };break
