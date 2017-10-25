@@ -2,7 +2,7 @@
 const Device = require('../model/Device')
 const DevMoniter = require('../model/DevMoniter')
 const DataGraph = require('../model/DataGraph')
-const quotaDic = require('../utils/quotaDic')
+const { quotaDic } = require('../utils/dic')
 const create_alarm_notice = require('./create_alarm_notice')
 const OTStable = require('../utils/OTStable')
   , tableStore = new OTStable()

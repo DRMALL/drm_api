@@ -2,10 +2,15 @@ const excelPort = require('excel-export')
 const moment = require('moment')
 const fs = require('fs')
 const Device = require('../model/Device')
-const allQuotas = require('./allQuotas')
 const OTStable = require('./OTStable')
 const tableStore = new OTStable()
 const logger = require('./logger')
+
+// const allQuotas = require('./allQuotas')
+const dic = require('./dic')
+const allQuotas = []
+
+dic.arr.map(item => allQuotas.push(Object.keys(item)[0]))
 
 var count = 0
 
