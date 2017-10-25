@@ -5,7 +5,6 @@ const Device = require('../model/Device')
 const OTStable = require('./OTStable')
 const tableStore = new OTStable()
 const logger = require('./logger')
-
 // const allQuotas = require('./allQuotas')
 const dic = require('./dic')
 const allQuotas = []
@@ -106,7 +105,6 @@ function moniterExcel(number, startTime, endTime) {
   return new Promise( async (resolve, reject)=> {
     var newObjArr = await changeData(number, startTime, endTime)
     // console.log(JSON.stringify(newObjArr))
-
     //入表
     var conf = {}
     conf.cols = [
