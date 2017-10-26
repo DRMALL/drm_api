@@ -894,8 +894,10 @@ class Admin {
     if(!startTime || !endTime) 
       ctx.body = { code: 300, message: 'miss query: startTime or endTime!', data: null }
 
-    const filePath = await moniterExcel(number, startTime, endTime)
-    ctx.body = { code: 200, message: 'ok', data: filePath }
+    const fileBuffer = await moniterExcel(number, startTime, endTime)
+    ctx.set('Content-Type', 'application/vnd.openxmlformats');
+    ctx.attachment(`${number}-${startTime}-${endTime}-${Date.now()}.xlsx`)
+    ctx.body = result
     // const result = await oss.uploadLocalNo('excel', filePath)
     // if(result.pubUrl) {
     //   fs.unlinkSync(filePath)

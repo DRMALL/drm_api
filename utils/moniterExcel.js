@@ -192,22 +192,23 @@ function moniterExcel(number, startTime, endTime) {
     // }
     conf.rows = rows
     var excelBuffer = excelPort.execute(conf)
+    resolve(new Buffer(excelBuffer), 'binary')
 
     //存到本地生成路径
-    var uploadDir = 'static/'
-      , filename = 'moniterData'
-      , filePath = `${uploadDir}${filename}${new Date().getTime()}.xlsx`
-      , fileStream = fs.createWriteStream(filePath, { 
-        flags: 'w', 
-        defaultEncoding: 'binary', 
-        fd: null, 
-        mode: 0o666, 
-        autoClose: true 
-      })
-    fileStream.write(excelBuffer)
-    fileStream.end(()=> {
-      resolve(filePath)
-    })
+    // var uploadDir = 'static/'
+    //   , filename = 'moniterData'
+    //   , filePath = `${uploadDir}${filename}${new Date().getTime()}.xlsx`
+    //   , fileStream = fs.createWriteStream(filePath, { 
+    //     flags: 'w', 
+    //     defaultEncoding: 'binary', 
+    //     fd: null, 
+    //     mode: 0o666, 
+    //     autoClose: true 
+    //   })
+    // fileStream.write(excelBuffer)
+    // fileStream.end(()=> {
+    //   resolve(filePath)
+    // })
   })
 } 
 
