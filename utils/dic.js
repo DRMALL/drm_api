@@ -1,5 +1,6 @@
 const arr = [
-  // 监控状态
+  // 监控状态  pkf_position
+  { 'pkf_position': null, quotaName: '排空阀开度', unitName: '', quotaClass: 1 },
   { 'ent_air_pressure_pv': null, quotaName: '空气入口压力PV', unitName: 'Mpa', quotaClass: 1 },
   { 'ent_air_pressure_sv': null, quotaName: '空气入口压力SV', unitName: 'Mpa', quotaClass: 1 },
   { 'air_flow_rate': null, quotaName: '空气瞬时流量', unitName: 'Kg/h', quotaClass: 1 },
@@ -133,13 +134,13 @@ const arr = [
   { 'no2_oilpump_outlet_sv': null, quotaName: '2号系统油出口压力SV', unitName: 'MPa', quotaClass: 1 },
   { 'no2_oilflue1': null, quotaName: '2号系统油瞬时流量', unitName: 'Kg/h', quotaClass: 1 },
   { 'no2_oilflue1total': null, quotaName: '2号系统油累计流量', unitName: 'Kg', quotaClass: 1 },
-
   { 'no2_oilpump_driver_t': null, quotaName: '2号系统油变频温度PV', unitName: '℃', quotaClass: 1 },
   { 'no2_oilpump_feedback': null, quotaName: '2号系统油变频频率PV', unitName: 'HZ', quotaClass: 1 },
   { 'no2_waterpump_derver_t': null, quotaName: '2号系统水变频温度2-1', unitName: '℃', quotaClass: 1 },
   { 'no2_waterpump_feedback': null, quotaName: '2号系统水变频频率2-1', unitName: 'HZ', quotaClass: 1 },
   { 'no2_waterpump_driver_temp1': null, quotaName: '2号系统水变频温度2-2', unitName: '℃', quotaClass: 1 },
   { 'no2_ext_waterpump_feedback': null, quotaName: '2号系统水变频频率2-2', unitName: 'HZ', quotaClass: 1 },
+  { 'pressairepress': null, quotaName: '动力气源压力', unitName: 'MPa', quotaClass: 1 },
 
   // 电机状态
   { 'stop_bit_store': null, quotaName: '相序正确开关', unitName: '', quotaClass: 2 },
@@ -147,7 +148,6 @@ const arr = [
   { 'ent_oil_valve': null, quotaName: '进原油，进柴油', unitName: '', quotaClass: 2 },
   { 'waterpump_auto_manual': null, quotaName: '水泵手自动', unitName: '', quotaClass: 2 },
   { 'oilpump_auto_manual': null, quotaName: '油泵手自动', unitName: '', quotaClass: 2 },
-  { 'pkf_position': null, quotaName: '排空阀开度', unitName: '', quotaClass: 2 },
   { 'pkf_close_in_postion': null, quotaName: '排空阀状态位', unitName: '', quotaClass: 2 },
   { 'pre_waterpump_status': null, quotaName: '前置水泵状态位', unitName: '', quotaClass: 2 },
   { 'waterpump_status': null, quotaName: '水泵状态位', unitName: '', quotaClass: 2 },
