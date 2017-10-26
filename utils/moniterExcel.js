@@ -9,7 +9,8 @@ const logger = require('./logger')
 const dic = require('./dic')
 const allQuotas = []
 
-dic.arr.map(item => allQuotas.push(Object.keys(item)[0]))
+dic.arr.map(item => [].push(Object.keys(item)[0]))
+
 
 var count = 0
 
@@ -205,7 +206,7 @@ function moniterExcel(number, startTime, endTime) {
       })
     fileStream.write(excelBuffer)
     fileStream.end(()=> {
-      resolve(filePath)
+      resolve(excelBuffer)
     })
   })
 } 
