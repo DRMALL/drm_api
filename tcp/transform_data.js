@@ -1,6 +1,6 @@
 const crypto = require('crypto')
     , salt = 'sparklog+=newteo'
-    , quotaDic = require('../utils/quotaDic')
+    , { quotaDic } = require('../utils/dic')
 
 const logger = require('../utils/logger')
 
