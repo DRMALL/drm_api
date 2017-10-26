@@ -1,4 +1,4 @@
-const quotaDic = require('../utils/dic').quotadic
+const { quotaDic } = require('../utils/dic')
 
 function to_app_data(normal_data) {
   var obj = {}
