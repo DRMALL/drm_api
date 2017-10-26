@@ -897,7 +897,7 @@ class Admin {
     const fileBuffer = await moniterExcel(number, startTime, endTime)
     ctx.set('Content-Type', 'application/vnd.openxmlformats');
     ctx.attachment(`${number}-${startTime}-${endTime}-${Date.now()}.xlsx`)
-    ctx.body = result
+    ctx.body = fileBuffer
     // const result = await oss.uploadLocalNo('excel', filePath)
     // if(result.pubUrl) {
     //   fs.unlinkSync(filePath)
