@@ -140,7 +140,7 @@ const arr = [
   { 'no2_waterpump_feedback': null, quotaName: '2号系统水变频频率2-1', unitName: 'HZ', quotaClass: 1 },
   { 'no2_waterpump_driver_temp1': null, quotaName: '2号系统水变频温度2-2', unitName: '℃', quotaClass: 1 },
   { 'no2_ext_waterpump_feedback': null, quotaName: '2号系统水变频频率2-2', unitName: 'HZ', quotaClass: 1 },
-  { 'pressairepress': null, quotaName: '动力气源压力', unitName: 'MPa', quotaClass: 1 },
+  { 'pressairpress': null, quotaName: '动力气源压力', unitName: 'MPa', quotaClass: 1 },
 
   // 电机状态
   { 'stop_bit_store': null, quotaName: '相序正确开关', unitName: '', quotaClass: 2 },
