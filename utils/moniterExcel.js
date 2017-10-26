@@ -206,7 +206,7 @@ function moniterExcel(number, startTime, endTime) {
       })
     fileStream.write(excelBuffer)
     fileStream.end(()=> {
-      resolve(excelBuffer)
+      resolve(filePath)
     })
   })
 } 
