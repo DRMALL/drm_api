@@ -102,8 +102,8 @@ async function changeData(number, startTime, endTime) {
   })
 }
 
-async function moniterExcel(number, startTime, endTime) {
-  // return new Promise( async (resolve, reject)=> {
+function moniterExcel(number, startTime, endTime) {
+  return new Promise( async (resolve, reject)=> {
     var newObjArr = await changeData(number, startTime, endTime)
     // console.log(JSON.stringify(newObjArr))
     //入表
@@ -131,8 +131,8 @@ async function moniterExcel(number, startTime, endTime) {
     conf.stylesXmlFile = 'styles.xml'
     conf.name = 'mysheet'
     var excelBuffer = excelPort.execute(conf)
-    return new Buffer(excelBuffer, 'binary')
-    // resolve(new Buffer(excelBuffer), 'binary')
+    // return new Buffer(excelBuffer, 'binary')
+    resolve(new Buffer(excelBuffer, 'binary'))
 
     //存到本地生成路径
     // var uploadDir = 'static/'
@@ -149,7 +149,7 @@ async function moniterExcel(number, startTime, endTime) {
     // fileStream.end(()=> {
     //   resolve(filePath)
     // })
-  // })
+  })
 } 
 
 
