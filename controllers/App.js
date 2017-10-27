@@ -655,35 +655,43 @@ class App {
 
   static async getMoniterByNumberField(ctx) {
     const { number, field } = ctx.query
-    // const doc = await DataGraph.findOne({ number: number, field: field })
-    const result = await tableStore.getRow({
-      tableName: 'DataGraph',
-      primaryKey: [
-        { 'number' : number },
-        { 'field' : field },
-      ],
-      maxVersions: 1
+    const doc = await DevMoniter.find({number}, `ts number data.${field}`, {limit: 2000})
+    const data = {}
+    const values = []
+    data.number = number 
+    data.field = field 
+    doc.map(item => {
+      values.push({ num: item.data[0][field], timeStamp: item.ts })
     })
-    let doc = null
-    if(result.attributes) {
-      let valArr = []
-      result.attributes.forEach((item, index)=> {
-        if(result.attributes.length > 2000) {
-          if(index >= (result.attributes.length - 2000)) {
-            valArr.push({num: item.columnValue, timeStamp: item.timestamp})
-          }
-        } else {
-          valArr.push({num: item.columnValue, timeStamp: item.timestamp})
-        }
-      })
-      doc = {
-        number: result.primaryKey[0].value,
-        field: result.primaryKey[1].value,
-        values: valArr,
-      }
-    }
+    data.values = values
+    // const result = await tableStore.getRow({
+    //   tableName: 'DataGraph',
+    //   primaryKey: [
+    //     { 'number' : number },
+    //     { 'field' : field },
+    //   ],
+    //   maxVersions: 1
+    // })
+    // let doc = null
+    // if(result.attributes) {
+    //   let valArr = []
+    //   result.attributes.forEach((item, index)=> {
+    //     if(result.attributes.length > 2000) {
+    //       if(index >= (result.attributes.length - 2000)) {
+    //         valArr.push({num: item.columnValue, timeStamp: item.timestamp})
+    //       }
+    //     } else {
+    //       valArr.push({num: item.columnValue, timeStamp: item.timestamp})
+    //     }
+    //   })
+    //   doc = {
+    //     number: result.primaryKey[0].value,
+    //     field: result.primaryKey[1].value,
+    //     values: valArr,
+    //   }
+    // }
     logger.info('app got tableStore counted %s times!', count++)
-    ctx.body = { code: 200, message: 'ok', data: doc }
+    ctx.body = { code: 200, message: 'ok', data }
   }
 
   //Part

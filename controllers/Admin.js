@@ -25,6 +25,7 @@ const logger = require('../utils/logger')
 const myEmitter = require('../tcp/emitter')
 const { quotaDic } = require('../utils/dic')
 const moniterExcel = require('../utils/moniterExcel')
+const createExcel = require('../utils/createExcel')
 const OSS = require('../utils/OSS')
 const oss = new OSS()
 
@@ -894,15 +895,11 @@ class Admin {
     if(!startTime || !endTime) 
       ctx.body = { code: 300, message: 'miss query: startTime or endTime!', data: null }
 
-    const fileBuffer = await moniterExcel(number, startTime, endTime)
+    const fileBuffer = await createExcel(number, startTime, endTime)
+    // const fileBuffer = await moniterExcel(number, startTime, endTime)
     ctx.set('Content-Type', 'application/vnd.openxmlformats');
     ctx.attachment(`${number}-${startTime}-${endTime}-${Date.now()}.xlsx`)
     ctx.body = fileBuffer
-    // const result = await oss.uploadLocalNo('excel', filePath)
-    // if(result.pubUrl) {
-    //   fs.unlinkSync(filePath)
-    //   ctx.body = { code: 200, message: 'ok', data: result.pubUrl }
-    // } else ctx.body = { code: 503, message: 'failed', data: null }
   }
 
   static async downloadMonitorExcel(ctx) {

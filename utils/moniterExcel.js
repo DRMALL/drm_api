@@ -5,12 +5,10 @@ const Device = require('../model/Device')
 const OTStable = require('./OTStable')
 const tableStore = new OTStable()
 const logger = require('./logger')
-// const allQuotas = require('./allQuotas')
 const dic = require('./dic')
 const allQuotas = []
 
-dic.arr.map(item => [].push(Object.keys(item)[0]))
-
+dic.arr.map(item => allQuotas.push(Object.keys(item)[0]))
 
 var count = 0
 
@@ -25,6 +23,7 @@ async function getTableOne(number, field) {
     maxVersions: 1
   })
   logger.info('excel got tableStore counted %s times!', count++)
+  
   return result
 }
 
@@ -109,23 +108,25 @@ function moniterExcel(number, startTime, endTime) {
     //入表
     var conf = {}
     var cols = []
-    cols.push({caption: '设备编号', type: 'string', width: 25})
-    cols.push({caption: '时间戳', type: 'string', width: 25})
+    cols.push({caption: '设备编号', type: 'string', width: 30})
+    cols.push({caption: '时间戳', type: 'string', width: 30})
     dic.arr.map(item => {
       cols.push({ caption: item.quotaName, type: 'string', width: 30 })
     })
     conf.cols = cols
 
     var rows = []
+
     newObjArr.map((item, index) => {
       var rowData = []
       item.ts = moment(new Date(item.ts)).format('YYYY-MM-DD HH:mm:ss')
-      Object.keys(item).map((item2, index2) => {
-        rowData.push(item[item2])
+      rowData.push(item.number)
+      rowData.push(item.ts)
+      Object.keys(item.data).map((item2, index2) => {
+        rowData.push(item.data[item2])
       })
       rows.push(rowData)
     })
-
     conf.rows = rows
 
     conf.stylesXmlFile = 'styles.xml'
