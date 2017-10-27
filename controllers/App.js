@@ -661,7 +661,7 @@ class App {
     data.number = number 
     data.field = field 
     doc.map(item => {
-      values.push({ num: item.data[0][field], timeStamp: item.ts })
+      values.push({ num: String(item.data[0][field]), timeStamp: item.ts })
     })
     data.values = values
     // const result = await tableStore.getRow({
