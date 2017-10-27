@@ -655,13 +655,13 @@ class App {
 
   static async getMoniterByNumberField(ctx) {
     const { number, field } = ctx.query
-    const doc = await DevMoniter.find({number}, `ts number data.${field}`, {limit: 2000})
+    const doc = await DevMoniter.find({number}, `ts number data.${field}`, {limit: 1000,  sort: {_id: -1}})
     const data = {}
     const values = []
     data.number = number 
     data.field = field 
     doc.map(item => {
-      values.push({ num: String(item.data[0][field]), timeStamp: item.ts })
+      values.push({ num: String(item.data[0][field]), timeStamp: Number(item.ts) })
     })
     data.values = values
     // const result = await tableStore.getRow({
