@@ -23,7 +23,7 @@ async function createExcel(number, startTime, endTime) {
 } 
 
 async function getData(number, startTime, endTime) {
-  const data = await DevMoniter.find({ number, ts: { $gte: startTime, $lte: endTime }}, null, {limit: 5000})
+  const data = await DevMoniter.find({ number, ts: { $gte: startTime, $lte: endTime }}, null, {limit: 10000})
   return data
 }
 
