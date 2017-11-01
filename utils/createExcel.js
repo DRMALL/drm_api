@@ -6,6 +6,17 @@ const allQuotas = []
 
 dic.arr.map(item => allQuotas.push(Object.keys(item)[0]))
 
+function format(uDate) {
+  let date = new Date(uDate)
+  let milliseconds = date.getMilliseconds()
+
+  let time = moment(uDate).format('YYYY-MM-DD HH:mm:ss')
+
+
+  return `${time} [${milliseconds}]`
+
+}
+
 function beforeCellWrite(row, cellData) {
   if (!cellData)
     return ' --- '

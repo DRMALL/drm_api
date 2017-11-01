@@ -16,6 +16,7 @@
     "url": "https://github.com/DRMALL/drm_api/issues"
   },
   "dependencies": {
+    "@alicloud/sms-sdk": "^1.0.2",
     "ali-oss": "^4.10.1",
     "all": "^0.0.0",
     "append-field": "^1.0.0",

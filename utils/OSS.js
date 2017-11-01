@@ -5,7 +5,7 @@ const multer = require('multer')
   , accessKeyId = process.env.ACCESSKEYID
   , accessKeySecret = process.env.ACCESSKEYSECRET
   , bucket = process.env.BUCKET
-
+  
 class OSS {
   constructor() {
     this.client = new AliOSS({
