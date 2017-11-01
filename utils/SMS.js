@@ -8,23 +8,14 @@ let smsClient = new SMSClient({
   secretAccessKey: SMS_ACCESS_KEY_SECRET
 })
 
-const obj = {
-    PhoneNumbers: '13911829017',
+module.exports = async (phone, name, msg) => {
+  const obj = {
+    PhoneNumbers: phone,
     SignName: '阿里云短信测试专用',
     TemplateCode: 'SMS_106955161',
-    TemplateParam: '{"deviceid":"『王 eight eggs 老板』","alertinfo":"『带着小姨子跑路！』"}'
+    TemplateParam: `{"deviceid":"『${name}』","alertinfo":"『${msg}』"}`
+  }
+
+  const result = await smsClient.sendSMS(obj)
 }
 
-smsClient.sendSMS(obj)
-  .then(res => {
-     if (res.Code === 'OK') {
-        console.log(res)
-     }
-  })
-  .catch(err => console.log(err))
-
-// async function sendSMS(obj) {
-//   const sms = await smsClient.sendSMS(obj)
-// }
-
-// sendSMS(obj)

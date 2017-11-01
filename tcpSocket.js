@@ -4,9 +4,9 @@ const net = require('net')
 const verify_socket_token = require('./utils/verify_socket_token')
 
 const transform_data = require('./tcp/transform_data')
-const verify_source = require('./tcp/verify_source')
 const deviceId_find_db = require('./tcp/deviceId_find_db')
 const save_to_db = require('./tcp/save_to_db')
+const send_msg = require('./tcp/send_msg')
 const to_app_data = require('./tcp/to_app_data')
 const myEmitter = require('./tcp/emitter')
 const redis = require('./redis_tcp')
@@ -34,43 +34,31 @@ function handleConnection(conn) {
   conn.setEncoding('utf8')
 
   async function onConnData(d) {
-    // logger.info('connection data from %s: %j', remoteAddress, d)
-    // logger.info('DRM_DATA:', d)
-    // logger.info('DRM_DATA:', transform_data(d))
+
     if(d.replace(/\$\$/g, '') !== d) {
-      console.log(true)
       d = huancun + d.replace(/\$\$/g, '')
       huancun = ''
     } else {
       huancun += d
       return 
     }
-    const dataSource = verify_source(d)
 
-    if(dataSource === 'hardware') {
-      try {
-        const normal_data = transform_data(d, conn)
-        console.log(normal_data)
-        myEmitter.emit('coming', to_app_data(normal_data))
-        const device_data = await deviceId_find_db(normal_data)
-        if(device_data) {
-          // setTimeout(() => {
-            save_to_db(normal_data)
-          // }, 1000*1 )
-        } else {
-          logger.info(`save failed: Didn't found this deviceId`)
-          console.log(`Didn't found this deviceId`)
-          // conn.write('NONOP')
-        }
-      } catch(e) {
-        console.error(e)
+    try {
+      const normal_data = transform_data(d, conn)
+      //console.log(normal_data)
+      myEmitter.emit('coming', to_app_data(normal_data))
+      const device_data = await deviceId_find_db(normal_data)
+      if(device_data) {
+          save_to_db(normal_data)
+          send_msg(normal_data)
+      } else {
+        logger.info(`save failed: Didn't found this deviceId`)
+        console.log(`Didn't found this deviceId`)
       }
-      conn.write('NOP')
+    } catch(e) {
+      console.error(e)
     }
-
-    if(dataSource === 'app') {
-
-    }
+    conn.write('NOP')
   }
 
   function onConnClose() {

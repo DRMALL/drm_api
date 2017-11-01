@@ -13,9 +13,9 @@ module.exports = (data, conn) => {
     decrypted += decipher.final('utf8')
 
     decrypted = decrypted.replace(/\0/g, '')
-    console.log(decrypted)
+    // console.log(decrypted)
     const obj = JSON.parse(decrypted)
-    console.log(obj)
+    // console.log(obj)
 
     let new_indexes = []
     obj.indexes.forEach((item)=> {
