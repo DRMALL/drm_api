@@ -68,7 +68,7 @@ function createRows(dataArray) {
 
   for (let i = 0; i < dataArray.length; i++) {
     let row = []
-    dataArray[i].ts = moment(new Date(Number(dataArray[i].ts))).format('YYYY-MM-DD HH:mm:ss')
+    dataArray[i].ts = format(Number(dataArray[i].ts))
     row.push(dataArray[i].number)
     row.push(dataArray[i].ts)
     for (let j = 0; j < dataArray[i].data.length; j++) {
