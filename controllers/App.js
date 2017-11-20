@@ -345,7 +345,7 @@ class App {
     try {
       const { type, search } = ctx.query
           , userId = ctx.request.decoded.id
-          , console.log(type, search)
+      console.log(type, search)
 
       if(type === 'onchange' && (search == '' || search == undefined) ) return ctx.body = { code: 200, message: 'ok', data: [] }
       else if(type === 'onchange' && search ) {
