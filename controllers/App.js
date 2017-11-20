@@ -344,6 +344,8 @@ class App {
   static async searchDevice (ctx) {
     try {
       const { type, search } = ctx.query
+          , userId = ctx.request.decoded.id
+          , console.log(type, search)
 
       if(type === 'onchange' && (search == '' || search == undefined) ) return ctx.body = { code: 200, message: 'ok', data: [] }
       else if(type === 'onchange' && search ) {
@@ -351,7 +353,6 @@ class App {
         ctx.body = { code: 200, message: 'ok', data: result }
       } 
       else if (type === 'submit' && search) {
-        console.log(1111,ctx.request.decoded)
         const hot = await Hot.findOneAndUpdate({ type: 'device', text: search }, { $inc: { weights: 1 }}, { new: true, upsert: true })
         ctx.body = { code: 200, message: 'ok', data: hot }
       }
