@@ -355,6 +355,7 @@ class App {
         ctx.body = { code: 200, message: 'ok', data: hot }
       }
       else {
+        console.log(1111,ctx)
         let docs = await Device.find()
         ctx.body = { code: 200, message: 'ok', data: docs }
       }
