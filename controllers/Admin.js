@@ -851,15 +851,15 @@ class Admin {
 
     try {
 
-      const { deviceId, remark } = ctx.request.body
+      const { remark } = ctx.request.body
       const { partId } = ctx.query
 
-      const device = await Device.findOne({ _id: deviceId }, { name:1, number: 1})
-      const { name, number } = device
+      // const device = await Device.findOne({ _id: deviceId }, { name:1, number: 1})
+      // const { name, number } = device
 
       const result = await Part.findByIdAndUpdate(
             { _id: partId },
-            { $set: { deviceCode: number, deviceName: name, remark: remark } },
+            { $set: { remark: remark } },
             { new: true }
           )
       ctx.body = { code: 201, message: '修改成功', data: result }
