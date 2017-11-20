@@ -351,7 +351,7 @@ class App {
         ctx.body = { code: 200, message: 'ok', data: result }
       } 
       else if (type === 'submit' && search) {
-        console.log(1111,ctx)
+        console.log(1111,ctx.request.decoded)
         const hot = await Hot.findOneAndUpdate({ type: 'device', text: search }, { $inc: { weights: 1 }}, { new: true, upsert: true })
         ctx.body = { code: 200, message: 'ok', data: hot }
       }
