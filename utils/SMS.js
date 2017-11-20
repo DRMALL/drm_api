@@ -1,4 +1,4 @@
-// require('dotenv').config()
+require('dotenv').config()
 const SMSClient = require('@alicloud/sms-sdk')
 
 const { SMS_ACCESS_KEY_SECRET, SMS_ACCESS_KEY_ID } = process.env
