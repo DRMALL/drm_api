@@ -363,8 +363,8 @@ class App {
         // const result = await Device
         //                       .find({ "$or" : [{ name: new RegExp(search, 'i') }, { description: new RegExp(search, 'i') }] })
         //                       .populate({path: 'auth', match: {canView: true}})
-        // 
-        console.log(result)                      .limit(50)
+        //                       .limit(50)
+        console.log(result)                     
         ctx.body = { code: 200, message: 'ok', data: result }
       } 
       else if (type === 'submit' && search) {
