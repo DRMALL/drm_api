@@ -351,8 +351,11 @@ class App {
       else if(type === 'onchange' && search ) {
         const result = await Auth
                               .find({ canView: true, 'user._id': userId })
-                              .populate('device')
-                              .select({ user: { name: new RegExp(search, 'i'), description: new RegExp(search, 'i')} })
+                              .populate({
+                                path: 'device',
+                                match: { name: new RegExp(search, 'i'), description: new RegExp(search, 'i')}
+                              })
+                              .select('device')
                               .limit(50)
         // const result = await Device
         //                       .find({ "$or" : [{ name: new RegExp(search, 'i') }, { description: new RegExp(search, 'i') }] })
