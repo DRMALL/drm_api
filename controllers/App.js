@@ -351,8 +351,8 @@ class App {
       else if(type === 'onchange' && search ) {
         const canView = await Auth
                                   .find({ canView: true })
-                                  .populate('user')
-                                  .populate('device')
+                                  .populate('user', 'id')
+                                  .populate('device', 'id')
                                   .select('user device')
 
         const idArr = canView.map(item => {
