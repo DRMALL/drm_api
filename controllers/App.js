@@ -356,7 +356,8 @@ class App {
                                   .select('user device')
 
         const idArr = canView.map(item => {
-          return item.user.id == userId
+          if (item.user.id == userId)
+            return item
         })
                                   
         const result = await Device
@@ -365,7 +366,8 @@ class App {
         console.log(idArr)
         const resultFilter = result.map(item => {
           return idArr.map(item2 => {
-            return item.id == item2.device.id
+             if (item.id == item2.device.id)
+              return item2
           })
         })
         console.log(resultFilter)                     
