@@ -355,7 +355,7 @@ class App {
                                   .populate('device', 'id')
                                   .select('user device')
 
-        const idArr [] 
+        const idArr = [] 
         canView.map(item => {
           if (item.user && item.user.id == userId)
             idArr.push(item)
