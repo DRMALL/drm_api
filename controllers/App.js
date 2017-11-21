@@ -353,7 +353,7 @@ class App {
                                   .find({ canView: true })
                                   .populate('user', '_id')
                                   .populate('device', '_id')
-                                  .select('user', 'device')
+                                  .select('user device')
 
         const idArr = canView.map(item => {
           return item.user._id == userId
