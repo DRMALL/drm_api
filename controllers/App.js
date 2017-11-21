@@ -349,32 +349,18 @@ class App {
 
       if(type === 'onchange' && (search == '' || search == undefined) ) return ctx.body = { code: 200, message: 'ok', data: [] }
       else if(type === 'onchange' && search ) {
-        const canView = await Auth
-                                  .find({ canView: true })
-                                  .populate('user')
-                                  .populate('device')
-                                  .select('user device')
+        const matchArr = await Auth.find({ user: userId, canView: true })
+        const deviceArr = []
 
-        const idArr = [] 
-        canView.map(item => {
-          if (item.user && item.user._id == userId)
-            idArr.push(item)
+        matchArr.map((item, index) => {
+          deviceArr.push(item.device)
         })
                                   
         const result = await Device
-                              .find({"$or" : [{ name: new RegExp(search, 'i') }, { description: new RegExp(search, 'i') }] })
+                              .find({_id: { $in: deviceArr }, "$or" : [{ name: new RegExp(search, 'i') }, { description: new RegExp(search, 'i') }] })
                               //.limit(50)
-        
-        const resultFilter = []
-        result.map(item => {
-          idArr.map(item2 => {
-            console.log(1111,item._id, 2222,item2.device._id)
-             if (item._id == item2.device._id)
-              resultFilter.push(item)
-          })
-        })
-        console.log(resultFilter)                     
-        ctx.body = { code: 200, message: 'ok', data: resultFilter }
+                             
+        ctx.body = { code: 200, message: 'ok', data: result }
       } 
       else if (type === 'submit' && search) {
         const hot = await Hot.findOneAndUpdate({ type: 'device', text: search }, { $inc: { weights: 1 }}, { new: true, upsert: true })
