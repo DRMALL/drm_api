@@ -355,19 +355,21 @@ class App {
                                   .populate('device', 'id')
                                   .select('user device')
 
-        const idArr = canView.map(item => {
-          if (item.user.id == userId)
-            return item
+        const idArr [] 
+        canView.map(item => {
+          if (item.user && item.user.id == userId)
+            idArr.push(item)
         })
                                   
         const result = await Device
                               .find({ "$or" : [{ name: new RegExp(search, 'i') }, { description: new RegExp(search, 'i') }] })
                               //.limit(50)
-        console.log(idArr)
-        const resultFilter = result.map(item => {
-          return idArr.map(item2 => {
+        
+        const resultFilter = []
+        result.map(item => {
+          idArr.map(item2 => {
              if (item.id == item2.device.id)
-              return item2
+              resultFilter.push(item2)
           })
         })
         console.log(resultFilter)                     
