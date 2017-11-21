@@ -349,7 +349,10 @@ class App {
 
       if(type === 'onchange' && (search == '' || search == undefined) ) return ctx.body = { code: 200, message: 'ok', data: [] }
       else if(type === 'onchange' && search ) {
-        const result = await Device.find({ "$or" : [{ name: new RegExp(search, 'i') }, { description: new RegExp(search, 'i') }] }).limit(10)
+        const result = await Device
+                              .find({ "$or" : [{ name: new RegExp(search, 'i') }, { description: new RegExp(search, 'i') }] })
+                              .populate({path: 'autho', match: {canView: true}})
+                              .limit(50)
         ctx.body = { code: 200, message: 'ok', data: result }
       } 
       else if (type === 'submit' && search) {
