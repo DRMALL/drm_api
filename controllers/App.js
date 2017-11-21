@@ -352,12 +352,13 @@ class App {
         const result = await Auth
                               .find({ canView: true })
                               // .find({ "$or" : [{ name: new RegExp(search, 'i') }, { description: new RegExp(search, 'i') }] })
-                              .populate({path: 'auth', match: { name: new RegExp(search, 'i'), description: new RegExp(search, 'i') }})
+                              .populate({path: 'auth', match: { name: new RegExp(search, 'i'), description: new RegExp(search, 'i')}})
                               .limit(50)
         // const result = await Device
         //                       .find({ "$or" : [{ name: new RegExp(search, 'i') }, { description: new RegExp(search, 'i') }] })
         //                       .populate({path: 'auth', match: {canView: true}})
-        //                       .limit(50)
+        // 
+        console.log(result)                      .limit(50)
         ctx.body = { code: 200, message: 'ok', data: result }
       } 
       else if (type === 'submit' && search) {
