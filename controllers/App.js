@@ -367,9 +367,10 @@ class App {
         
         const resultFilter = []
         result.map(item => {
+          console.log(item)
           idArr.map(item2 => {
              if (item.id == item2.device.id)
-              resultFilter.push(item2)
+              resultFilter.push(item)
           })
         })
         console.log(resultFilter)                     
