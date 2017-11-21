@@ -362,14 +362,14 @@ class App {
         })
                                   
         const result = await Device
-                              .find({ "$or" : [{ name: new RegExp(search, 'i') }, { description: new RegExp(search, 'i') }] })
+                              .find({"$or" : [{ name: new RegExp(search, 'i') }, { description: new RegExp(search, 'i') }] })
                               //.limit(50)
         
         const resultFilter = []
         result.map(item => {
           idArr.map(item2 => {
+            console.log(1111,item._id, 2222,item2.device._id)
              if (item._id == item2.device._id)
-              console.log(item._id, item2.device._id)
               resultFilter.push(item)
           })
         })
