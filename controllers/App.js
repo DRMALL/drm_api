@@ -351,8 +351,8 @@ class App {
       else if(type === 'onchange' && search ) {
         const canView = await Auth
                                   .find({ canView: true })
-                                  .populate('user', '_id')
-                                  .populate('device', '_id')
+                                  .populate('user')
+                                  .populate('device')
                                   .select('user device')
 
         const idArr = canView.map(item => {
@@ -362,6 +362,7 @@ class App {
         const result = await Device
                               .find({ "$or" : [{ name: new RegExp(search, 'i') }, { description: new RegExp(search, 'i') }] })
                               //.limit(50)
+        console.log(idArr)
         const resultFilter = result.map(item => {
           return idArr.map(item2 => {
             return item._id == item2.device._id
