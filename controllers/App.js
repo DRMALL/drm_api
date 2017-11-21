@@ -351,13 +351,13 @@ class App {
       else if(type === 'onchange' && search ) {
         const canView = await Auth
                                   .find({ canView: true })
-                                  .populate('user', 'id')
-                                  .populate('device', 'id')
+                                  .populate('user')
+                                  .populate('device')
                                   .select('user device')
 
         const idArr = [] 
         canView.map(item => {
-          if (item.user && item.user.id == userId)
+          if (item.user && item.user._id == userId)
             idArr.push(item)
         })
                                   
@@ -367,9 +367,8 @@ class App {
         
         const resultFilter = []
         result.map(item => {
-          console.log(item)
           idArr.map(item2 => {
-             if (item.id == item2.device.id)
+             if (item._id == item2.device._id)
               resultFilter.push(item)
           })
         })
