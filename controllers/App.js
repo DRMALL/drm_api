@@ -349,11 +349,26 @@ class App {
 
       if(type === 'onchange' && (search == '' || search == undefined) ) return ctx.body = { code: 200, message: 'ok', data: [] }
       else if(type === 'onchange' && search ) {
+        const canView = await Auth
+                                  .find({ canView: true })
+                                  .populate('user', '_id')
+                                  .populate('device', '_id')
+                                  .select('user', 'device')
+
+        const idArr = canView.map(item => {
+          return item.user._id == userId
+        })
+                                  
         const result = await Device
                               .find({ "$or" : [{ name: new RegExp(search, 'i') }, { description: new RegExp(search, 'i') }] })
-                              .limit(50)
-        console.log(result)                     
-        ctx.body = { code: 200, message: 'ok', data: result }
+                              //.limit(50)
+        const resultFilter = result.map(item => {
+          return idArr.map(item2 => {
+            return item._id == item2.device._id
+          })
+        })
+        console.log(resultFilter)                     
+        ctx.body = { code: 200, message: 'ok', data: resultFilter }
       } 
       else if (type === 'submit' && search) {
         const hot = await Hot.findOneAndUpdate({ type: 'device', text: search }, { $inc: { weights: 1 }}, { new: true, upsert: true })
