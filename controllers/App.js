@@ -369,7 +369,7 @@ class App {
         result.map(item => {
           idArr.map(item2 => {
              if (item._id == item2.device._id)
-              console.log(item, item2)
+              console.log(item._id, item2.device._id)
               resultFilter.push(item)
           })
         })
