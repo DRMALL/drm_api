@@ -176,7 +176,7 @@ class App {
 
         let result = await Bug.find(
           { "$or" : [{ content: new RegExp(search, 'i') }, { title:  new RegExp(search, 'i') }] }
-        )
+        ).populate('category', 'text sortIndex')
 
         result = result.map((item, index) => {
           item.content = stripTags(item.content)
