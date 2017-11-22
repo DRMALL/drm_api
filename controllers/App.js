@@ -59,7 +59,7 @@ class App {
         return ctx.body = { code: 403, message: '用户名或密码错误', data: '' }
 
       const token = jwt.sign({ id: result._id }, cert, { expiresIn: '7d' } )
-      ctx.body = { code: 201, message: 'ok', data: token, userInfo: result.email }
+      ctx.body = { code: 201, message: 'ok', data: token }
     } catch(e) {
       logger.error('app session error', e)
     }
