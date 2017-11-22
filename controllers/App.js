@@ -442,6 +442,13 @@ class App {
       const { id } = ctx.request.decoded
       let { deviceId, start, end } = ctx.query
 
+      // hacking the end time for purpose
+
+      let num = end.slice(end.length - 1, end.length)
+      num = String(Number(num) + 1)
+      let sub = end.slice(0, end.length -1)
+      end = sub + num
+
       let startTime = new Date(start)
       let endTime = new Date(end)
 
