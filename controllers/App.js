@@ -287,6 +287,17 @@ class App {
     }
   }
 
+
+  static async getOrder(ctx) {
+    let { id } = ctx.query
+    try {
+      let result = await Order.findById({_id: id})
+      ctx.body = { code: 200, message: 'ok', data: result }
+    } catch(e) {
+      logger.error('app getOrders error', e)
+    }
+  }
+
   static async getLastLocation(ctx) {
 
     const { id } = ctx.request.decoded

@@ -138,6 +138,7 @@ router.get('/app/bugs/cate', App.getBugsCate)
 //orders
 router.post('/app/order/new', App.createOrder)
 router.get('/app/order/all', App.getOrders)
+router.get('/app/order/one', App.getOrder)
 router.post('/app/order/upload', App.uploadOrderImages)
 router.post('/app/order/delimg', App.deleteOrderImage)
 
