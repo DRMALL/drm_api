@@ -7,7 +7,7 @@ const mongoose = require('mongoose')
   
 mongoose.Promise = global.Promise
 
-mongoose.connect(`mongodb://localhost/drm?user=${DATABASE_USER}&pass=${DATABASE_PWD}`, {useMongoClient: true})
+mongoose.connect(`mongodb://${DATABASE_USER}:${DATABASE_PWD}@localhost/drm`, {useMongoClient: true})
 
 db.on('error', console.error.bind(console, 'connect error:'))
 
