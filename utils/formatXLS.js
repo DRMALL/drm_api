@@ -18,10 +18,16 @@ function formatXLS(path) {
 
   data.map((item, index) => {
     result.push({
+      // code  :  item[0],
+      // name  :  item[1],
+      // model :  item[2],
+      // unit  :  item[3]
       code  :  item[0],
       name  :  item[1],
       model :  item[2],
-      unit  :  item[3]
+      unit  :  item[3],
+      levelOne: item[4],
+      levelTwo: item[5],
     })
   })
 
