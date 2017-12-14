@@ -10,6 +10,9 @@ const Counter = require('../model/Counter')
 const Part = require('../model/Part')
 const Notice = require('../model/Notice')
 const DevMoniter = require('../model/DevMoniter')
+const FitCategoryOne = require('../model/FitCategoryOne')
+const FitCategoryTwo = require('../model/FitCategoryTwo')
+
 const jwt = require('jsonwebtoken')
 const fs = require('fs')
 const deleteFile = require('../utils/deleteFile')
@@ -810,15 +813,28 @@ class Admin {
     try {
       const upload = await uploadXLS(ctx, { fileType: 'album' })
       const data = formatXLS(upload.path)
-      const existParts = await Part.find({}, { _id: 0, code: 1, name: 1, model: 1, unit: 1 })
-      existParts.map((item)=> {
-        for(var i = 0; i < data.length; i++) {
-          if(JSON.stringify(data[i]) === JSON.stringify(item)) {
-            data.splice(i, 1)
-            i -= 1
-          }
-        }
+  
+      // const existParts = await Part.find({}, { _id: 0, code: 1, name: 1, model: 1, unit: 1 })
+      // existParts.map((item)=> {
+      //   for(var i = 0; i < data.length; i++) {
+      //     if(JSON.stringify(data[i]) === JSON.stringify(item)) {
+      //       console.log(data[i],item,333)
+      //       data.splice(i, 1)
+      //       i -= 1
+      //     }
+      //   }
+      // })
+
+      data.map(async item => {
+        await FitCategoryOne.findOneAndUpdate({name: item.levelOne},{name: item.levelOne},{upsert: true})
       })
+
+      data.map(async item => {
+        let levelOne = await FitCategoryOne.findOne({name: item.levelOne}, '_id')
+        
+        let levelTwo = await FitCategoryTwo.findOneAndUpdate({name: item.levelTwo},{name: item.levelTwo, fitCategoryOne: levelOne},{upsert: true})
+      })
+
       const result = await Part.insertMany(data)
       ctx.body = { code: 200, message: 'ok', data: result }
 

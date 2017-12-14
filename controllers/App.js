@@ -15,6 +15,10 @@ const FuelSort = require('../model/FuelSort')
 const DevMoniter = require('../model/DevMoniter')
 const Part = require('../model/Part')
 const DataGraph = require('../model/DataGraph')
+
+const FitCategoryOne = require('../model/FitCategoryOne')
+const FitCategoryTwo = require('../model/FitCategoryTwo')
+
 const jwt = require('jsonwebtoken')
 const { cert } = require('../config')
 const { busboys } = require('../utils/upload')
@@ -733,7 +737,7 @@ class App {
 
   //Part
   static async searchPart(ctx) {
-    const { type, search, offset = 0, limit = 20 } = ctx.query
+    const { type, search, level_one = null, level_two = null, offset = 0, limit = 20 } = ctx.query
 
     if(type === 'onchange' && search ) {
       const result = await Part.find({ "$or" : [{ name: new RegExp(search, 'i') }, { model: new RegExp(search, 'i') }] }).limit(10).sort('-createdAt')
@@ -744,11 +748,40 @@ class App {
       const hot = await Hot.findOneAndUpdate({ type: 'part', text: search }, { $inc: { weights: 1 }}, { new: true, upsert: true })
       ctx.body = { code: 200, message: 'ok', data: hot }
     }
+
+    // else if (levelOne && !levelTwo) {
+    //   let count = await Part.find().count()
+    //   let meta = { offset: Number(offset), limit: Number(limit), count: Number(count) }
+    //   let docs = await Part.find({levelOne}).skip(Number(offset)).limit(Number(limit)).sort('-createdAt')
+    //   ctx.body = { code: 200, message: 'ok', data: docs, meta }
+    // }
+
+    // else if (levelOne && levelTwo) {
+    //   let count = await Part.find().count()
+    //   let meta = { offset: Number(offset), limit: Number(limit), count: Number(count) }
+    //   let docs = await Part.find({levelOne, levelTwo}).skip(Number(offset)).limit(Number(limit)).sort('-createdAt')
+    //   ctx.body = { code: 200, message: 'ok', data: docs, meta }
+    // }
+
     else {
-      let count = await Part.find().count()
-      let meta = { offset: Number(offset), limit: Number(limit), count: Number(count) }
-      let docs = await Part.find().skip(Number(offset)).limit(Number(limit)).sort('-createdAt')
-      ctx.body = { code: 200, message: 'ok', data: docs, meta }
+      if (level_one && !level_two) {
+        let count = await Part.find({levelOne: level_one}).count()
+        let meta = { offset: Number(offset), limit: Number(limit), count: Number(count) }
+        let docs = await Part.find({levelOne: level_one}).skip(Number(offset)).limit(Number(limit)).sort('-createdAt')
+        ctx.body = { code: 200, message: 'ok', data: docs, meta }
+      }
+      else if(level_one && level_two) {
+        let count = await Part.find({levelOne: level_one, levelTwo: level_two}).count()
+        let meta = { offset: Number(offset), limit: Number(limit), count: Number(count) }
+        let docs = await Part.find({levelOne: level_one, levelTwo: level_two}).skip(Number(offset)).limit(Number(limit)).sort('-createdAt')
+        ctx.body = { code: 200, message: 'ok', data: docs, meta }
+      }
+      else {
+        let count = await Part.find().count()
+        let meta = { offset: Number(offset), limit: Number(limit), count: Number(count) }
+        let docs = await Part.find().skip(Number(offset)).limit(Number(limit)).sort('-createdAt')
+        ctx.body = { code: 200, message: 'ok', data: docs, meta }
+      }
     }
   }
 
@@ -758,14 +791,21 @@ class App {
   }
 
   static async getFirstClassParts(ctx) {
-    const docs = await Part.find({}, { _id: 0, name: 1 })
-    ctx.body = { code: 200, message: 'ok', data: uniqueObjArr(docs) }
+    // const docs = await Part.find({}, { _id: 0, name: 1 })
+    // ctx.body = { code: 200, message: 'ok', data: uniqueObjArr(docs) }
+
+    const docs = await FitCategoryOne.find({})
+    ctx.body = { code: 200, message: 'ok', data: docs }
   }
 
   static async getSecondClassParts(ctx) {
-    const { name } = ctx.query
-    const docs = await Part.find({ name: name }, { _id: 0, model: 1 })
-    ctx.body = { code: 200, message: 'ok', data: uniqueObjArr(docs) }
+    // const { name } = ctx.query
+    // const docs = await Part.find({ name: name }, { _id: 0, model: 1 })
+    // ctx.body = { code: 200, message: 'ok', data: uniqueObjArr(docs) }
+
+    const { id } = ctx.query
+    const docs = await FitCategoryTwo.find({fitCategoryOne: id})
+    ctx.body = { code: 200, message: 'ok', data: docs }
   }
 
   static async getSinglePart(ctx) {
