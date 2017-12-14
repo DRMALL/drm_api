@@ -733,7 +733,7 @@ class App {
 
   //Part
   static async searchPart(ctx) {
-    const { type, search } = ctx.query
+    const { type, search, offset = 0, limit = 20 } = ctx.query
 
     if(type === 'onchange' && search ) {
       const result = await Part.find({ "$or" : [{ name: new RegExp(search, 'i') }, { model: new RegExp(search, 'i') }] }).limit(10).sort('-createdAt')
@@ -745,8 +745,10 @@ class App {
       ctx.body = { code: 200, message: 'ok', data: hot }
     }
     else {
-      let docs = await Part.find().sort('-createdAt')
-      ctx.body = { code: 200, message: 'ok', data: docs }
+      let count = await Part.find().count()
+      let meta = { offset: Number(offset), limit: Number(limit), count: Number(count) }
+      let docs = await Part.find().skip(Number(offset)).limit(Number(limit)).sort('-createdAt')
+      ctx.body = { code: 200, message: 'ok', data: docs, meta }
     }
   }
 
