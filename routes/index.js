@@ -182,6 +182,13 @@ router.get('/app/parts/first', App.getFirstClassParts)
 router.get('/app/parts/second', App.getSecondClassParts)
 router.get('/app/parts/one', App.getSinglePart)
 
+//fits
+router.get('/app/fits/search', App.searchFit)
+router.get('/app/fits/hots', App.getFitHots)
+router.get('/app/fits/first', App.getFirstClassFits)
+router.get('/app/fits/second', App.getSecondClassFits)
+router.get('/app/fits/one', App.getSingleFit)
+
 
 
 module.exports = router

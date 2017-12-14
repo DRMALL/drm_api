@@ -781,7 +781,47 @@ class App {
     ctx.body = { code: 201, message: 'ok', data: ossResult.del ? ossResult : result }
   }
 
+// fits
 
+  static async searchFit(ctx) {
+    const { type, search } = ctx.query
+
+    if(type === 'onchange' && search ) {
+      const result = await Part.find({ "$or" : [{ name: new RegExp(search, 'i') }, { model: new RegExp(search, 'i') }] }).limit(10).sort('-createdAt')
+      ctx.body = { code: 200, message: 'ok', data: result }
+    }
+
+    else if (type === 'submit' && search) {
+      const hot = await Hot.findOneAndUpdate({ type: 'part', text: search }, { $inc: { weights: 1 }}, { new: true, upsert: true })
+      ctx.body = { code: 200, message: 'ok', data: hot }
+    }
+    else {
+      let docs = await Part.find().sort('-createdAt')
+      ctx.body = { code: 200, message: 'ok', data: docs }
+    }
+  }
+
+  static async getFitHots(ctx) {
+    const docs = await Hot.find({ type: 'part' }).sort('-weights').limit(10)
+    ctx.body = { code: 200, message: 'ok', data: docs }
+  }
+
+  static async getFirstClassFits(ctx) {
+    const docs = await Part.find({}, { _id: 0, name: 1 })
+    ctx.body = { code: 200, message: 'ok', data: uniqueObjArr(docs) }
+  }
+
+  static async getSecondClassFits(ctx) {
+    const { name } = ctx.query
+    const docs = await Part.find({ name: name }, { _id: 0, model: 1 })
+    ctx.body = { code: 200, message: 'ok', data: uniqueObjArr(docs) }
+  }
+
+  static async getSingleFit(ctx) {
+    const { id } = ctx.query
+    const doc = await Part.findById({ _id: id })
+    ctx.body = { code: 200, message: 'ok', data: doc }
+  }
 
 
 }
