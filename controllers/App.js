@@ -740,7 +740,7 @@ class App {
     const { type, search, level_one = null, level_two = null, offset = 0, limit = 20 } = ctx.query
 
     if(type === 'onchange' && search ) {
-      const result = await Part.find({ "$or" : [{ name: new RegExp(search, 'i') }, { model: new RegExp(search, 'i') }] }).limit(1000).sort('-createdAt')
+      const result = await Part.find({ "$or" : [{ name: new RegExp(search, 'i') }, { model: new RegExp(search, 'i') }] }).limit(100).sort('-createdAt')
       ctx.body = { code: 200, message: 'ok', data: result }
     }
 
