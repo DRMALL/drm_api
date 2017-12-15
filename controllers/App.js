@@ -767,19 +767,19 @@ class App {
       if (level_one && !level_two) {
         let count = await Part.find({levelOne: level_one}).count()
         let meta = { offset: Number(offset), limit: Number(limit), count: Number(count) }
-        let docs = await Part.find({levelOne: level_one}).skip(Number(offset)).limit(Number(limit)).sort('-id')
+        let docs = await Part.find({levelOne: level_one}).skip(Number(offset)).limit(Number(limit)).sort('id')
         ctx.body = { code: 200, message: 'ok', data: docs, meta }
       }
       else if(level_one && level_two) {
         let count = await Part.find({levelOne: level_one, levelTwo: level_two}).count()
         let meta = { offset: Number(offset), limit: Number(limit), count: Number(count) }
-        let docs = await Part.find({levelOne: level_one, levelTwo: level_two}).skip(Number(offset)).limit(Number(limit)).sort('-id')
+        let docs = await Part.find({levelOne: level_one, levelTwo: level_two}).skip(Number(offset)).limit(Number(limit)).sort('id')
         ctx.body = { code: 200, message: 'ok', data: docs, meta }
       }
       else {
         let count = await Part.find().count()
         let meta = { offset: Number(offset), limit: Number(limit), count: Number(count) }
-        let docs = await Part.find().skip(Number(offset)).limit(Number(limit)).sort('-id')
+        let docs = await Part.find().skip(Number(offset)).limit(Number(limit)).sort('id')
         ctx.body = { code: 200, message: 'ok', data: docs, meta }
       }
     }
