@@ -72,7 +72,7 @@ class App {
   //获取用户信息
   static async getUserInfo(ctx) {
     try {
-      const { id } = ctx.request.decoded 
+      const { id } = ctx.request.decoded
       const result = await User.findById(id, '-password')
       if(!result)
         return ctx.body = { code: 404, message: '未找到该用户', data: result }
@@ -121,14 +121,14 @@ class App {
 
       const { id } = ctx.request.decoded
       const userinfo = await User.findById({ _id: id })
-      
+
       const isValid = await bcrypt.compare(password, userinfo.password)
       if(!isValid)
         return ctx.body = { code: 410, message: '密码不正确，不允许修改', data: '' }
 
       const encryptPass = await hash(newPass)
 
-      const result = await User.findOneAndUpdate({ _id: id }, { password: encryptPass }, { new: true }) 
+      const result = await User.findOneAndUpdate({ _id: id }, { password: encryptPass }, { new: true })
       if(!result)
         ctx.body = { code: 500, message: '修改出错', data: '' }
       result.password = undefined
@@ -140,9 +140,16 @@ class App {
 
   //获取所有信息
   static async getNews(ctx) {
+    const { offset = 0, limit = 20 } = ctx.query
     try {
-      const result = await News.find({ published: true }).sort('-updatedAt')
-      ctx.body = { code: 200, message: 'ok', data: result }
+      const count = await News.find().count()
+      const meta = { offset: Number(offset), limit: Number(limit), count }
+      const result = await News
+                      .find({ published: true })
+                      .skip(Number(offset))
+                      .limit(Number(limit))
+                      .sort('-updatedAt')
+      ctx.body = { code: 200, message: 'ok', data: result, meta }
     }
     catch(e) {
       logger.error('app getNews error', e)
@@ -165,8 +172,7 @@ class App {
   //获取所有 故障+搜索
   static async getBugs(ctx) {
     try {
-      const { type, search } = ctx.query
-
+      const { type, search, category_id = '', offset = 0, limit = 20 } = ctx.query
       if(type === 'submit') {
         // hots
         // 有这个词就权重加1,没有这个词就创建。
@@ -191,8 +197,17 @@ class App {
       }
 
       else {
-        let result = await Bug.find({}).populate('category', 'text sortIndex')
-        ctx.body = { code: 200, message: 'ok', data: result }      
+        let count = await Bug
+                      .find({'category': {$in: {_id: category_id}}})
+                      .count()
+        let meta = { count, offset: Number(offset), limit: Number(limit) }
+        let result = await Bug
+                      .find({'category': {$in: {_id: category_id}}})
+                      .populate('category', '_id text')
+                      .limit(Number(limit))
+                      .skip(Number(offset))
+                      .sort('-createdAt')
+        ctx.body = { code: 200, message: 'ok', data: result, meta }
       }
 
     } catch(e) {
@@ -370,13 +385,13 @@ class App {
         matchArr.map((item, index) => {
           deviceArr.push(item.device)
         })
-                                  
+
         const result = await Device
                               .find({_id: { $in: deviceArr }, "$or" : [{ name: new RegExp(search, 'i') }, { description: new RegExp(search, 'i') }] })
-                              //.limit(50)
-                             
+                              .limit(100)
+
         ctx.body = { code: 200, message: 'ok', data: result }
-      } 
+      }
       else if (type === 'submit' && search) {
         const hot = await Hot.findOneAndUpdate({ type: 'device', text: search }, { $inc: { weights: 1 }}, { new: true, upsert: true })
         ctx.body = { code: 200, message: 'ok', data: hot }
@@ -401,12 +416,11 @@ class App {
   }
 
   static async getDevices (ctx) {
+    const { createTime, type, value, cc, pressure, combustible, address, offset = 0, limit = 20 } = ctx.request.query
+    // var devices;
+    const { id } = ctx.request.decoded
 
     try {
-    
-      const { createTime, type, value, cc, pressure, combustible, address } = ctx.request.query
-      // var devices;
-      const { id } = ctx.request.decoded
 
       const matchArr = await Auth.find({ user: id, canView: true })
       var deviceArr = []
@@ -418,16 +432,20 @@ class App {
 
       //按时间排序
       if(createTime == "desc" || createTime == "asc") {
-        const devices = await Device.find({ _id: { $in: deviceArr } }).sort({ createdAt: createTime })
-        return ctx.body = { code: 200, message: 'ok', data: devices }
+        const count = await Device.find({ _id: { $in: deviceArr } }).count()
+        const meta = { count, offset: Number(offset), limit: Number(limit) }
+        const devices = await Device.find({ _id: { $in: deviceArr } }).limit(Number(limit)).skip(Number(offset)).sort({ createdAt: createTime })
+        return ctx.body = { code: 200, message: 'ok', data: devices, meta }
       }
 
       //
       else if(type && value) {
         const find = {}
         find[type] = value
-        const devices = await Device.find( Object.assign({}, find, { _id: { $in: deviceArr } }) )
-        return ctx.body = { code: 200, message: 'ok', data: devices }
+        const count = await Device.find( Object.assign({}, find, { _id: { $in: deviceArr } }) ).count()
+        const meta = { count, offset: Number(offset), limit: Number(limit) }
+        const devices = await Device.find( Object.assign({}, find, { _id: { $in: deviceArr } }) ).limit(Number(limit)).skip(Number(offset)).sort('-createdAt')
+        return ctx.body = { code: 200, message: 'ok', data: devices, meta }
       }
 
     //
@@ -438,13 +456,18 @@ class App {
             delete obj[key]
         }
 
-        const devices = await Device.find( Object.assign({}, obj, { _id: { $in: deviceArr } }) )
-        return ctx.body = { code: 200, message: 'ok', data: devices }
+        const count = await Device.find( Object.assign({}, obj, { _id: { $in: deviceArr } }) ).count()
+        const meta = { count, offset: Number(offset), limit: Number(limit) }
+
+        const devices = await Device.find( Object.assign({}, obj, { _id: { $in: deviceArr } }) ).limit(Number(limit)).skip(Number(offset)).sort('-createdAt')
+        return ctx.body = { code: 200, message: 'ok', data: devices, meta }
       }
 
       else {
-        const devices = await Device.find({ _id: { $in: deviceArr } })
-        ctx.body = { code: 200, message: 'ok', data: devices }
+        const count = await Device.find({ _id: { $in: deviceArr } }).count()
+        const meta = { count, offset: Number(offset), limit: Number(limit) }
+        const devices = await Device.find({ _id: { $in: deviceArr } }).limit(Number(limit)).skip(Number(offset)).sort('-createdAt')
+        ctx.body = { code: 200, message: 'ok', data: devices, meta }
       }
     } catch(e) {
         logger.error('app getDevices error', e)
@@ -472,7 +495,7 @@ class App {
 
 
       if(!matchArr.length) {
-        return ctx.body = { code: 503, message: 'you has no authority to watch this device', data: ''}      
+        return ctx.body = { code: 503, message: 'you has no authority to watch this device', data: ''}
       }
 
       const canView = matchArr.some((item, index) => {
@@ -509,7 +532,7 @@ class App {
       const result = await Device.findByIdAndUpdate({ _id: deviceId }, { remark }, { new: true })
       ctx.body = { code: 201, message: 'ok', data: result }
     } catch(e) {
-      logger.error('app updateDeviceRemark error', e)      
+      logger.error('app updateDeviceRemark error', e)
     }
   }
 
@@ -522,7 +545,7 @@ class App {
                                   )
       ctx.body = { code: 201, message: 'ok', data: result }
     } catch(e) {
-      logger.error('app addDeviceTimeline error', e)      
+      logger.error('app addDeviceTimeline error', e)
     }
   }
 
@@ -539,7 +562,7 @@ class App {
                                     )
           if(index == (ossResult.length - 1)) result = resultOne
         })
-        return ctx.body = { code: 201, message: '上传成功', data: result } 
+        return ctx.body = { code: 201, message: '上传成功', data: result }
       } else ctx.body = { code: 501, message: '上传文件失败', data: ossResult }
     } catch(e) {
       logger.error('app addDeviceImages error', e)
@@ -548,11 +571,11 @@ class App {
 
   static async getNotices(ctx) {
     try {
-      const { id } = ctx.request.decoded 
+      const { id } = ctx.request.decoded
       const docs = await Notice.find({ 'user.id' : id }).sort('-createdAt')
       ctx.body = { code: 200, message: 'ok', data: docs }
     } catch(e) {
-      logger.error('app getNotices error', e)     
+      logger.error('app getNotices error', e)
     }
   }
 
@@ -562,7 +585,7 @@ class App {
       const doc = await Notice.findById({ _id: id })
       ctx.body = { code: 200, message: 'ok', data: doc }
     } catch(e) {
-      logger.error('app getOneNotice error', e)           
+      logger.error('app getOneNotice error', e)
     }
   }
 
@@ -603,9 +626,9 @@ class App {
   static async getMoniterDevs(ctx) {
 
     const { id } = ctx.request.decoded
-    
+
     const matchArr = await Auth.find({ user: id, canMonitor: true })
-    
+
     var deviceArr = []
 
     matchArr.map((item, index) => {
@@ -622,7 +645,7 @@ class App {
     const { id } = ctx.request.decoded
 
     const matchArr = await Auth.find({ user: id, canMonitor: true })
-    
+
     var deviceArr = []
 
     matchArr.map((item, index) => {
@@ -654,7 +677,7 @@ class App {
       if(result.key)
         return ctx.body = { code: 400, message: `参数值错误, key: ${result.key}`, data: '' }
       else if(result.pubUrl)
-        return ctx.body = { code: 201, message: '上传成功', data: { url: result.pubUrl } }   
+        return ctx.body = { code: 201, message: '上传成功', data: { url: result.pubUrl } }
       else ctx.body = { code: 501, message: '上传文件失败', data: result }
     } catch(e) {
       logger.error('app upload orders image error', e)
@@ -693,8 +716,8 @@ class App {
     const doc = await DevMoniter.find({number}, `ts number data.${field}`, {limit: 1000,  sort: {_id: -1}})
     const data = {}
     const values = []
-    data.number = number 
-    data.field = field 
+    data.number = number
+    data.field = field
     doc.map((item, index) => {
       let fieldObj
       item.data.map((item2, index2) => {
