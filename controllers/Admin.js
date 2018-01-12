@@ -607,7 +607,8 @@ class Admin {
         return ctx.body = { code: 200, message: 'ok', data: docs }
       }
 
-      let result = await Device.find({}).sort('-createdAt')
+      let count = await Device.find({}).count()
+      let result = await Device.find({}).skip(Number(offset)).limit(Number(limit)).sort('-createdAt')
 
       const addIncharge = (result) => {
         const promise = result.map(async (item, index) => {
@@ -630,7 +631,9 @@ class Admin {
         return item
       })
 
-      ctx.body = { code: 200, message: 'ok', data: result }
+      const meta = { count, offset: Number(offset), limit: Number(limit) }
+
+      ctx.body = { code: 200, message: 'ok', data: result, meta }
     } catch (e) {
       logger.error('admin get devices error', e)
     }
