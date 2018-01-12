@@ -45,7 +45,7 @@ class Admin {
       const { admin, password } = ctx.request.body
       if(!admin || !password)
         return ctx.body = { code: 400, message: '缺少必要的参数 admin, password', data: '' }
-      
+
       const valid = initAdmins.some((item, index) => {
         return item.admin === admin && item.password === password
       })
@@ -97,13 +97,13 @@ class Admin {
         return element.email === email
       })
 
-      if(valida) return ctx.body = { code: 402, message: '该邮箱已被注册', data: ''}    
-      
+      if(valida) return ctx.body = { code: 402, message: '该邮箱已被注册', data: ''}
+
       const encryptPass = await hash(password)
 
       let result = await User.create({ name, email, password: encryptPass, phone, company_name, address })
       result.password = undefined
-      ctx.body = { code: 201, message: 'ok', data: result } 
+      ctx.body = { code: 201, message: 'ok', data: result }
     } catch(e) {
       logger.error('新增用户失败' , e)
     }
@@ -119,7 +119,7 @@ class Admin {
       }
       const result = await User.find({}, '-password').sort('-createdAt')
       ctx.body = { code: 200, message: 'ok', data: result }
-    } 
+    }
     catch(e) {
       logger.error('admin get all users error', e)
     }
@@ -189,7 +189,7 @@ class Admin {
       if(result.key)
         return ctx.body = { code: 400, message: `参数值错误, key: ${result.key}`, data: '' }
       else if(result.pubUrl)
-        return ctx.body = { code: 201, message: '上传成功', data: { url: result.pubUrl } }   
+        return ctx.body = { code: 201, message: '上传成功', data: { url: result.pubUrl } }
       else ctx.body = { code: 501, message: '上传文件失败', data: result }
     } catch(e) {
       logger.error('admin upload news image error', e)
@@ -202,7 +202,7 @@ class Admin {
       let { title, abstract, content, published, images } = ctx.request.body
       if( !title || !abstract || !content || !images.length )
         return ctx.body = {
-          code: 400, 
+          code: 400,
           message: '缺少必要的参数: title, abstract, content, published, images',
           data: ''
         }
@@ -228,8 +228,12 @@ class Admin {
   //获取所有消息
   static async getNews(ctx) {
     try {
-      const result = await News.find().sort('-updatedAt')
-      ctx.body = { code: 200, message: '获取成功', data: result }
+      const { offset = 0, limit = 10, published = false } = ctx.query
+      const count = await News.find({ published }).count()
+      const result = await News.find({ published }).skip(Number(offset)).limit(Number(limit)).sort('-updatedAt')
+      const meta = { offset: Number(offset), limit: Number(limit), count }
+
+      ctx.body = { code: 200, message: '获取成功', data: result, meta }
     } catch(e) {
       logger.error('admin get all news error', e)
     }
@@ -273,7 +277,7 @@ class Admin {
           }
         }
       })
-      
+
       const result = await News.remove({ _id: id })
       ctx.body = { code: 201, message: '删除成功', data: {} }
     }
@@ -297,7 +301,7 @@ class Admin {
 
   static async createBugCate (ctx) {
     try {
-      const { text } = ctx.request.body 
+      const { text } = ctx.request.body
       if(!text)
         return ctx.body = { code: 400, message: '缺少必要的参数: text', data: '' }
       const cate = new Category({
@@ -397,7 +401,7 @@ class Admin {
       if(result.key)
         return ctx.body = { code: 400, message: `参数值错误, key: ${result.key}`, data: '' }
       else if(result.pubUrl)
-        return ctx.body = { code: 201, message: '上传成功', data: { url: result.pubUrl } }   
+        return ctx.body = { code: 201, message: '上传成功', data: { url: result.pubUrl } }
       else ctx.body = { code: 501, message: '上传文件失败', data: result }
     } catch(e) {
       logger.error('admin upload image with bug error', e)
@@ -452,9 +456,9 @@ class Admin {
 
       if(!id || !advice)
         return ctx.body = { code: 400, message: '缺少必要的参数：id, advice', data: '' }
-      
+
       const result = await Order.findOneAndUpdate({ _id: id }, { $set: { advice: advice, isHanlded: true } }, { new: true } )
-    
+
       const notice = {
         types: 'order',
         des: result.title,
@@ -496,11 +500,11 @@ class Admin {
 
     if(!startTime || !endTime)
       return ctx.body = { code: 400, message: '缺少必要的参数 startTime, endTime', data: ''}
-    
+
     const devices = await Device.aggregate([
       { $unwind: "$timelines" },
-      { $project: 
-        { 
+      { $project:
+        {
           "linestime" : "$timelines.line_time",
           "linestype" : "$timelines.line_type",
           "linesdes" : "$timelines.line_des",
@@ -530,7 +534,7 @@ class Admin {
     ctx.set('Content-Type', 'application/vnd.openxmlformats');
     ctx.attachment(`${time}.xlsx`)
 
-    const result = new Buffer(nodeExcel.execute(conf), 'binary'); 
+    const result = new Buffer(nodeExcel.execute(conf), 'binary');
 
     ctx.body = result
   }
@@ -541,7 +545,7 @@ class Admin {
       if(result.key)
         return ctx.body = { code: 400, message: `参数值错误, key: ${result.key}`, data: '' }
       else if(result.pubUrl)
-        return ctx.body = { code: 201, message: '上传成功', data: { url: result.pubUrl } }   
+        return ctx.body = { code: 201, message: '上传成功', data: { url: result.pubUrl } }
       else ctx.body = { code: 501, message: '上传文件失败', data: result }
     } catch(e) {
       logger.error('admin uploadImgWithDevice error', e)
@@ -595,7 +599,7 @@ class Admin {
   static async getDevices(ctx) {
 
     try {
-      const { type } = ctx.query
+      const { type, offset = 0, limit = 10 } = ctx.query
 
       //获取设备名称
       if(type === 'name') {
@@ -603,12 +607,12 @@ class Admin {
         return ctx.body = { code: 200, message: 'ok', data: docs }
       }
 
-      var result = await Device.find({}).sort('-createdAt')
+      let result = await Device.find({}).sort('-createdAt')
 
       const addIncharge = (result) => {
         const promise = result.map(async (item, index) => {
-            var incharges = await Auth.find({ device: item._id }).populate('user', 'name')
-            var user = []
+            let incharges = await Auth.find({ device: item._id }).populate('user', 'name')
+            let user = []
             incharges.map((auth, i) => {
               if(auth.user && auth.user.name) user.push(auth.user.name)
             })
@@ -679,10 +683,10 @@ class Admin {
       obj.text = address
       obj.time = new Date()
 
-      const result = await Device.findByIdAndUpdate({ _id: deviceId }, { 
+      const result = await Device.findByIdAndUpdate({ _id: deviceId }, {
         $push : { 'location' : obj },
         $set : { 'address' : address }
-      }, 
+      },
       { new: true , upsert: false })
       ctx.body = { code: 201, message: 'ok', data: result }
     } catch(e) {
@@ -716,10 +720,10 @@ class Admin {
       }
       const result = await Device.update(
           { _id: deviceId, "timelines._id" : lineId },
-          { $set: { 
+          { $set: {
               "timelines.$.line_type" : line_type,
               "timelines.$.line_des"  : line_des,
-              "timelines.$.line_time" : line_time 
+              "timelines.$.line_time" : line_time
             }
           }
         )
@@ -731,12 +735,12 @@ class Admin {
   }
 
   static async addAuth(ctx) {
-    
+
     try {
       const { userId, deviceId, canView, canMonitor } = ctx.request.body
       if( !userId || !deviceId || canView === undefined || canMonitor === undefined )
         return ctx.body = { code: 400, message: '缺少必要的参数 userId, deviceId, canView, canMonitor', data: '' }
-      
+
       const currentAuth = await Auth.find({})
 
       const isReap = currentAuth.some((item, index) => {
@@ -813,7 +817,7 @@ class Admin {
     try {
       const upload = await uploadXLS(ctx, { fileType: 'album' })
       const data = formatXLS(upload.path)
-  
+
       // const existParts = await Part.find({}, { _id: 0, code: 1, name: 1, model: 1, unit: 1 })
       // existParts.map((item)=> {
       //   for(var i = 0; i < data.length; i++) {
@@ -831,7 +835,7 @@ class Admin {
 
       data.map(async item => {
         let levelOne = await FitCategoryOne.findOne({name: item.levelOne}, '_id')
-        
+
         let levelTwo = await FitCategoryTwo.findOneAndUpdate({name: item.levelTwo},{name: item.levelTwo, fitCategoryOne: levelOne},{upsert: true})
       })
 
@@ -850,7 +854,7 @@ class Admin {
     // if(!upload.success)
       // return ctx.body = { code: 501, message: '上传文件失败', data: upload }
 
-    // ctx.body = { code: 201, message: '上传成功', data: { url: upload.file } }   
+    // ctx.body = { code: 201, message: '上传成功', data: { url: upload.file } }
 
   }
 
@@ -887,7 +891,7 @@ class Admin {
   static async getMoniterByNumber(ctx) {
 
     let { number } = ctx.request.query
-    
+
     let doc = await Device.findOne({ number: number }, {name: 1, number: 1, data: 1, ts: 1, createdAt: 1, updatedAt: 1})
 
     if(doc) {
@@ -908,7 +912,7 @@ class Admin {
   // 即将废弃
   static async getMoniterExcelByNumber(ctx) {
     let { number, startTime, endTime } = ctx.request.query
-    if(!startTime || !endTime) 
+    if(!startTime || !endTime)
       ctx.body = { code: 300, message: 'miss query: startTime or endTime!', data: null }
 
     const fileBuffer = await createExcel(number, startTime, endTime)
@@ -920,11 +924,10 @@ class Admin {
 
   static async downloadMonitorExcel(ctx) {
     let { number, startTime, endTime } = ctx.request.query
-    if(!startTime || !endTime) 
+    if(!startTime || !endTime)
       ctx.body = { code: 300, message: 'miss query: startTime or endTime!', data: null }
   }
 
 }
 
 module.exports = Admin
-
