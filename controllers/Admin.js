@@ -391,7 +391,7 @@ class Admin {
       let { offset = 0, limit = 10 } = ctx.query
 
       const count = await Bug.find().count()
-      const result = await Bug.find({}, '-isSolved')
+      const result = await Bug.find({}, '-isSolved -content')
                               .sort('-updatedAt')
                               .populate('category', 'text sortIndex')
                               .skip(Number(offset))
