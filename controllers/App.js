@@ -202,7 +202,7 @@ class App {
                       .count()
         let meta = { count, offset: Number(offset), limit: Number(limit) }
         let result = await Bug
-                      .find({'category': {$in: {_id: category_id}}})
+                      .find({'category': {$in: {_id: category_id}}}, '-content')
                       .populate('category', '_id text')
                       .limit(Number(limit))
                       .skip(Number(offset))
