@@ -112,13 +112,17 @@ class Admin {
   //获取所有用户
   static async getUsers (ctx) {
     try {
-      const { type } = ctx.query
+      let { type, offset = 0, limit = 10 } = ctx.query
       if(type === 'name') {
         let docs = await User.find({}, { name: 1, email: 1 }).sort('-createdAt')
         return ctx.body = { code: 200, message: 'ok', data: docs }
       }
-      const result = await User.find({}, '-password').sort('-createdAt')
-      ctx.body = { code: 200, message: 'ok', data: result }
+
+      const count = await User.find().count()
+      const result = await User.find({}, '-password').skip(Number(offset)).limit(Number(limit)).sort('-createdAt')
+      const meta = { count, offset: Number(offset), limit: Number(limit) }
+
+      ctx.body = { code: 200, message: 'ok', data: result, meta }
     }
     catch(e) {
       logger.error('admin get all users error', e)
@@ -384,11 +388,17 @@ class Admin {
 
   static async getBugs(ctx) {
     try {
+      let { offset = 0, limit = 10 } = ctx.query
+
+      const count = await Bug.find().count()
       const result = await Bug.find({}, '-isSolved')
                               .sort('-updatedAt')
                               .populate('category', 'text sortIndex')
+                              .skip(Number(offset))
+                              .limit(Number(limit))
 
-      ctx.body = { code: 200, message: '获取成功', data: result }
+      const meta = { count, offset: Number(offset), limit: Number(limit) }
+      ctx.body = { code: 200, message: '获取成功', data: result, meta }
     }
     catch(e) {
       logger.error('admin get bugs error', e)
@@ -768,10 +778,16 @@ class Admin {
 
   static async getAuths(ctx) {
     try {
+      let { offset = 0, limit = 10 } = ctx.query
+
+      const count = await Auth.find().count()
       const result = await Auth.find({})
                   .populate('user', 'name')
                   .populate('device', 'name number')
-      ctx.body = { code: 200, message: 'ok', data: result }
+                  .skip(Number(offset))
+                  .limit(Number(limit))
+      const meta = { count, offset: Number(offset), limit: Number(limit) }
+      ctx.body = { code: 200, message: 'ok', data: result, meta }
     } catch(e) {
       logger.error('admin get Auths error')
     }
@@ -863,8 +879,13 @@ class Admin {
 
   static async getParts(ctx) {
     try {
-    const docs = await Part.find({})
-      ctx.body = { code: 200, message: 'ok', data: docs }
+      let { offset = 0, limit = 10 } = ctx.query
+
+      const count = await Part.find().count()
+      const docs = await Part.find({}).skip(Number(offset)).limit(Number(limit))
+
+      const meta = { count, offset: Number(offset), limit: Number(limit) }
+      ctx.body = { code: 200, message: 'ok', data: docs, meta }
     } catch(e) {
       logger.error('admin get parts error', e)
     }

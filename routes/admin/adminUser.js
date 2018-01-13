@@ -7,14 +7,18 @@ const { hash } = require('../../utils/util')
 
 //获取所有用户
 adminUser.get('/', async (ctx) => {
-  let { type } = ctx.query
+  let { type, offset = 0, limit = 10 } = ctx.query
   try {
     if(type === 'name') {
       let docs = await User.find({}, 'name email').sort('-createdAt')
       return ctx.body = { code: 200, message: 'ok', data: docs }
     }
-    let result = await User.find({}, '-password').sort('-createdAt')
-    ctx.body = { code: 200, message: 'ok', data: result }
+
+    const count = await User.find().count()
+    const result = await User.find({}, '-password').skip(Number(offset)).limit(Number(limit)).sort('-createdAt')
+    const meta = { count, offset: Number(offset), limit: Number(limit) }
+
+    ctx.body = { code: 200, message: 'ok', data: result, meta }
   }
   catch(e) {
     logger.error('admin get users error: ', e)
@@ -35,7 +39,7 @@ adminUser.post('/new', async (ctx) => {
   }
 
   if(!isPhone(phone)) {
-    return ctx.body = { code: 400, message: '请输入正确的手机号码', data: '' }    
+    return ctx.body = { code: 400, message: '请输入正确的手机号码', data: '' }
   }
 
   try {
@@ -45,13 +49,13 @@ adminUser.post('/new', async (ctx) => {
       return element.email === email
     })
 
-    if(valida) return ctx.body = { code: 402, message: '该邮箱已被注册', data: '' }    
-    
+    if(valida) return ctx.body = { code: 402, message: '该邮箱已被注册', data: '' }
+
     const encryptPass = await hash(password)
 
     let result = await User.create({ name, email, password: encryptPass, phone, company_name, address })
     result.password = undefined
-    ctx.body = { code: 201, message: 'ok', data: result } 
+    ctx.body = { code: 201, message: 'ok', data: result }
   }
   catch(e) {
     logger.error('admin new User error', e)
@@ -80,7 +84,7 @@ adminUser.put('/:id', async (ctx) => {
     }
 
     if(!isPhone(phone)) {
-      return ctx.body = { code: 400, message: '请输入正确的手机号码', data: '' }    
+      return ctx.body = { code: 400, message: '请输入正确的手机号码', data: '' }
     }
 
     if(password) {
@@ -91,7 +95,7 @@ adminUser.put('/:id', async (ctx) => {
     } else {
       const doc = await User.findByIdAndUpdate({ _id: id }, ctx.request.body, { new: true })
       doc.password = undefined
-      ctx.body = { code: 201, message: 'ok', data: doc }     
+      ctx.body = { code: 201, message: 'ok', data: doc }
     }
   } catch(e) {
     logger.error('admin update user error', e)
