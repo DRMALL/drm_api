@@ -1,4 +1,4 @@
-
+const xlsx = require('node-xlsx')
 const User = require('../model/User')
 const News = require('../model/News')
 const Bug = require('../model/Bug')
@@ -544,7 +544,14 @@ class Admin {
     ctx.set('Content-Type', 'application/vnd.openxmlformats');
     ctx.attachment(`${time}.xlsx`)
 
-    const result = new Buffer(nodeExcel.execute(conf), 'binary');
+    // const result = new Buffer(nodeExcel.execute(conf), 'binary');
+
+    const result = xlsx.build([
+       {
+         name: conf.name,
+         data: [keyArray.map(_ => _.caption)].concat(valueArray)
+       }
+     ])
 
     ctx.body = result
   }
